@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+            Team Deluxe-Tardigrades :: Yifan Wang, Amber Chen, Elizabeth Doss, Mandy Zheng
+            SoftDev: pd1
+            P05 :: Fin
+            2020-06-11
+        -->
+        <title>{{title}}</title>
+        <script src='http://d3js.org/d3.v5.min.js'></script>
+        <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        {% block style %}
+        {% endblock %}
+    </head>
+    <body style = "background-color: #AEECEF;">
+      <font face = "Didot">
+        <br>
+        <center><h1>{{heading}}</h1></center>
+        {% block body %}
+        {% endblock %}
+        {% block scripts %}
+        {% endblock %}
+      </font>
+    </body>
+</html>
