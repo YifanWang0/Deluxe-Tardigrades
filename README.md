@@ -1,6 +1,6 @@
 # Team Name: Deluxe-Tardigrades
 
-# Team Members:
+## Team Members:
 - Amanda Chen
 - Elizabeth Doss
 - Amanda Zheng
