@@ -1,18 +1,16 @@
 # Team Name: Deluxe-Tardigrades
 
-## Team Members:
-- Amanda Chen
-- Elizabeth Doss
-- Amanda Zheng
-- Yifan Wang (PM)
-
-# Data Visualization by Eclipse
-
 SoftDev pd1
 
 P05: Fin
 
 2020-06-11
+
+## Team Members:
+- Amanda Chen
+- Elizabeth Doss
+- Amanda Zheng
+- Yifan Wang (PM)
 
 ## Video Demo Here:
 
