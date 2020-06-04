@@ -1,2 +1,33 @@
 amandaZ -- 2020-05-28 12:51
-      -set up template files
+    - set up template files
+
+elizabethD -- 2020-05-28 14:20
+    - created team flag
+
+amandaZ -- 2020-05-31 15:37
+    - discussed project idea
+    - worked on design doc
+
+elizabethD -- 2020-05-31 15:37
+    - discussed project idea
+    - worked on design doc
+
+amandaC -- 2020-05-31 15:37
+    - discussed project idea
+    - worked on design doc
+
+yifanW -- 2020-05-31 15:37
+    - discussed project idea
+    - worked on design doc
+
+amandaZ -- 2020-06-01 16:02
+    - worked on design doc
+
+elizabethD -- 2020-06-01 16:02
+    - worked on design doc
+
+amandaC -- 2020-06-01 16:02
+    - worked on design doc
+
+yifanW -- 2020-06-01 16:02
+    - worked on design doc
