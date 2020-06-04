@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block body %}
+  <h1>Login</h1>
+  <form action="/auth" method="POST">
+     <div class="form-group">
+       <label for="osis" class="font-weight-bold"> Osis </label>
+       <input name="osis" type="text" class="form-control" id="osis" value={{osis}}>
+     </div>
+     <div class="form-group">
+       <label for="password" class="font-weight-bold">Password</label>
+       <input name="password" type="password" class="form-control" id="password" value={{password}}>
+     </div>
+     <br>
+     <button type="submit" class="btn">Login</button>
+   </form>
+   <br>
+   <form>
+     <input class="btn btn-link text-light" type="button" onclick= "location.href='/signup';" value="Sign Up">
+   </form>
+{% endblock %}
