@@ -40,3 +40,6 @@ amandaZ -- 2020-06-07 17:25
 amandaZ -- 2020-06-07 18:28
     - sign up backend done
     - adding new user
+
+amandaZ -- 2020-06-07 18:35
+    - login credentials

@@ -39,6 +39,17 @@ def no_login_required(f):
 def login():
     return render_template("login.html")
 
+@app.route("/check", methods=['POST'])
+@no_login_required
+def authentication():
+    osis = request.form.get("osis")
+    password = request.form.get("password")
+    if(userValid(osis,password)):
+        return render_template("home.html")
+    else:
+        #wrong credentials flash message
+        return render_template("login.html")
+
 @app.route("/signup")
 @no_login_required
 def signup():
@@ -47,7 +58,7 @@ def signup():
 @app.route("/auth", methods=['POST'])
 @no_login_required
 def newUser():
-    #add error handling (like password mismatch and invalud stuff) and flash
+    #add error handling (like password mismatch and invalud stuff), blank fields, and flash
     osis = request.form.get("osis")
     password = request.form.get("password")
     confirm = request.form.get("confirm")
