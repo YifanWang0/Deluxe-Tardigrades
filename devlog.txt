@@ -37,3 +37,6 @@ amandaZ -- 2020-06-07 17:25
     - made datatables
     -began registration form
 
+amandaZ -- 2020-06-07 18:28
+    - sign up backend done
+    - adding new user

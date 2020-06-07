@@ -44,6 +44,31 @@ def login():
 def signup():
     return render_template("signup.html")
 
+@app.route("/auth", methods=['POST'])
+@no_login_required
+def newUser():
+    #add error handling (like password mismatch and invalud stuff) and flash
+    osis = request.form.get("osis")
+    password = request.form.get("password")
+    confirm = request.form.get("confirm")
+    grade = request.form.get("grade")
+    locker = request.form.get("locker")
+    combo = request.form.get("combo")
+    type = request.form.get("location")
+    level = request.form.get("level")
+    floor = request.form.get("floor")
+    gender = request.form.get("gender")
+    buddy = ""
+    survey = [combo, floor, level, location, "OWNED"]
+    if(addUser(osis, password, grade, buddy, locker, gender)=="done"):
+        return render_template("login.html")
+    elif(addUser(osis, password, grade, buddy, locker, gender)=="locker"):
+        #someone already registered locker add flash
+        return render_template("signup")
+    else:
+        #someone already registered with that osis add flash
+        return render_template("signup")
+
 if __name__ == "__main__":
     db_builder.build_db()
     app.debug = True
