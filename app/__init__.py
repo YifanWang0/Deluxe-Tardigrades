@@ -6,7 +6,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from functools import wraps
 from datetime import date, timedelta
-import db_builder
+import db_builder, db_manager
 import os, random, sqlite3
 import urllib3, json, urllib
 
@@ -45,6 +45,7 @@ def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
     if(userValid(osis,password)):
+        session["osis"]=osis
         return render_template("home.html")
     else:
         #wrong credentials flash message
@@ -70,15 +71,15 @@ def newUser():
     floor = request.form.get("floor")
     gender = request.form.get("gender")
     buddy = ""
-    survey = [combo, floor, level, location, "OWNED"]
-    if(addUser(osis, password, grade, buddy, locker, gender)=="done"):
+    survey = combo+","+floor+","+level+","+type+",OWNED"
+    if(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="done"):
         return render_template("login.html")
-    elif(addUser(osis, password, grade, buddy, locker, gender)=="locker"):
+    elif(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="locker"):
         #someone already registered locker add flash
-        return render_template("signup")
+        return render_template("signup.html")
     else:
         #someone already registered with that osis add flash
-        return render_template("signup")
+        return render_template("signup.html")
 
 if __name__ == "__main__":
     db_builder.build_db()

@@ -46,3 +46,6 @@ amandaZ -- 2020-06-07 18:35
 
 yifanW -- 2020-06-07 19:10
     - formatted sign up page
+    
+amandaZ -- 2020-06-07 19:21
+    - login backend and input user
