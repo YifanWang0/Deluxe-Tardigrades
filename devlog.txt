@@ -34,8 +34,8 @@ yifanW -- 2020-06-01 16:02
 
 amandaZ -- 2020-06-07 17:25
     - setup sign up
-    - made datatables
-    -began registration form
+    - made database tables
+    - began registration form
 
 amandaZ -- 2020-06-07 18:28
     - sign up backend done
@@ -44,5 +44,8 @@ amandaZ -- 2020-06-07 18:28
 amandaZ -- 2020-06-07 18:35
     - login credentials
 
+yifanW -- 2020-06-07 19:10
+    - formatted sign up page
+    
 amandaZ -- 2020-06-07 19:21
     - login backend and input user
