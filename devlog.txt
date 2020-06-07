@@ -31,3 +31,9 @@ amandaC -- 2020-06-01 16:02
 
 yifanW -- 2020-06-01 16:02
     - worked on design doc
+
+amandaZ -- 2020-06-07 17:25
+    - setup sign up
+    - made datatables
+    -began registration form
+
