@@ -1,51 +1,63 @@
 {% extends "base.html" %}
 
-{% block title %} Login {% endblock %}
+{% block title %} Sign up {% endblock %}
 
 {% block body %}
   <h1>Sign up</h1>
-  <form>
+  <form action="/auth" method="post">
   <div class="form-group row justify-content-around">
       <label for="id" class="col-3">Osis</label>
       <label for="password1" class="col-3">Password</label>
       <label for="confirm1" class="col-3">Confirm Password</label>
     </div>
     <div class="form-group row justify-content-around">
-      <input type="text" class="form-control col-sm-3 col-form-label" id="locker" placeholder="XXXXXXXXX">
-      <input type="password" class="form-control col-sm-3 col-form-label" id="password" placeholder="Password">
-      <input type="password" class="form-control col-sm-3 col-form-label" id="confirm" placeholder="Confirm Password">
+      <input type="text" class="form-control col-sm-3 col-form-label" id="osis" placeholder="XXXXXXXXX" name="osis">
+      <input type="password" class="form-control col-sm-3 col-form-label" id="password" placeholder="Password" name="password">
+      <input type="password" class="form-control col-sm-3 col-form-label" id="confirm" placeholder="Confirm Password" name="confirm">
     </div>
     <div class="form-group row justify-content-around">
         <label for="Num" class="col-6">Locker Number</label>
         <label for="Combo" class="col-6">Locker Combo</label>
       </div>
       <div class="form-group row justify-content-around">
-        <input type="text" class="form-control col-sm-6" id="num" placeholder="">
-        <input type="combo" class="form-control col-sm-6" id="combo" placeholder="">
+        <input type="text" class="form-control col-sm-6" id="locker" placeholder="" name="locker">
+        <input type="combo" class="form-control col-sm-6" id="combo" placeholder="" name="combo">
       </div>
 
       <div class="form-group row justify-content-around">
+        <label for="grade" class"col-3">Grade</label>
+        <label for="" class="col-3">Gender</label>
         <label for="lockertype" class="col-3">Locker Type</label>
         <label for="level" class="col-3">Top/Bottom</label>
         <label for="" class="col-3">Floor</label>
-        <label for="" class="col-3">Gender</label>
       </div>
         <div class="form-group row justify-content-around">
-          <select id="Ltype" class="form-control form-group col-sm-3 col-form-label">
+          <select id="grade" class="form-control form-group col-sm-3 col-form-label" name="Grade">
+            <option selected>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+          </select>
+          <select id="Gender" class="form-control form-group col-sm-3 col-form-label" name="gender">
+            <option selected>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+          </select>
+          <select id="Ltype" class="form-control form-group col-sm-3 col-form-label" name="location">
             <option selected>Hallyway</option>
-            <option>Atrium</option>
+            <option>Senior Atrium</option>
+            <option>Senior Bar</option>
             <option>Robotics</option>
             <option>Music Hallway</option>
             <option>Atrium</option>
             <option>Swim Gym</option>
-            <option>Bar</option>
             <option>Gym</option>
           </select>
-          <select id="Ltype" class="form-control form-group col-sm-3 col-form-label">
+          <select id="Ltype" class="form-control form-group col-sm-3 col-form-label" name="level">
             <option selected>Top</option>
             <option>Bottom</option>
           </select>
-          <select id="floor" class="form-control form-group col-sm-3 col-form-label">
+          <select id="floor" class="form-control form-group col-sm-3 col-form-label" name="floor">
             <option selected>1</option>
             <option>2</option>
             <option>3</option>
@@ -57,14 +69,64 @@
             <option>9</option>
             <option>10</option>
           </select>
-          <select id="Gender" class="form-control form-group col-sm-3 col-form-label">
-            <option selected>Female</option>
-            <option>Male</option>
-            <option>Other</option>
-          </select>
         </div>
 
 
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
+
+
+  <form>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="id">Osis</label>
+        <input type="text" class="form-control col-md-4 col-form-label" id="osis" placeholder="XXXXXXXXX" name="osis">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="password1">Password</label>
+        <input type="password" class="form-control col-md-4 col-form-label" id="password" placeholder="Password" name="password">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="confirm1">Confirm Password</label>
+        <input type="password" class="form-control col-md-4 col-form-label" id="confirm" placeholder="Confirm Password" name="confirm">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="Num" class="col-6">Locker Number</label>
+        <input type="text" class="form-control col-sm-6" id="locker" placeholder="" name="locker">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="Combo" class="col-6">Locker Combo</label>
+        <input type="combo" class="form-control col-sm-6" id="combo" placeholder="" name="combo">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputCity">City</label>
+        <input type="text" class="form-control" id="inputCity">
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputState">State</label>
+        <select id="inputState" class="form-control">
+          <option selected>Choose...</option>
+          <option>...</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputZip">Zip</label>
+        <input type="text" class="form-control" id="inputZip">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="gridCheck">
+        <label class="form-check-label" for="gridCheck">
+          Check me out
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Sign in</button>
+  </form>
+
 {% endblock %}
