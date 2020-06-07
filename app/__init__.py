@@ -44,7 +44,8 @@ def login():
 def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
-    if(userValid(osis,password)):
+    if(db_manager.userValid(osis,password)):
+        print("hi there")
         session["osis"]=osis
         return render_template("home.html")
     else:

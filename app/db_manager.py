@@ -6,6 +6,7 @@ from datetime import datetime
 from datetime import timedelta
 
 def userValid(osis,password):
+    q = "SELECT * FROM user_tbl"
     data = exec(q)
     for uName in data:
         if uName[0] == osis:
