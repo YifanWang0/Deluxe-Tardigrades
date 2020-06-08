@@ -60,3 +60,40 @@ def getTransactionInfo(id):
     if data[4] == "open":
         info = [data[0],data[1],data[2],data[3],data[4],data[5]]
     return info
+
+def editUserTbl(osis,fxn,new):
+    new = "\"" + new + "\""
+    q = "UPDATE user_tbl SET " + fxn + "=" + new + " WHERE osis=?"
+    inputs = (osis,)
+    data = execmany(q,inputs)
+    return True
+
+def editLockerTbl(locker,fxn,new):
+    new = "\"" + new + "\""
+    q = "UPDATE locker_tbl SET " + fxn + "=" + new + " WHERE locker=?"
+    inputs = (locker,)
+    data = execmany(q,inputs)
+    return True
+
+def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type):
+    if(userValid(oldosis,oldpassword)):
+        if (password != ""): editUserTbl(oldosis,"password",password)
+        if (grade != "No Change"): editUserTbl(oldosis,"grade", grade)
+        if (gender != "No Change"): editUserTbl(oldosis,"gender", gender)
+        q = "SELECT locker FROM user_tbl WHERE osis=?"
+        inputs = (oldosis,)
+        oldlocker = execmany(q,inputs).fetchone()[0]
+        if (combo != ""): editLockerTbl(oldlocker,"combo", combo)
+        if (floor != "No Change"): editLockerTbl(oldlocker,"floor", floor)
+        if (level != "No Change"): editLockerTbl(oldlocker,"level", level)
+        if (type != "No Change"): editLockerTbl(oldlocker,"location", type)
+        if (locker != ""):
+            editLockerTbl(oldlocker, "locker", locker)
+            editUserTbl(oldosis, "locker", locker)
+        if (osis != ""):
+            q = "UPDATE locker_tbl SET owner=? WHERE owner=?"
+            inputs = (osis,oldosis)
+            data = execmany(q, inputs)
+            editUserTbl(oldosis,"osis",osis)
+        return True
+    return False

@@ -6,7 +6,7 @@
         P05 :: Fin
         2020-06-11
     -->
-    <title>Sign Up</title>
+    <title>Edit Profile</title>
     <script src='http://d3js.org/d3.v5.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -19,18 +19,25 @@
 </head>
 
 <body>
-  <h1>Sign up</h1>
-  <br><br>
-  <form action="/auth" method="post">
+  <h1>Edit Profile</h1>
+  <br>
+  <h5>Only edit the information you would like to change. You must include your old/current password to make changes. Leave all other fields blank.</h5>
+  <br>
+  <form action="/updateprof" method="post">
     <div class="form-row">
       <div class="form group col-md-4">
         <label for="id" class="font-weight-bold">Osis</label>
-        <input type="text" class="form-control" id="osis" placeholder="xxxxxxxxx" name="osis">
+        <input type="text" class="form-control" id="osis" placeholder="XXXXXXXXX" name="osis">
         <small class="form-text text-muted">Must be 9 digits</small>
       </div>
       <div class="form group col-md-4">
-        <label for="password1" class="font-weight-bold">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+        <label for="password1" class="font-weight-bold">Old Password</label>
+        <input type="password" class="form-control" id="oldpassword" placeholder=" Old Password" name="oldpassword">
+        <small class="form-text text-muted">Must include old password to make any changes</small>
+      </div>
+      <div class="form group col-md-4">
+        <label for="password1" class="font-weight-bold">New Password</label>
+        <input type="password" class="form-control" id="password" placeholder="New Password" name="password">
       </div>
       <div class="form group col-md-4">
         <label for="confirm1" class="font-weight-bold">Confirm Password</label>
@@ -42,6 +49,7 @@
       <div class="form-group col-md-6">
       <label for="grade" class="font-weight-bold">Grade</label>
       <select id="grade" class="form-control" name="grade">
+        <option selected>No Change</option>
         <option>9</option>
         <option>10</option>
         <option>11</option>
@@ -51,8 +59,9 @@
       <div class="form group col-md-6">
         <label for="gender" class="font-weight-bold">Gender</label>
         <select id="Gender" class="form-control" name="gender">
-          <option>Male</option>
+          <option selected>No Change</option>
           <option>Female</option>
+          <option>Male</option>
           <option>Prefer Not to Say</option>
         </select>
       </div>
@@ -63,12 +72,12 @@
     <div class="form-row">
       <div class="form group col-md-6">
         <label for="Num" class="font-weight-bold">Locker Number</label>
-        <input type="text" class="form-control" id="locker" placeholder="xxx" name="locker">
+        <input type="text" class="form-control" id="locker" placeholder="" name="locker">
         <small class="form-text text-muted">Must be 3 digits and ignore floor number (Ex: 2-225 as 225)</small>
       </div>
       <div class="form group col-md-6">
         <label for="Combo" class="font-weight-bold">Locker Combo</label>
-        <input type="text" class="form-control" id="combo" placeholder="xxxxxx" name="combo">
+        <input type="combo" class="form-control" id="combo" placeholder="" name="combo">
         <small class="form-text text-muted">Must be 6 digits and ignore dashes (Ex: 10-21-06 as 102106)</small>
       </div>
     </div>
@@ -77,6 +86,7 @@
       <div class="form group col-md-4">
         <label for="floor" class="font-weight-bold">Floor</label>
         <select id="floor" class="form-control" name="floor">
+          <option selected>No Change</option>
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -92,7 +102,8 @@
       <div class="form-group col-md-4">
       <label for="lockertype" class="font-weight-bold">Locker Location</label>
       <select id="Ltype" class="form-control" name="location">
-        <option selected>Hallway</option>
+        <option selected>No Change</option>
+        <option>Hallyway</option>
         <option>Senior Atrium</option>
         <option>Senior Bar</option>
         <option>Robotics</option>
@@ -104,38 +115,15 @@
       </div>
       <div class="form group col-md-4">
         <label for="Ltype" class="font-weight-bold">Top/Bottom</label>
-        <select id="level" class="form-control" name="level">
+        <select id="Ltype" class="form-control" name="level">
+          <option selected>No Change</option>
           <option>Top</option>
           <option>Bottom</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </div>
   </form>
-
-    <script>
-      var osis = document.getElementById("osis");
-      var num = document.getElementById("locker");
-      var combo = document.getElementById("combo");
-
-      var sendAlert = function() {
-        if (osis.value.length != 9){
-          //console.log(osis.value.length);
-          alert("Length of osis must be 9 digits!");
-        };
-        if (num.value.length != 3){
-          //console.log(num.value.length);
-          alert("Length of locker number must be 3 digits!");
-        };
-        if (combo.value.length != 6){
-          //console.log(combo.value.length);
-          alert("Length of locker combination must be 6 digits!");
-        };
-      };
-
-      var submit = document.getElementById("submit");
-      submit.addEventListener("click", sendAlert);
-    </script>
 
 </body>
 </html>

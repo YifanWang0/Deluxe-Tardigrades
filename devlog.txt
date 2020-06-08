@@ -46,6 +46,16 @@ amandaZ -- 2020-06-07 18:35
 
 yifanW -- 2020-06-07 19:10
     - formatted sign up page
-    
+
 amandaZ -- 2020-06-07 19:21
     - login backend and input user
+
+elizabethD -- 2020-06-07 20:26
+    - moved locker_info to correct table
+    - fixed userValid
+
+yifanW -- 2020-06-07 23:32
+    - added alerts when inputs for sign up do not meet requirements
+
+elizabethD -- 2020-06-07 23:39
+    - added profile editor html and database functions
