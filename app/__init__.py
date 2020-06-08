@@ -46,10 +46,17 @@ def authentication():
     password = request.form.get("password")
     if(userValid(osis,password)):
         session["osis"]=osis
-        return render_template("home.html")
+        return redirect('/home')
     else:
         #wrong credentials flash message
-        return render_template("login.html")
+        return redirect('/login')
+
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    flash('You have logged out!')
+    return redirect('/')
 
 @app.route("/signup")
 @no_login_required
@@ -71,15 +78,23 @@ def newUser():
     floor = request.form.get("floor")
     gender = request.form.get("gender")
     buddy = ""
-    survey = combo+","+floor+","+level+","+type+",OWNED"
-    if(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="done"):
-        return render_template("login.html")
-    elif(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="locker"):
+    linfo = [combo, floor, level, type, "OWNED"]
+    if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender,"")=="done"):
+        return redirect('/')
+    elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender,"")=="locker"):
         #someone already registered locker add flash
-        return render_template("signup.html")
+        return redirect('/signup')
     else:
         #someone already registered with that osis add flash
-        return render_template("signup.html")
+        return redirect('/signup')
+
+@app.route("/home", methods=['POST'])
+@login_required
+def profile():
+    user = db_manager.getUserInfo(session['osis'])
+    buddy = db_manager.getUserInfo()
+    locker = db_manager.getUserInfo()
+    request = db_manager.getUserInfo()
 
 if __name__ == "__main__":
     db_builder.build_db()
