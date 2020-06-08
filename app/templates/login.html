@@ -5,34 +5,51 @@
   SoftDev: pd1
   P05 :: Fin
   2020-06-11
--->
-<title>Login</title>
-<script src='http://d3js.org/d3.v5.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<style>
-  body {
-    margin-left: 30px;
-  }
-</style>
+  -->
+  <title>Locker Swapper</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src='http://d3js.org/d3.v5.min.js'></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+  <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
+  <style>
+    body {
+      margin-left: 30px;
+    }
+  </style>
 </head>
+
 <body>
-  <h1>Login</h1>
-  <br>
-  <form action="/check" method="POST">
-    <div class="form-group">
-      <label for="osis" class="font-weight-bold"> Osis </label>
-      <input name="osis" type="text" class="form-control" id="osis" value={{osis}} name="osis">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h2 class="card-title text-center">Locker Swapper</h2>
+            <div class="icon text-center">
+              <img class="mb-4" src="/../static/lockericon.png" alt="" width="72" height="72">
+            </div>
+            <form class="form-signin" action="/check" method="POST">
+              <div class="form-label-group">
+                <label for="osis">OSIS</label>
+                <input type="text" id="osis" class="form-control" placeholder="OSIS" required="required" value={{osis}}>
+              </div>
+              <br>
+              <div class="form-label-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" id="password" class="form-control" placeholder="Password" required="required" value={{password}}>
+              </div>
+              <br>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+              </form>
+              <hr class="my-4">
+              <div class="signUp text-center">
+                <a class="underlineHover" href="./signup">Sign Up</a>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="password" class="font-weight-bold">Password</label>
-      <input name="password" type="password" class="form-control" id="password" value={{password}} name="password">
-    </div>
-    <button class="btn btn-primary" type="submit">Login</button>
-  </form>
-  <br>
-  <div>
-    <a class="btn btn-primary" href="./signup" role="button">Sign Up</a>
   </div>
+  <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
 </body>
 </html>
