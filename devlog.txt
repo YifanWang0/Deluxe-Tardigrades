@@ -54,6 +54,10 @@ elizabethD -- 2020-06-07 20:26
     - moved locker_info to correct table
     - fixed userValid
 
+amandaZ -- 2020-06-07 20:03
+    - made login work
+    - created profile page with cards with right info
+
 yifanW -- 2020-06-07 23:32
     - added alerts when inputs for sign up do not meet requirements
 
