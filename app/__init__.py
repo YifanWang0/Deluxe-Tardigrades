@@ -46,10 +46,17 @@ def authentication():
     password = request.form.get("password")
     if(db_manager.userValid(osis,password)):
         session["osis"]=osis
-        return render_template("home.html")
+        return redirect('/home')
     else:
-        #wrong credentials flash message
-        return render_template("login.html")
+        flash("Wrong")
+        return redirect('/')
+
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    flash('You have logged out!')
+    return redirect('/')
 
 @app.route("/signup")
 @no_login_required
@@ -71,16 +78,62 @@ def newUser():
     floor = request.form.get("floor")
     gender = request.form.get("gender")
     buddy = ""
-    survey = ""
-    locker_info = combo+","+floor+","+level+","+type+",OWNED"
-    if(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender, locker_info)=="done"):
-        return render_template("login.html")
-    elif(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="locker"):
+    linfo = [combo, floor, level, type, "OWNED"]
+    if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="done"):
+        flash("You've successfully made an account!")
+        return redirect('/')
+    elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="locker"):
         #someone already registered locker add flash
-        return render_template("signup.html")
+        return redirect('/signup')
     else:
         #someone already registered with that osis add flash
-        return render_template("signup.html")
+        return redirect('/signup')
+
+@app.route("/home")
+@login_required
+def profile():
+    user = db_manager.getUserInfo(session['osis'])
+    buddy = ["N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A"]
+    if len(user[4]) != 0:
+        buddy = db_manager.getUserInfo(user[4])
+    locker = db_manager.getLockerInfo(user[2])
+    transactions = []
+    if user[6] != '':
+        transactions = user[6].split(",")
+        for id in transactions:
+            request=db_manager.getTransactionInfo(id)
+            if len(request)>0:
+                transactions.append(request)
+    return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
+
+@app.route("/editprof", methods=['POST'])
+def editprof():
+    return render_template("editprof.html")
+
+@app.route("/updateprof", methods=['POST'])
+def updateprof():
+    oldosis = session['osis']
+    osis = request.form.get("osis")
+    oldpassword = request.form.get("oldpassword")
+    password = request.form.get("password")
+    confirm = request.form.get("confirm")
+    grade = request.form.get("grade")
+    locker = request.form.get("locker")
+    combo = request.form.get("combo")
+    type = request.form.get("location")
+    level = request.form.get("level")
+    floor = request.form.get("floor")
+    gender = request.form.get("gender")
+    if(db_manager.editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type)):
+        return render_template("login.html")
+    else:
+        #error somewhere in the form, make more specific later
+        print("error")
+        return render_template("editprof.html")
+
+
+
+
 
 if __name__ == "__main__":
     db_builder.build_db()
