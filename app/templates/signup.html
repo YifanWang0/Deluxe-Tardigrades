@@ -25,7 +25,7 @@
     <div class="form-row">
       <div class="form group col-md-4">
         <label for="id" class="font-weight-bold">Osis</label>
-        <input type="text" class="form-control" id="osis" placeholder="XXXXXXXXX" name="osis">
+        <input type="text" class="form-control" id="osis" placeholder="xxxxxxxxx" name="osis">
         <small class="form-text text-muted">Must be 9 digits</small>
       </div>
       <div class="form group col-md-4">
@@ -42,7 +42,7 @@
       <div class="form-group col-md-6">
       <label for="grade" class="font-weight-bold">Grade</label>
       <select id="grade" class="form-control" name="grade">
-        <option selected>9</option>
+        <option>9</option>
         <option>10</option>
         <option>11</option>
         <option>12</option>
@@ -51,8 +51,8 @@
       <div class="form group col-md-6">
         <label for="gender" class="font-weight-bold">Gender</label>
         <select id="Gender" class="form-control" name="gender">
-          <option selected>Female</option>
           <option>Male</option>
+          <option>Female</option>
           <option>Prefer Not to Say</option>
         </select>
       </div>
@@ -63,12 +63,12 @@
     <div class="form-row">
       <div class="form group col-md-6">
         <label for="Num" class="font-weight-bold">Locker Number</label>
-        <input type="text" class="form-control" id="locker" placeholder="" name="locker">
+        <input type="text" class="form-control" id="locker" placeholder="xxx" name="locker">
         <small class="form-text text-muted">Must be 3 digits and ignore floor number (Ex: 2-225 as 225)</small>
       </div>
       <div class="form group col-md-6">
         <label for="Combo" class="font-weight-bold">Locker Combo</label>
-        <input type="combo" class="form-control" id="combo" placeholder="" name="combo">
+        <input type="text" class="form-control" id="combo" placeholder="xxxxxx" name="combo">
         <small class="form-text text-muted">Must be 6 digits and ignore dashes (Ex: 10-21-06 as 102106)</small>
       </div>
     </div>
@@ -77,7 +77,7 @@
       <div class="form group col-md-4">
         <label for="floor" class="font-weight-bold">Floor</label>
         <select id="floor" class="form-control" name="floor">
-          <option selected>1</option>
+          <option>1</option>
           <option>2</option>
           <option>3</option>
           <option>4</option>
@@ -91,7 +91,7 @@
       </div>
       <div class="form-group col-md-4">
       <label for="lockertype" class="font-weight-bold">Locker Location</label>
-      <select id="Ltype" class="form-control" name="location">
+      <select id="location" class="form-control" name="location">
         <option selected>Hallyway</option>
         <option>Senior Atrium</option>
         <option>Senior Bar</option>
@@ -104,14 +104,38 @@
       </div>
       <div class="form group col-md-4">
         <label for="Ltype" class="font-weight-bold">Top/Bottom</label>
-        <select id="Ltype" class="form-control" name="level">
-          <option selected>Top</option>
+        <select id="level" class="form-control" name="level">
+          <option>Top</option>
           <option>Bottom</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" id="submit">Submit</button>
     </div>
   </form>
+
+    <script>
+      var osis = document.getElementById("osis");
+      var num = document.getElementById("locker");
+      var combo = document.getElementById("combo");
+
+      var sendAlert = function() {
+        if (osis.value.length != 9){
+          //console.log(osis.value.length);
+          alert("Length of osis must be 9 digits!");
+        };
+        if (num.value.length != 3){
+          //console.log(num.value.length);
+          alert("Length of locker number must be 3 digits!");
+        };
+        if (combo.value.length != 6){
+          //console.log(combo.value.length);
+          alert("Length of locker combination must be 6 digits!");
+        };
+      };
+
+      var submit = document.getElementById("submit");
+      submit.addEventListener("click", sendAlert);
+    </script>
 
 </body>
 </html>
