@@ -19,7 +19,7 @@ def login_required(f):
         '''dec (*args, **kwargs): Decorator for checking login and if user in session'''
         if 'osis' in session:
             return f(*args, **kwargs)
-        flash('You must be logged in to view this page!', 'alert-danger')
+        flash('You must be logged in to view this page!', 'danger')
         return redirect('/')
     return dec
 
@@ -30,13 +30,14 @@ def no_login_required(f):
         '''dec(*args, **kwargs): Decorator for checking no login'''
         if 'osis' not in session:
             return f(*args, **kwargs)
-        flash('You cannot view this page while logged in!', 'alert-danger')
+        flash('You cannot view this page while logged in!', 'danger')
         return redirect('/home')
     return dec
 
 @app.route("/")
 @no_login_required
 def login():
+    flash('You cannot view this page while logged in!', 'danger')
     return render_template("login.html")
 
 @app.route("/check", methods=['POST'])
@@ -48,14 +49,14 @@ def authentication():
         session["osis"]=osis
         return redirect('/home')
     else:
-        flash("Wrong")
+        flash("Wrong", 'danger')
         return redirect('/')
 
 @app.route("/logout")
 @login_required
 def logout():
     session.clear()
-    flash('You have logged out!')
+    flash('You have logged out!', 'success')
     return redirect('/')
 
 @app.route("/signup")
@@ -80,7 +81,7 @@ def newUser():
     buddy = ""
     linfo = [combo, floor, level, type, "OWNED"]
     if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="done"):
-        flash("You've successfully made an account!")
+        flash("You've successfully made an account!", 'success')
         return redirect('/')
     elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="locker"):
         #someone already registered locker add flash

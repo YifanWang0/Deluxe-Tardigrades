@@ -1,3 +1,5 @@
+{% from "macros/render_flashes.html" import render_flashes %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -73,6 +75,7 @@
 				    </div>
 				</nav>
         <br>
+        {{ render_flashes() }}
         <center><h1>{{heading}}</h1></center>
         {% block body %}
         {% endblock %}

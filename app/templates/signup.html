@@ -1,3 +1,5 @@
+{% from "macros/render_flashes.html" import render_flashes %}
+
 <html>
 <head>
     <!--
@@ -38,6 +40,7 @@
 </head>
 
 <body>
+  {{ render_flashes() }}
   <div class="container">
     <div class="row">
       <div class="col-sm-12 col-md-9 col-lg-7 mx-auto">
@@ -52,7 +55,7 @@
               <div class="form-row">
                 <div class="form group col-md-12">
                   <label for="id" class="lb-md">OSIS</label>
-                  <input type="number" class="form-control" id="osis" placeholder="---------" name="osis" required="required">
+                  <input type="text" pattern="[0-9]{9}" class="form-control" id="osis" placeholder="---------" name="osis" required="required">
                   <small class="form-text text-muted">Must be 9 digits</small>
                 </div>
               </div>
@@ -98,7 +101,7 @@
               <div class="form-row">
                 <div class="form group col-md-12">
                   <label for="Num" class="lb-md">Locker Number</label>
-                  <input type="number" class="form-control" id="locker" placeholder="---" name="locker" required="required">
+                  <input type="text" pattern="[0-9]{3}"class="form-control" id="locker" placeholder="---" name="locker" required="required">
                   <small class="form-text text-muted">Must be 3 digits and ignoring floor number (Ex: 2-225 as 225)</small>
                 </div>
               </div>
@@ -106,7 +109,7 @@
               <div class="form-row">
                 <div class="form group col-md-12">
                   <label for="Combination" class="lb-md">Locker Combo</label>
-                  <input type="number" class="form-control" id="combo" placeholder="------" name="combo" required="required">
+                  <input type="text" pattern="[0-9]{6}"class="form-control" id="combo" placeholder="------" name="combo" required="required">
                   <small class="form-text text-muted">Must be 6 digits and ignoring dashes (Ex: 10-21-06 as 102106)</small>
                 </div>
               </div>
@@ -149,36 +152,13 @@
                 </div>
               </div>
               <br>
-              <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+              <button class="btn btn-lg btn-primary btn-block" type="submit" id="submit">Sign Up</button>
               </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-    <script>
-      var osis = document.getElementById("osis");
-      var num = document.getElementById("locker");
-      var combo = document.getElementById("combo");
-
-      var sendAlert = function() {
-        if (osis.value.length != 9){
-          //console.log(osis.value.length);
-          alert("Length of osis must be 9 digits!");
-        };
-        if (num.value.length != 3){
-          //console.log(num.value.length);
-          alert("Length of locker number must be 3 digits!");
-        };
-        if (combo.value.length != 6){
-          //console.log(combo.value.length);
-          alert("Length of locker combination must be 6 digits!");
-        };
-      };
-
-      var submit = document.getElementById("submit");
-      submit.addEventListener("click", sendAlert);
-    </script>
     <footer class="footer border-top">
       <div class="container">
         <!-- <img class="mb-2" src="/../static/lockericon.png" alt="" width="24" height="24"> -->
