@@ -49,7 +49,7 @@ def authentication():
         session["osis"]=osis
         return redirect('/home')
     else:
-        flash("Wrong", 'danger')
+        # flash("Wrong", 'danger')
         return redirect('/')
 
 @app.route("/logout")
@@ -67,7 +67,6 @@ def signup():
 @app.route("/auth", methods=['POST'])
 @no_login_required
 def newUser():
-    #add error handling (like password mismatch and invalud stuff), blank fields, and flash
     osis = request.form.get("osis")
     password = request.form.get("password")
     confirm = request.form.get("confirm")
@@ -84,10 +83,10 @@ def newUser():
         flash("You've successfully made an account!", 'success')
         return redirect('/')
     elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="locker"):
-        #someone already registered locker add flash
+        flash("Locker has already been registered.", 'danger')
         return redirect('/signup')
     else:
-        #someone already registered with that osis add flash
+        flash("Locker has already been registered.", 'danger')
         return redirect('/signup')
 
 @app.route("/home")

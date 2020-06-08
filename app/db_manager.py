@@ -4,16 +4,20 @@ import sys
 import random
 from datetime import datetime
 from datetime import timedelta
+from flask import flash
 
 def userValid(osis,password):
     q = "SELECT password from user_tbl WHERE osis=?"
     inputs = (osis,)
     data = execmany(q, inputs).fetchone()
+    print(data)
     if (data is not None):
         if (data[0] == password):
             return True
         else:
+            flash("Incorrect OSIS and password combination.", 'danger')
             return False
+    flash("OSIS does not exist. Please sign up for an account.", 'danger')
     return False
 
 def addUser(osis, password, grade, buddy, linfo, locker, gender):
