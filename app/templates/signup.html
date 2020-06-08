@@ -7,112 +7,155 @@
         2020-06-11
     -->
     <title>Sign Up</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src='http://d3js.org/d3.v5.min.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
     <style>
     body {
       margin-left: 20px;
       margin-right: 20px;
     }
+    .footer {
+      /* position: absolute; */
+      /* bottom: 0; */
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+    }
+    .lb-sm {
+      font-size: 14px;
+    }
+
+    .lb-md {
+      font-size: 18px;
+    }
+
+    .lb-lg {
+      font-size: 20px;
+    }
     </style>
 </head>
 
 <body>
-  <h1>Sign up</h1>
-  <br><br>
-  <form action="/auth" method="post">
-    <div class="form-row">
-      <div class="form group col-md-4">
-        <label for="id" class="font-weight-bold">Osis</label>
-        <input type="text" class="form-control" id="osis" placeholder="xxxxxxxxx" name="osis">
-        <small class="form-text text-muted">Must be 9 digits</small>
-      </div>
-      <div class="form group col-md-4">
-        <label for="password1" class="font-weight-bold">Password</label>
-        <input type="password" class="form-control" id="password" placeholder="Password" name="password">
-      </div>
-      <div class="form group col-md-4">
-        <label for="confirm1" class="font-weight-bold">Confirm Password</label>
-        <input type="password" class="form-control" id="confirm" placeholder="Confirm Password" name="confirm">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-9 col-lg-7 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h2 class="card-title text-center">Sign Up</h2>
+            <div class="icon text-center">
+              <img class="mb-4" src="/../static/lockericon.png" alt="" width="72" height="72">
+            </div>
+            <form class="form-signin" action="/auth" method="POST">
+              <h4 class="text-center">Student Information</h4>
+              <div class="form-row">
+                <div class="form group col-md-12">
+                  <label for="id" class="lb-md">OSIS</label>
+                  <input type="number" class="form-control" id="osis" placeholder="---------" name="osis" required="required">
+                  <small class="form-text text-muted">Must be 9 digits</small>
+                </div>
+              </div>
+              <br>
+              <div class="form-row">
+                <div class="form group col-md-12">
+                  <label for="password1" class="lb-md">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Password" name="password" required="required">
+                </div>
+              </div>
+              <br>
+              <div class="form-row">
+                <div class="form group col-md-12">
+                  <label for="confirm1" class="lb-md">Confirm Password</label>
+                  <input type="password" class="form-control" id="confirm" placeholder="Confirm Password" name="confirm" required="required">
+                </div>
+              </div>
+              <br>
+              <div class="form-row">
+                <div class="form-group col-md-4">
+                <label for="grade" class="lb-md">Grade</label>
+                <select id="grade" class="form-control" name="grade">
+                  <option>9</option>
+                  <option>10</option>
+                  <option>11</option>
+                  <option>12</option>
+                </select>
+                </div>
+                <div class="form-group col-md-1">
+                </div>
+                <div class="form group col-md-7">
+                  <label for="gender" class="lb-md">Gender</label>
+                  <select id="Gender" class="form-control" name="gender">
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Prefer Not to Say</option>
+                  </select>
+                </div>
+              </div>
+              <br>
+              <h4 class="text-center">Locker Information</h4>
+              <br>
+              <div class="form-row">
+                <div class="form group col-md-12">
+                  <label for="Num" class="lb-md">Locker Number</label>
+                  <input type="number" class="form-control" id="locker" placeholder="---" name="locker" required="required">
+                  <small class="form-text text-muted">Must be 3 digits and ignoring floor number (Ex: 2-225 as 225)</small>
+                </div>
+              </div>
+              <br>
+              <div class="form-row">
+                <div class="form group col-md-12">
+                  <label for="Combination" class="lb-md">Locker Combo</label>
+                  <input type="number" class="form-control" id="combo" placeholder="------" name="combo" required="required">
+                  <small class="form-text text-muted">Must be 6 digits and ignoring dashes (Ex: 10-21-06 as 102106)</small>
+                </div>
+              </div>
+              <br>
+              <div class="form-row">
+                <div class="form group col-md-3">
+                  <label for="floor" class="lb-md">Floor</label>
+                  <select id="floor" class="form-control" name="floor">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                    <option>6</option>
+                    <option>7</option>
+                    <option>8</option>
+                    <option>9</option>
+                    <option>10</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-5">
+                <label for="lockertype" class="lb-md">Locker Location</label>
+                <select id="Ltype" class="form-control" name="location">
+                  <option selected>Hallway</option>
+                  <option>Senior Atrium</option>
+                  <option>Senior Bar</option>
+                  <option>Robotics</option>
+                  <option>Music Hallway</option>
+                  <option>Atrium</option>
+                  <option>Swim Gym</option>
+                  <option>Gym</option>
+                </select>
+                </div>
+                <div class="form group col-md-4">
+                  <label for="Ltype" class="lb-md">Locker Position</label>
+                  <select id="level" class="form-control" name="level">
+                    <option>Top</option>
+                    <option>Bottom</option>
+                  </select>
+                </div>
+              </div>
+              <br>
+              <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+              </form>
+          </div>
+        </div>
       </div>
     </div>
-    <br>
-    <div class="form-row">
-      <div class="form-group col-md-6">
-      <label for="grade" class="font-weight-bold">Grade</label>
-      <select id="grade" class="form-control" name="grade">
-        <option>9</option>
-        <option>10</option>
-        <option>11</option>
-        <option>12</option>
-      </select>
-      </div>
-      <div class="form group col-md-6">
-        <label for="gender" class="font-weight-bold">Gender</label>
-        <select id="Gender" class="form-control" name="gender">
-          <option>Male</option>
-          <option>Female</option>
-          <option>Prefer Not to Say</option>
-        </select>
-      </div>
-    </div>
-
-    <br>
-    <h4>Locker Information</h4>
-    <div class="form-row">
-      <div class="form group col-md-6">
-        <label for="Num" class="font-weight-bold">Locker Number</label>
-        <input type="text" class="form-control" id="locker" placeholder="xxx" name="locker">
-        <small class="form-text text-muted">Must be 3 digits and ignore floor number (Ex: 2-225 as 225)</small>
-      </div>
-      <div class="form group col-md-6">
-        <label for="Combo" class="font-weight-bold">Locker Combo</label>
-        <input type="text" class="form-control" id="combo" placeholder="xxxxxx" name="combo">
-        <small class="form-text text-muted">Must be 6 digits and ignore dashes (Ex: 10-21-06 as 102106)</small>
-      </div>
-    </div>
-    <br>
-    <div class="form-row">
-      <div class="form group col-md-4">
-        <label for="floor" class="font-weight-bold">Floor</label>
-        <select id="floor" class="form-control" name="floor">
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
-        </select>
-      </div>
-      <div class="form-group col-md-4">
-      <label for="lockertype" class="font-weight-bold">Locker Location</label>
-      <select id="Ltype" class="form-control" name="location">
-        <option selected>Hallway</option>
-        <option>Senior Atrium</option>
-        <option>Senior Bar</option>
-        <option>Robotics</option>
-        <option>Music Hallway</option>
-        <option>Atrium</option>
-        <option>Swim Gym</option>
-        <option>Gym</option>
-      </select>
-      </div>
-      <div class="form group col-md-4">
-        <label for="Ltype" class="font-weight-bold">Top/Bottom</label>
-        <select id="level" class="form-control" name="level">
-          <option>Top</option>
-          <option>Bottom</option>
-        </select>
-      </div>
-      <button type="submit" class="btn btn-primary" id="submit">Submit</button>
-    </div>
-  </form>
-
+  </div>
     <script>
       var osis = document.getElementById("osis");
       var num = document.getElementById("locker");
@@ -136,6 +179,11 @@
       var submit = document.getElementById("submit");
       submit.addEventListener("click", sendAlert);
     </script>
-
+    <footer class="footer border-top">
+      <div class="container">
+        <!-- <img class="mb-2" src="/../static/lockericon.png" alt="" width="24" height="24"> -->
+        <span class="text-muted">© 2020 Team Deluxe-Tardigrades</small>
+      </div>
+    </footer>
 </body>
 </html>
