@@ -82,6 +82,35 @@ def newUser():
         #someone already registered with that osis add flash
         return render_template("signup.html")
 
+@app.route("/editprof", methods=['POST'])
+def editprof():
+    return render_template("editprof.html")
+
+@app.route("/updateprof", methods=['POST'])
+def updateprof():
+    oldosis = session['osis']
+    osis = request.form.get("osis")
+    oldpassword = request.form.get("oldpassword")
+    password = request.form.get("password")
+    confirm = request.form.get("confirm")
+    grade = request.form.get("grade")
+    locker = request.form.get("locker")
+    combo = request.form.get("combo")
+    type = request.form.get("location")
+    level = request.form.get("level")
+    floor = request.form.get("floor")
+    gender = request.form.get("gender")
+    if(db_manager.editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type)):
+        return render_template("login.html")
+    else:
+        #error somewhere in the form, make more specific later
+        print("error")
+        return render_template("editprof.html")
+
+
+
+
+
 if __name__ == "__main__":
     db_builder.build_db()
     app.debug = True

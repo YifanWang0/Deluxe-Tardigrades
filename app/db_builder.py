@@ -26,7 +26,7 @@ def execmany(cmd, inputs):
 
 def build_db():
     '''def build_db(): Creates database if it does not yet exist with the necessary tables'''
-    command = "CREATE TABLE IF NOT EXISTS user_tbl (osis INT, password TEXT, locker INT, grade INT, buddy INT, survey TEXT)"
+    command = "CREATE TABLE IF NOT EXISTS user_tbl (osis INT, password TEXT, locker INT, grade INT, gender TEXT, buddy INT, survey TEXT)"
     exec(command)
 
     command = "CREATE TABLE IF NOT EXISTS locker_tbl (locker INT, owner INT, combo TEXT, floor INT, level INT, location TEXT, status TEXT)"
