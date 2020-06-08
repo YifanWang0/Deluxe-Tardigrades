@@ -44,12 +44,12 @@ def login():
 def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
-    if(userValid(osis,password)):
+    if(db_manager.userValid(osis,password)):
         session["osis"]=osis
         return redirect('/home')
     else:
-        #wrong credentials flash message
-        return redirect('/login')
+        flash("Wrong")
+        return redirect('/')
 
 @app.route("/logout")
 @login_required
@@ -79,22 +79,32 @@ def newUser():
     gender = request.form.get("gender")
     buddy = ""
     linfo = [combo, floor, level, type, "OWNED"]
-    if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender,"")=="done"):
+    if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="done"):
+        flash("You've successfully made an account!")
         return redirect('/')
-    elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender,"")=="locker"):
+    elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="locker"):
         #someone already registered locker add flash
         return redirect('/signup')
     else:
         #someone already registered with that osis add flash
         return redirect('/signup')
 
-@app.route("/home", methods=['POST'])
+@app.route("/home")
 @login_required
 def profile():
     user = db_manager.getUserInfo(session['osis'])
-    buddy = db_manager.getUserInfo()
-    locker = db_manager.getUserInfo()
-    request = db_manager.getUserInfo()
+    buddy = ["N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A"]
+    if len(user[4]) != 0:
+        buddy = db_manager.getUserInfo(user[4])
+    locker = db_manager.getLockerInfo(user[2])
+    transactions = []
+    if user[6] != '':
+        transactions = user[6].split(",")
+        for id in transactions:
+            request=db_manager.getTransactionInfo(id)
+            if len(request)>0:
+                transactions.append(request)
+    return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
 
 if __name__ == "__main__":
     db_builder.build_db()
