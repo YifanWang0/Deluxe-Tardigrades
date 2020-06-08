@@ -18,7 +18,7 @@ def userValid(osis,password):
                     return True
     return False
 
-def addUser(osis, password, grade, buddy, survey, locker, gender):
+def addUser(osis, password, grade, buddy, survey, locker, gender,locker_info):
     q = "SELECT * FROM user_tbl WHERE osis=?"
     inputs = (osis,)
     data = execmany(q, inputs).fetchone()
@@ -31,7 +31,7 @@ def addUser(osis, password, grade, buddy, survey, locker, gender):
             inputs = (osis, password, locker, grade, buddy, survey)
             execmany(q, inputs)
             q = "INSERT INTO locker_tbl VALUES(?, ?, ?, ?, ?, ?, ?)"
-            inputs = (locker, osis, survey[0], survey[1], survey[2], survey[3], survey[4])
+            inputs = (locker, osis, locker_info[0], locker_info[1], locker_info[2], locker_info[3], locker_info[4])
             execmany(q, inputs)
             return "done"
         else:

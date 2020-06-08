@@ -45,7 +45,6 @@ def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
     if(db_manager.userValid(osis,password)):
-        print("hi there")
         session["osis"]=osis
         return render_template("home.html")
     else:
@@ -72,8 +71,9 @@ def newUser():
     floor = request.form.get("floor")
     gender = request.form.get("gender")
     buddy = ""
-    survey = combo+","+floor+","+level+","+type+",OWNED"
-    if(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="done"):
+    survey = ""
+    locker_info = combo+","+floor+","+level+","+type+",OWNED"
+    if(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender, locker_info)=="done"):
         return render_template("login.html")
     elif(db_manager.addUser(osis, password, grade, buddy, survey, locker, gender)=="locker"):
         #someone already registered locker add flash
