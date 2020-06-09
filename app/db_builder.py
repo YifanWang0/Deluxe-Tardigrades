@@ -32,5 +32,5 @@ def build_db():
     command = "CREATE TABLE IF NOT EXISTS locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status TEXT)"
     exec(command)
 
-    command = "CREATE TABLE IF NOT EXISTS transaction_tbl (id INT, locker INT, recipient INT, sender INT, status TEXT, request TEXT)"
+    command = "CREATE TABLE IF NOT EXISTS transaction_tbl (id INT, locker INT, recipient INT, sender INT, status TEXT, request TEXT, floor INT)"
     exec(command)

@@ -106,7 +106,7 @@ def profile():
                 transactions.append(request)
     return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
 
-@app.route("/editprof", methods=['POST'])
+@app.route("/editprof")
 def editprof():
     return render_template("editprof.html")
 
@@ -125,11 +125,27 @@ def updateprof():
     floor = request.form.get("floor")
     gender = request.form.get("gender")
     if(db_manager.editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type)):
+        logout()
         return render_template("login.html")
     else:
         #error somewhere in the form, make more specific later
         print("error")
         return render_template("editprof.html")
+
+@app.route("/locker")
+def locker():
+    return render_template("locker.html",results=[])
+
+@app.route("/lSearch", methods=['POST'])
+def lSearch():
+    #searching for a locker/osis should only yield one result
+    searchBy = request.form.get("searchBy")
+    query = request.form.get("query")
+    results = db_manager.searchLocker(searchBy, query)[0]
+    print(len(results))
+    print(results)
+    return render_template("locker.html", results=results, num=len(results))
+
 
 
 

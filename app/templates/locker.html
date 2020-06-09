@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block body %}
+<head>
+  <style>
+    .pr-4{
+      margin-right: 200px;
+    }
+  </style>
+</head>
+
+<body>
+  <p> Search for a specific locker number by inputting 4 digits with a space after the floor number (Ex: 2-225 as 2 225)</p>
+  <p> Search for a specific person trading by inputting their 9 digit OSIS</p>
+  <form class="pr-4" action="/lSearch" method="post">
+    <input id="query" class="form-control mr-sm-2" type="text" name="query" placeholder="Search">
+      <div class="form-inline md-form mr-auto mb-4">
+      <label for="searchBy">Search By: </label>
+      <div class="px-2">
+      <select id="searchBy" class="form-control" name="searchBy">
+        <option>Locker Number</option>
+        <option>Owner</option>
+      </select>
+      </div>
+    <button class="btn btn-secondary btn-sm" type="submit">Search</button>
+  </form>
+<div class="form-inline">
+<div>
+  {% if results != [] %}
+  <div>Search Results:</div>
+  <!-- id, locker number, owner, status, request, floor -->
+  <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+    <div class="card-header">Locker Number: {{results[5]}}-{{results[1]}}</div>
+    <div class="card-body">
+      <h5 class="card-title">Locker Info:</h5>
+      <p class="card-text">Owner: {{results[2]}} <br> Market Status: {{results[3]}}</p>
+    </div>
+    <form action="/home">
+    <button>Request Trade</button>
+    </form>
+  </div>
+  {% endif %}
+</div>
+</div>
+</body>
+
+{% endblock %}

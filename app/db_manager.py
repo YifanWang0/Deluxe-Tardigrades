@@ -97,3 +97,15 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
             editUserTbl(oldosis,"osis",osis)
         return True
     return False
+
+#  transaction_tbl (id INT, locker INT, recipient INT, sender INT, status TEXT, request TEXT)"
+
+#returns list of info
+def searchLocker(searchBy, query):
+    if (searchBy == "Locker Number"):
+        head,space,tail = query.partition(" ")
+        q = "SELECT id,locker,sender,status,request,floor FROM transaction_tbl WHERE locker=" + tail + " AND floor=" + head
+    else:
+        q = "SELECT id,locker,sender,status,request,floor FROM transaction_tbl WHERE sender=" + query
+    data = exec(q).fetchall()
+    return data

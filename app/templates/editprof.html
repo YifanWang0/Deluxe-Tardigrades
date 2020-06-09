@@ -1,3 +1,5 @@
+{% extends "base.html" %}
+{% block body %}
 <html>
 <head>
     <!--
@@ -121,9 +123,34 @@
           <option>Bottom</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" id="submit">Submit</button>
     </div>
   </form>
 
+  <script>
+    var osis = document.getElementById("osis");
+    var num = document.getElementById("locker");
+    var combo = document.getElementById("combo");
+
+    var sendAlert = function() {
+      if (osis.value.length != 0 && osis.value.length != 9){
+        //console.log(osis.value.length);
+        alert("Length of osis must be 9 digits!");
+      };
+      if (num.value.length != 0 && num.value.length != 3){
+        //console.log(num.value.length);
+        alert("Length of locker number must be 3 digits!");
+      };
+      if (combo.value.length != 0 && combo.value.length != 6){
+        //console.log(combo.value.length);
+        alert("Length of locker combination must be 6 digits!");
+      };
+    };
+
+    var submit = document.getElementById("submit");
+    submit.addEventListener("click", sendAlert);
+  </script>
+
 </body>
 </html>
+{% endblock %}
