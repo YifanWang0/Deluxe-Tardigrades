@@ -88,7 +88,7 @@ def newUser():
         flash("Locker has already been registered.", 'danger')
         return redirect('/signup')
     else:
-        flash("Locker has already been registered.", 'danger')
+        flash("OSIS has already been registered.", 'danger')
         return redirect('/signup')
 
 @app.route("/home")
