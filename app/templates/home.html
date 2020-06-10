@@ -1,19 +1,19 @@
-{% extends "base.html" %}
+ {% extends "base.html" %}
 
 {% block body %}
 <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
   <div class="card-header">User Osis: {{user[0]}}</div>
   <div class="card-body">
     <h5 class="card-title">User Info:</h5>
-    <p class="card-text">Grade: {{user[3]}} <br> Gender: {{user[7]}}</p>
+    <p class="card-text">Grade: {{user[3]}} <br> Gender: {{user[6]}}</p>
   </div>
-    <button>Edit</button>
+    <button class="btn btn-primary" type="submit">Edit</button>
 </div>
 <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
   <div class="card-header">Buddy Osis: {{buddy[0]}}</div>
   <div class="card-body">
     <h5 class="card-title">Buddy Info:</h5>
-    <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[7]}}</p>
+    <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[6]}}</p>
   </div>
 </div>
 <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
@@ -22,16 +22,16 @@
     <h5 class="card-title">Locker Info:</h5>
     <p class="card-text">Combination: {{locker[2]}} <br> Floor: {{locker[3]}} <br> Level: {{locker[4]}} <br> Location: {{locker[5]}} <br> Market Status: {{locker[6]}}</p>
   </div>
-  <button>Sell</button>
+  <button class="btn btn-primary" type="submit">Sell</button>
 </div>
 {% for item in transactions%}
 <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
   <div class="card-header">Pending Transaction</div>
   <div class="card-body">
     <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
-    <p class="card-text">Request to: {{item[2]}} <br> </p>
+    <p class="card-text">Request to: {{item[1]}} <br> </p>
   </div>
-  <button>Give Up</button>
+  <button class="btn btn-primary" type="submit">Give Up</button>
 </div>
 {% endfor %}
   {% endblock %}

@@ -63,3 +63,22 @@ yifanW -- 2020-06-07 23:32
 
 elizabethD -- 2020-06-07 23:39
     - added profile editor html and database functions
+
+amandaZ -- 2020-06-08 24:28
+    - created buddy survey's layout
+    - accessibility of survey answers
+amandaZ -- 2020-06-08 27:33
+    - recording the survey answers into sqlite
+    - made placeholder the survey answers if you already answered before
+amandaZ -- 2020-06-09 12:19
+    - format filter system (html boxes)
+    - debug survey and sqlite data recording
+amandaZ -- 2020-06-09 23:57
+    - made filter system using sqlite
+    - debugged filter error dealing with wrong type being returned
+amandaZ -- 2020-06-10 17:12
+    - fixed filter system due to quotes error
+    - made update route that gathers info about which person user requested
+amandaZ -- 2020-06-10 20:25
+    - made filter display cards with info and fixed transaction card on first page
+    - finished transaction request with buddies

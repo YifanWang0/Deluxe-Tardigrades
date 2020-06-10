@@ -13,6 +13,7 @@ import urllib3, json, urllib
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
+
 def login_required(f):
     @wraps(f)
     def dec(*args, **kwargs):
@@ -97,14 +98,15 @@ def profile():
     if len(user[4]) != 0:
         buddy = db_manager.getUserInfo(user[4])
     locker = db_manager.getLockerInfo(user[2])
-    transactions = []
-    if user[6] != '':
-        transactions = user[6].split(",")
-        for id in transactions:
-            request=db_manager.getTransactionInfo(id)
-            if len(request)>0:
-                transactions.append(request)
+    transactions=db_manager.getTransactionInfo(session['osis'])
     return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
+
+@app.route("/updated", methods=['POST'])
+@login_required
+def updateBuddy():
+     osis=request.form.get("request")
+     db_manager.buddyRequest(osis,session['osis'])
+     return redirect("/home")
 
 @app.route("/editprof", methods=['POST'])
 def editprof():
@@ -131,10 +133,64 @@ def updateprof():
         print("error")
         return render_template("editprof.html")
 
+@app.route("/survey")
+@login_required
+def survey():
+    sports = ""
+    books = ""
+    misc = ""
+    list = db_manager.getSurveyInfo(session["osis"])
+    if (len(list)>0):
+        sports = list[0]
+        books = list[1]
+        misc = list[2]
+    return render_template("survey.html", sports = sports, books = books, misc = misc)
 
+@app.route("/buddy", methods=['POST'])
+@login_required
+def buddy():
+    sports = request.form.get("sports")
+    books = request.form.get("textbook")
+    misc = request.form.get("misc")
+    info = sports+","+books+","+misc
+    db_manager.updateSurvey(session['osis'],info)
+    return render_template("buddy.html", query=["","","","","","","","",""])
 
-
-
+@app.route("/bsearch", methods=['POST'])
+@login_required
+def bsearch():
+    query=["","","","","","","","",""]
+    if request.form.get("searchtype") == "osis":
+        query[0] = request.form.get("input")
+    else:
+        query[1] = request.form.get("input")
+    query[2] = request.form.get("sports")
+    query[3] = request.form.get("textbook")
+    query[4] = request.form.get("grade")
+    query[5] = request.form.get("gender")
+    query[6] = request.form.get("floor")
+    query[7] = request.form.get("location")
+    query[8] = request.form.get("level")
+    results = db_manager.filter(query,session["osis"])
+    buddy=[]
+    locker=[]
+    loop=[]
+    survey =[]
+    count = 0
+    for value in range(len(results)):
+        info = db_manager.getUserInfo(results[value])
+        buddy.append(info)
+        temp=db_manager.getLockerInfo(info[2])
+        locker.append(temp)
+        loop.append(count)
+        temp=["", ""]
+        if info[5] != "":
+            temp = info[5].split(",")
+        survey.append(temp)
+        count+=1
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
+    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
 if __name__ == "__main__":
     db_builder.build_db()
     app.debug = True
