@@ -134,22 +134,25 @@ def updateprof():
 
 @app.route("/locker")
 def locker():
-    return render_template("locker.html",results=[])
+    all = db_manager.tradeableLockers()
+    return render_template("locker.html",all=all,results=[])
 
 @app.route("/lSearch", methods=['POST'])
 def lSearch():
-    #searching for a locker/osis should only yield one result
     searchBy = request.form.get("searchBy")
     query = request.form.get("query")
-    results = db_manager.searchLocker(searchBy, query)[0]
-    print(len(results))
+    results = db_manager.searchLocker(searchBy, query)
+    #print(results)
+    return render_template("locker.html", results=results)
+
+@app.route("/lFilter", methods=['POST'])
+def lFilter():
+    floor = request.form.get("floorSearch")
+    level = request.form.get("levelSearch")
+    type = request.form.get("typeSearch")
+    results = db_manager.filterLocker(floor,level,type)
     print(results)
-    return render_template("locker.html", results=results, num=len(results))
-
-
-
-
-
+    return render_template("locker.html", results=results)
 
 if __name__ == "__main__":
     db_builder.build_db()

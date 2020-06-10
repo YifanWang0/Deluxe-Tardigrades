@@ -98,14 +98,45 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
         return True
     return False
 
-#  transaction_tbl (id INT, locker INT, recipient INT, sender INT, status TEXT, request TEXT)"
+#creates dict of transaction/locker data
+def getTransLock(data):
+    dataDict = {}
+    for i in data:
+        lock = getLockerInfo(i[1])
+        dataDict[i] = lock
+    return dataDict
 
-#returns list of info
+#returns a dict of transaction_tbl tuples and locker_tbl lists of all available lockers
+def tradeableLockers():
+    q = "SELECT * FROM transaction_tbl WHERE status='OPEN' AND request='trade'"
+    data = exec(q).fetchall() #-> [(tuple,1,2,3),(tuple,1,2,3)]
+    return getTransLock(data)
+
+#returns a dict of transaction_tbl tuple and locker_tbl list of searched locker
 def searchLocker(searchBy, query):
     if (searchBy == "Locker Number"):
         head,space,tail = query.partition(" ")
-        q = "SELECT id,locker,sender,status,request,floor FROM transaction_tbl WHERE locker=" + tail + " AND floor=" + head
+        q = "SELECT * FROM transaction_tbl WHERE locker=" + tail + " AND floor=" + head
     else:
-        q = "SELECT id,locker,sender,status,request,floor FROM transaction_tbl WHERE sender=" + query
+        q = "SELECT * FROM transaction_tbl WHERE sender=" + query
     data = exec(q).fetchall()
-    return data
+    return getTransLock(data)
+
+#  transaction_tbl (id INT, locker INT, recipient INT, sender INT, status TEXT, request TEXT)
+#  locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status TEXT)
+
+
+def filterLocker(floor,level,location):
+    q = "SELECT owner FROM locker_tbl WHERE status='OPEN'"
+    if (floor != ""):
+        q += " AND floor=" + floor
+    if (level != ""):
+        q += " AND level='" + level + "'"
+    if (type != ""):
+        q += " AND location='" + location + "'"
+    print(q)
+    data = exec(q).fetchall()
+    dictRes = {}
+    for i in data:
+        dictRes.update(searchLocker("Owner", i[0]))
+    return dictRes

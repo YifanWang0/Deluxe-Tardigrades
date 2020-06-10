@@ -8,7 +8,7 @@
     <p class="card-text">Grade: {{user[3]}} <br> Gender: {{user[7]}}</p>
   </div>
   <form action="/editprof">
-    <button type="submit">Edit</button>
+    <button type="submit" class="btn-primary btn-block active">Edit</button>
   </form>
 </div>
 <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
@@ -24,7 +24,7 @@
     <h5 class="card-title">Locker Info:</h5>
     <p class="card-text">Combination: {{locker[2]}} <br> Floor: {{locker[3]}} <br> Level: {{locker[4]}} <br> Location: {{locker[5]}} <br> Market Status: {{locker[6]}}</p>
   </div>
-  <button>Sell</button>
+  <button class="btn-info active btn-block">Sell</button>
 </div>
 {% for item in transactions%}
 <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
