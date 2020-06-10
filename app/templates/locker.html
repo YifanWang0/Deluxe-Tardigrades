@@ -40,6 +40,7 @@
           <input type="checkbox" class="custom-control-input" id="floor" onclick="displayFloor()">
           <label class="custom-control-label" for="floor">Floor</label>
           <select id="floorSearch" class="form-control" style="display:none" name="floorSearch">
+            <option> </option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -56,6 +57,7 @@
           <input type="checkbox" class="custom-control-input" id="level" onclick="displayLevel()">
           <label class="custom-control-label" for="level">Level</label>
           <select id="levelSearch" class="form-control" style="display:none" name="levelSearch">
+            <option> </option>
             <option>Top</option>
             <option>Bottom</option>
           </select>
@@ -64,6 +66,7 @@
           <input type="checkbox" class="custom-control-input" id="type" onclick="displayType()">
           <label class="custom-control-label" for="type">Location</label>
           <select id="typeSearch" class="form-control" style="display:none" name="typeSearch">
+            <option> </option>
             <option>Hallway</option>
             <option>Senior Atrium</option>
             <option>Senior Bar</option>
@@ -92,12 +95,12 @@
       {% for key in all %}
       <div class="row">
         <div class="card text-white text-center bg-info my-3 col-md-12">
-          <div class="card-header">Locker Number: {{key[6]}}-{{key[1]}}</div>
+          <div class="card-header">Locker Number: {{key[5]}}-{{key[0]}}</div>
           <div class="card-body">
             <h5 class="card-title">Locker Info:</h5>
-            <p class="card-text">Owner: {{key[3]}} <br> Floor: {{key[6]}} <br>
+            <p class="card-text">Owner: {{key[2]}} <br> Floor: {{key[5]}} <br>
                                Level: {{all[key][4]}} <br> Location: {{all[key][5]}} <br>
-                               Market Status: {{key[4]}} </p>
+                               Market Status: OPEN </p>
             <hr class="my-4">
             <form action="/home">
               <button type="submit" class="btn btn-info btn-block active">Request Trade</button>
@@ -119,12 +122,12 @@
       {% for key in results %}
       <div class="row">
         <div class="card text-white text-center bg-info my-3 col-md-12">
-          <div class="card-header">Locker Number: {{key[6]}}-{{key[1]}}</div>
+          <div class="card-header">Locker Number: {{key[5]}}-{{key[0]}}</div>
           <div class="card-body">
             <h5 class="card-title">Locker Info:</h5>
-            <p class="card-text">Owner: {{key[3]}} <br> Floor: {{key[6]}} <br>
+            <p class="card-text">Owner: {{key[2]}} <br> Floor: {{key[5]}} <br>
                                  Level: {{results[key][4]}} <br> Location: {{results[key][5]}} <br>
-                                Market Status: {{key[4]}} </p>
+                                Market Status: OPEN </p>
             <form action="/home">
               <button class="btn btn-info active btn-block">Request Trade</button>
             </form>
