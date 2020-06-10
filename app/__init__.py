@@ -37,7 +37,6 @@ def no_login_required(f):
 @app.route("/")
 @no_login_required
 def login():
-    flash('You cannot view this page while logged in!', 'danger')
     return render_template("login.html")
 
 @app.route("/check", methods=['POST'])
@@ -45,6 +44,8 @@ def login():
 def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
+    print(osis)
+    print(password)
     if(db_manager.userValid(osis,password)):
         session["osis"]=osis
         return redirect('/home')
