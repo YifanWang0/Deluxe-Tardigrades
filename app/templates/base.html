@@ -1,3 +1,5 @@
+{% from "macros/render_flashes.html" import render_flashes %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,6 +17,24 @@
         <style>
         body {
           margin-left: 30px;
+        }
+        .footer {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          height: 60px;
+          line-height: 60px;
+        }
+        .lb-sm {
+          font-size: 12px;
+        }
+
+        .lb-md {
+          font-size: 16px;
+        }
+
+        .lb-lg {
+          font-size: 20px;
         }
         </style>
         {% endblock %}
@@ -55,10 +75,17 @@
 				    </div>
 				</nav>
         <br>
+        {{ render_flashes() }}
         <center><h1>{{heading}}</h1></center>
         {% block body %}
         {% endblock %}
         {% block scripts %}
         {% endblock %}
+      <footer class="footer border-top">
+        <div class="container">
+          <!-- <img class="mb-2" src="/../static/lockericon.png" alt="" width="24" height="24"> -->
+          <span class="text-muted">© 2020 Team Deluxe-Tardigrades</small>
+        </div>
+      </footer>
     </body>
 </html>
