@@ -150,6 +150,9 @@ def lSearch():
     query = request.form.get("query")
     results = db_manager.searchLocker(searchBy, query)
     #print(results)
+    if (not results):
+        flash("Incorrect Query Format","danger")
+        return redirect('/locker')
     return render_template("locker.html", user=user,results=results)
 
 @app.route("/lFilter", methods=['POST'])

@@ -82,15 +82,15 @@ def editLockerTbl(locker,fxn,new):
 def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type):
     if(userValid(oldosis,oldpassword)):
         if (password != ""): editUserTbl(oldosis,"password",password)
-        if (grade != "No Change"): editUserTbl(oldosis,"grade", grade)
-        if (gender != "No Change"): editUserTbl(oldosis,"gender", gender)
+        if (grade != ""): editUserTbl(oldosis,"grade", grade)
+        if (gender != ""): editUserTbl(oldosis,"gender", gender)
         q = "SELECT locker FROM user_tbl WHERE osis=?"
         inputs = (oldosis,)
         oldlocker = execmany(q,inputs).fetchone()[0]
         if (combo != ""): editLockerTbl(oldlocker,"combo", combo)
-        if (floor != "No Change"): editLockerTbl(oldlocker,"floor", floor)
-        if (level != "No Change"): editLockerTbl(oldlocker,"level", level)
-        if (type != "No Change"): editLockerTbl(oldlocker,"location", type)
+        if (floor != ""): editLockerTbl(oldlocker,"floor", floor)
+        if (level != ""): editLockerTbl(oldlocker,"level", level)
+        if (type != ""): editLockerTbl(oldlocker,"location", type)
         if (locker != ""):
             editLockerTbl(oldlocker, "locker", locker)
             editUserTbl(oldosis, "locker", locker)
@@ -119,9 +119,13 @@ def tradeableLockers():
 #returns a dict of transaction_tbl tuple and locker_tbl list of searched locker
 def searchLocker(searchBy, query):
     if (searchBy == "Locker Number"):
+        if (len(query) != 5):
+            return False
         head,space,tail = query.partition(" ")
         q = "SELECT * FROM transaction_tbl WHERE locker=" + tail + " AND floor=" + head
     else:
+        if (len(query) != 9):
+            return False
         q = "SELECT * FROM transaction_tbl WHERE sender=" + query
     data = exec(q).fetchall()
     return getTransLock(data)
