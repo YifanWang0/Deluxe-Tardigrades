@@ -48,6 +48,7 @@ def authentication():
     print(password)
     if(db_manager.userValid(osis,password)):
         session["osis"]=osis
+        flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
         # flash("Wrong", 'danger')
@@ -105,11 +106,14 @@ def profile():
             request=db_manager.getTransactionInfo(id)
             if len(request)>0:
                 transactions.append(request)
-    return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
+    # print(transactions)
+    return render_template("home.html", heading="Home", user=user, buddy=buddy, locker=locker, transactions=transactions)
 
 @app.route("/editprof")
+@login_required
 def editprof():
-    return render_template("editprof.html")
+    user = db_manager.getUserInfo(session['osis'])
+    return render_template("editprof.html", user=user, heading="Edit Profile")
 
 @app.route("/updateprof", methods=['POST'])
 def updateprof():
@@ -131,29 +135,32 @@ def updateprof():
     else:
         #error somewhere in the form, make more specific later
         print("error")
-        return render_template("editprof.html")
+        return render_template("editprof.html",user=oldosis)
 
 @app.route("/locker")
 def locker():
+    user = db_manager.getUserInfo(session['osis'])
     all = db_manager.tradeableLockers()
-    return render_template("locker.html",all=all,results=[])
+    return render_template("locker.html",user=user,all=all,results=[])
 
 @app.route("/lSearch", methods=['POST'])
 def lSearch():
+    user = db_manager.getUserInfo(session['osis'])
     searchBy = request.form.get("searchBy")
     query = request.form.get("query")
     results = db_manager.searchLocker(searchBy, query)
     #print(results)
-    return render_template("locker.html", results=results)
+    return render_template("locker.html", user=user,results=results)
 
 @app.route("/lFilter", methods=['POST'])
 def lFilter():
+    user = db_manager.getUserInfo(session['osis'])
     floor = request.form.get("floorSearch")
     level = request.form.get("levelSearch")
     type = request.form.get("typeSearch")
     results = db_manager.filterLocker(floor,level,type)
     print(results)
-    return render_template("locker.html", results=results)
+    return render_template("locker.html", user=user,results=results)
 
 if __name__ == "__main__":
     db_builder.build_db()

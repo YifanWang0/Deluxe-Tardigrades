@@ -1,39 +1,56 @@
 {% extends "base.html" %}
 
 {% block body %}
-<div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-  <div class="card-header">User Osis: {{user[0]}}</div>
-  <div class="card-body">
-    <h5 class="card-title">User Info:</h5>
-    <p class="card-text">Grade: {{user[3]}} <br> Gender: {{user[7]}}</p>
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
+    <div class="row">
+      <div class="card text-white text-center bg-info my-3 col-md-12">
+        <div class="card-header">Locker Number: {{locker[3]}}-{{locker[0]}}</div>
+        <div class="card-body">
+          <h5 class="card-title">Locker Info:</h5>
+          <p class="card-text">Combination: {{locker[2]}} <br> Floor: {{locker[3]}} <br> Level: {{locker[4]}} <br> Location: {{locker[5]}} <br> Market Status: {{locker[6]}}</p>
+          <hr class="my-4">
+          <form action="#">
+            <button type="submit" class="btn btn-info btn-block active">Sell</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card text-white text-center bg-primary my-3 col-md-5">
+        <div class="card-header">User Osis: {{user[0]}}</div>
+        <div class="card-body">
+          <h5 class="card-title">User Info:</h5>
+          <p class="card-text">Grade: {{user[3]}} <br> Gender: {{user[7]}}</p>
+          <hr class="my-4">
+          <form action="/editprof">
+            <button type="submit" class="btn btn-primary btn-block active">Edit</button>
+          </form>
+        </div>
+      </div>
+      <div class="col-md-2">
+      </div>
+      <div class="card text-white text-center bg-success my-3 col-md-5">
+        <div class="card-header">Buddy Osis: {{buddy[0]}}</div>
+        <div class="card-body">
+          <h5 class="card-title">Buddy Info:</h5>
+          <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[7]}}</p>
+        </div>
+      </div>
+    </div>
+    {% for item in transactions%}
+    <div class="card text-white bg-warning my-3 col-md-12">
+      <div class="card-header">Pending Transaction</div>
+      <div class="card-body">
+        <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
+        <p class="card-text">Request to: {{item[2]}} <br> </p>
+        <hr class="my-4">
+        <form action="#">
+          <button type="submit" class="btn btn-warning btn-block active">Give Up</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
   </div>
-  <form action="/editprof">
-    <button type="submit" class="btn-primary btn-block active">Edit</button>
-  </form>
 </div>
-<div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-  <div class="card-header">Buddy Osis: {{buddy[0]}}</div>
-  <div class="card-body">
-    <h5 class="card-title">Buddy Info:</h5>
-    <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[7]}}</p>
-  </div>
-</div>
-<div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-  <div class="card-header">Locker Number: {{locker[3]}}-{{locker[0]}}</div>
-  <div class="card-body">
-    <h5 class="card-title">Locker Info:</h5>
-    <p class="card-text">Combination: {{locker[2]}} <br> Floor: {{locker[3]}} <br> Level: {{locker[4]}} <br> Location: {{locker[5]}} <br> Market Status: {{locker[6]}}</p>
-  </div>
-  <button class="btn-info active btn-block">Sell</button>
-</div>
-{% for item in transactions%}
-<div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
-  <div class="card-header">Pending Transaction</div>
-  <div class="card-body">
-    <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
-    <p class="card-text">Request to: {{item[2]}} <br> </p>
-  </div>
-  <button>Give Up</button>
-</div>
-{% endfor %}
-  {% endblock %}
+{% endblock %}

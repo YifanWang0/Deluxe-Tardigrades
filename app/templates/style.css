@@ -1,0 +1,21 @@
+body {
+  margin-left: 30px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 97%;
+  height: 60px;
+  line-height: 60px;
+}
+.lb-sm {
+  font-size: 14px;
+}
+
+.lb-md {
+  font-size: 18px;
+}
+
+.lb-lg {
+  font-size: 20px;
+}
