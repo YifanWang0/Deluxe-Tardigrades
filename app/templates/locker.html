@@ -1,138 +1,140 @@
 {% extends "base.html" %}
 {% block body %}
-<head>
-  <style>
-    .pr-4{
-      margin-right: 200px;
-    }
-  </style>
-</head>
-
-<body>
-  <h1>Locker Search</h1>
+<div class="container">
   <h3>Search</h3>
-  <p> Search for a specific locker number by inputting 4 digits with a space after the floor number (Ex: 2-225 as 2 225)<br>
-      Search for a specific person trading by inputting their 9 digit OSIS<br>
-      Indicate which search to make using the dropdown </p>
+  <div class="alert alert-info" role="alert">
+     Search for a specific locker number by inputting 4 digits with a space after the floor number (Ex: 2-225 as 2 225).<br>
+      Search for a specific person trading by inputting their 9 digit OSIS.<br>
+      Indicate which search to make using the dropdown.
+  </div>
   <div>
-    <form class="pr-4" action="/lSearch" method="post">
-      <input id="query" class="form-control mr-sm-2" type="text" name="query" placeholder="2 225 OR 123456789"><br>
-        <div class="form-inline md-form mr-auto mb-4">
-          <label for="searchBy">Search By: </label>
-          <div class="px-2">
-            <select id="searchBy" class="form-control" name="searchBy">
-              <option>Locker Number</option>
-              <option>Owner</option>
-            </select>
-          </div>
-          <button class="btn btn-secondary btn-lg ml-3" type="submit">Search</button>
-      </form>
-    </div>
-
-  <h3>Filter</h3>
-  <p> Filter the entire collection of lockers that can be traded by selecting the checkboxes for categories and indicating preferences on dropdowns </p>
-  <div>
-    <form action="/lFilter" method="post">
-    <div class="form-inline md-form mr-auto mb-4">
-      <label for="filter">Filter By: </label>
-      <div class="custom-control custom-checkbox">
-      <div class="px-2">
-        <input type="checkbox" class="custom-control-input" id="floor" onclick="displayFloor()">
-        <label class="custom-control-label" for="floor">Floor</label>
-        <select id="floorSearch" class="form-control" style="display:none" name="floorSearch">
-          <option> </option>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          <option>4</option>
-          <option>5</option>
-          <option>6</option>
-          <option>7</option>
-          <option>8</option>
-          <option>9</option>
-          <option>10</option>
-        </select>
+    <form action="/lSearch" method="post">
+      <div class="form-row">
+        <div class="form group col-md-4">
+          <input id="query" class="form-control mr-sm-2" type="text" name="query" placeholder="2 225 OR 123456789"><br>
+        </div>
+        <div class="form group col-md-3">
+          <select id="searchBy" class="form-control" name="searchBy">
+            <option>Locker Number</option>
+            <option>Owner</option>
+          </select>
+        </div>
+        <div class="form-group col-md-1">
+          <button class="btn btn-dark" type="submit">Search</button>
+        </div>
       </div>
-      </div>
-      <div class="custom-control custom-checkbox">
-      <div class="px-2">
-        <input type="checkbox" class="custom-control-input" id="level" onclick="displayLevel()">
-        <label class="custom-control-label" for="level">Level</label>
-        <select id="levelSearch" class="form-control" style="display:none" name="levelSearch">
-          <option> </option>
-          <option>Top</option>
-          <option>Bottom</option>
-        </select>
-      </div>
-      </div>
-      <div class="custom-control custom-checkbox">
-      <div class="px-2">
-        <input type="checkbox" class="custom-control-input" id="type" onclick="displayType()">
-        <label class="custom-control-label" for="type">Location</label>
-        <select id="typeSearch" class="form-control" style="display:none" name="typeSearch">
-          <option> </option>
-          <option>Hallway</option>
-          <option>Senior Atrium</option>
-          <option>Senior Bar</option>
-          <option>Robotics</option>
-          <option>Music Hallway</option>
-          <option>Atrium</option>
-          <option>Swim Gym</option>
-          <option>Gym</option>
-        </select>
-      </div>
-      </div>
-      <button class="btn btn-secondary btn-lg ml-3" type="submit">Filter</button>
-    </div>
     </form>
   </div>
 
+  <h3>Filter</h3>
+  <div class="alert alert-info" role="alert">
+    Filter the entire collection of lockers that can be traded by selecting the checkboxes for categories and indicating preferences on dropdowns.
+  </div>
+  <div>
+    <form action="/lFilter" method="post">
+      <div class="form-row text-center">
+        <div class="form-group col-md-1">
+          <label for="filter">Filter By:  </label>
+        </div>
+        <div class="form-group col-md-1 custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="floor" onclick="displayFloor()">
+          <label class="custom-control-label" for="floor">Floor</label>
+          <select id="floorSearch" class="form-control" style="display:none" name="floorSearch">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2 custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="level" onclick="displayLevel()">
+          <label class="custom-control-label" for="level">Level</label>
+          <select id="levelSearch" class="form-control" style="display:none" name="levelSearch">
+            <option>Top</option>
+            <option>Bottom</option>
+          </select>
+        </div>
+        <div class="form-group col-md-2 custom-control custom-checkbox">
+          <input type="checkbox" class="custom-control-input" id="type" onclick="displayType()">
+          <label class="custom-control-label" for="type">Location</label>
+          <select id="typeSearch" class="form-control" style="display:none" name="typeSearch">
+            <option>Hallway</option>
+            <option>Senior Atrium</option>
+            <option>Senior Bar</option>
+            <option>Robotics</option>
+            <option>Music Hallway</option>
+            <option>Atrium</option>
+            <option>Swim Gym</option>
+            <option>Gym</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-md-1">
+        <button class="btn btn-dark" type="submit">Filter</button>
+      </div>
+    </form>
+  </div>
 
+  <hr>
 
-
-
-  <div class="form-inline">
-    <div>
-      {% if results == [] and all != [] %}
-      <h3>All Lockers:</h3>
+  <div class="container">
+    {% if results == [] and all != [] %}
+    <div class="text-center">
+      <h2>All Lockers</h2>
+    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
       {% for key in all %}
-        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-          <div class="card-header card-primary">Locker Number: {{key[6]}}-{{key[1]}}</div>
+      <div class="row">
+        <div class="card text-white text-center bg-info my-3 col-md-12">
+          <div class="card-header">Locker Number: {{key[6]}}-{{key[1]}}</div>
           <div class="card-body">
             <h5 class="card-title">Locker Info:</h5>
             <p class="card-text">Owner: {{key[3]}} <br> Floor: {{key[6]}} <br>
-                                 Level: {{all[key][4]}} <br> Location: {{all[key][5]}} <br>
-                                 Market Status: {{key[4]}} </p>
+                               Level: {{all[key][4]}} <br> Location: {{all[key][5]}} <br>
+                               Market Status: {{key[4]}} </p>
+            <hr class="my-4">
+            <form action="/home">
+              <button type="submit" class="btn btn-info btn-block active">Request Trade</button>
+            </form>
           </div>
-          <form action="/home">
-            <button class="btn btn-primary active btn-block">Request Trade</button>
-          </form>
         </div>
+      </div>
       {% endfor %}
-      {% endif %}
+    {% endif %}
     </div>
 
-    <div>
-      {% if results != [] %}
-      <h3>Search Results:</h3>
-      <!-- id, locker number, recipient, owner, status, request, floor -->
-      <!-- locker number, owner, combo, floor, level, type, status -->
+    {% if results != [] %}
+    <div class="text-center">
+      <h2>Search Results</h2>
+    </div>
+    <!-- id, locker number, recipient, owner, status, request, floor -->
+    <!-- locker number, owner, combo, floor, level, type, status -->
+    <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
       {% for key in results %}
-        <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+      <div class="row">
+        <div class="card text-white text-center bg-info my-3 col-md-12">
           <div class="card-header">Locker Number: {{key[6]}}-{{key[1]}}</div>
           <div class="card-body">
             <h5 class="card-title">Locker Info:</h5>
             <p class="card-text">Owner: {{key[3]}} <br> Floor: {{key[6]}} <br>
                                  Level: {{results[key][4]}} <br> Location: {{results[key][5]}} <br>
-                                 Market Status: {{key[4]}} </p>
+                                Market Status: {{key[4]}} </p>
+            <form action="/home">
+              <button class="btn btn-info active btn-block">Request Trade</button>
+            </form>
           </div>
-          <form action="/home">
-            <button class="btn btn-primary active btn-block">Request Trade</button>
-          </form>
         </div>
+      </div>
       {% endfor %}
-      {% endif %}
+    {% endif %}
     </div>
+  </div>
 
 
 <script>
@@ -155,8 +157,5 @@ function displayType() {
   else {typeDrop.style.display = "none";}
 }
 </script>
-
-
-</body>
 
 {% endblock %}

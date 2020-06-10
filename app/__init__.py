@@ -141,7 +141,7 @@ def updateprof():
 def locker():
     user = db_manager.getUserInfo(session['osis'])
     all = db_manager.tradeableLockers()
-    return render_template("locker.html",user=user,all=all,results=[])
+    return render_template("locker.html",user=user,all=all,results=[],heading="Locker Search")
 
 @app.route("/lSearch", methods=['POST'])
 def lSearch():
