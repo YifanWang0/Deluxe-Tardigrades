@@ -15,69 +15,65 @@
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
   <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
   <style>
-    body {
-      margin-left: 30px;
-    }
-    .footer {
-      position: absolute;
-      bottom: 0;
-      width: 97%;
-      height: 60px;
-      line-height: 60px;
-    }
-    .lb-sm {
-      font-size: 14px;
-    }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 97%;
+    height: 60px;
+    line-height: 60px;
+  }
+  .lb-sm {
+    font-size: 14px;
+  }
 
-    .lb-md {
-      font-size: 18px;
-    }
+  .lb-md {
+    font-size: 18px;
+  }
 
-    .lb-lg {
-      font-size: 20px;
-    }
+  .lb-lg {
+    font-size: 20px;
+  }
   </style>
 </head>
 
 <body>
-  {{ render_flashes() }}
   <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-            <h2 class="card-title text-center">Locker Swapper</h2>
-            <div class="icon text-center">
-              <img class="mb-4" src="/../static/lockericon.png" alt="" width="72" height="72">
+    {{ render_flashes() }}
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+          <div class="card card-signin my-5">
+            <div class="card-body">
+              <h2 class="card-title text-center">Locker Swapper</h2>
+              <div class="icon text-center">
+                <img class="mb-4" src="/../static/lockericon.png" alt="" width="72" height="72">
+              </div>
+              <form class="form-signin" action="/check" method="POST">
+                <div class="form-label-group">
+                  <label for="osis" class="lb-md">OSIS</label>
+                  <input type="text" id="osis" class="form-control" placeholder="OSIS" required="required" name="osis">
+                </div>
+                <br>
+                <div class="form-label-group">
+                  <label for="inputPassword" class="lb-md">Password</label>
+                  <input type="password" id="password" class="form-control" placeholder="Password" required="required" name="password">
+                </div>
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+                </form>
+                <hr class="my-4">
+                <div class="signUp text-center">
+                  <a class="underlineHover" href="./signup">Sign Up</a>
+                </div>
             </div>
-            <form class="form-signin" action="/check" method="POST">
-              <div class="form-label-group">
-                <label for="osis" class="lb-md">OSIS</label>
-                <input type="text" id="osis" class="form-control" placeholder="OSIS" required="required" value={{osis}}>
-              </div>
-              <br>
-              <div class="form-label-group">
-                <label for="inputPassword" class="lb-md">Password</label>
-                <input type="password" id="password" class="form-control" placeholder="Password" required="required" value={{password}}>
-              </div>
-              <br>
-              <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
-              </form>
-              <hr class="my-4">
-              <div class="signUp text-center">
-                <a class="underlineHover" href="./signup">Sign Up</a>
-              </div>
           </div>
         </div>
       </div>
     </div>
   </div>
   <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
-  <footer class="footer border-top">
-    <div class="container">
-      <!-- <img class="mb-2" src="/../static/lockericon.png" alt="" width="24" height="24"> -->
-      <span class="text-muted">© 2020 Team Deluxe-Tardigrades</small>
-    </div>
+  <footer class="footer-copyright text-center py-3 border-top">
+      <small class="text-muted">© 2020 Team Deluxe-Tardigrades</small>
   </footer>
 </body>
 </html>

@@ -59,3 +59,18 @@ yifanW -- 2020-06-07 23:32
 
 elizabethD -- 2020-06-07 23:39
     - added profile editor html and database functions
+
+elizabethD -- 2020-06-08 17:45
+    - connected editprof to home page
+
+elizabethD -- 2020-06-08 22:08
+    - created inital locker search, needs more testing
+
+elizabethD -- 2020-06-09 23:23
+    - finished locker search
+    - finished filter
+    - enhanced locker search design
+
+elizabethD -- 2020-06-10 17:47
+    - fixed editprof and search page
+    - removed history/id requirements from all pages
