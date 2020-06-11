@@ -1,3 +1,5 @@
+{% from "macros/render_flashes.html" import render_flashes %}
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,59 +13,64 @@
         <script src='http://d3js.org/d3.v5.min.js'></script>
         <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        {% block style %}
         <style>
-        body {
-          margin-left: 30px;
+        .footer {
+          width: 100%;
+          height: 60px;
+          line-height: 60px;
         }
         </style>
+        {% block style %}
         {% endblock %}
     </head>
     <body>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="margin-left: -50px;">
-				    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-				        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				        <span class="navbar-toggler-icon"></span>
-				    </button>
+      <!-- NavBar -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="/home">
+        <img src="/../static/lockericon.png" alt="" width="30" height="30">
+      </a>
+      <a class="navbar-brand" href="/home">Locker Swapper</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-				    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-				        <ul class="navbar-nav">
-				            <li class="nav-item active px-4">
-				                <a class="nav-link" href="/home" style="font-size:20px;">Home</a>
-				            </li>
-				        </ul>
-								<ul class="navbar-nav">
-				            <li class="nav-item active px-4">
-				                <a class="nav-link" href="/locker" style="font-size:20px;">Locker Search</a>
-				            </li>
-				        </ul>
-								<ul class="navbar-nav">
-				            <li class="nav-item active px-4">
-				                <a class="nav-link" href="/buddy" style="font-size:20px;">Locker Buddy</a>
-				            </li>
-				        </ul>
-								<ul class="navbar-nav">
-				            <li class="nav-item active px-4">
-				                <a class="nav-link" href="/stats" style="font-size:20px;">Stats</a>
-				            </li>
-				        </ul>
-                <ul class="navbar-nav">
-				            <li class="nav-item active px-4">
-				                <a class="nav-link" href="/notifs" style="font-size:20px;">Notifications</a>
-				            </li>
-				        </ul>
-				        <ul class="navbar-nav ml-auto">
-										<li class="nav-item navbar-right">
-				                <a class="nav-link text-white" href="/logout" style="font-size:20px; background-color:#f84854;"> Logout </a>
-				            </li>
-				        </ul>
-				    </div>
-				</nav>
-        <br>
-        <center><h1>{{heading}}</h1></center>
-        {% block body %}
-        {% endblock %}
-        {% block scripts %}
-        {% endblock %}
-    </body>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/locker">Locker Search</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="/buddy">Locker Buddy</a>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="/stats">Stats</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav navbar-right">
+            <li class="nav-item">
+                <a class="nav-link disabled">{{user[0]}}</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Log Out</a>
+            </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      {{ render_flashes() }}
+      <h1 class="text-center">{{heading}}</h1>
+      <br>
+      {% block body %}
+      {% endblock %}
+      {% block scripts %}
+      {% endblock %}
+    </div>
+    <br>
+    <footer class="footer-copyright text-center py-3 border-top">
+        <small class="text-muted">© 2020 Team Deluxe-Tardigrades</small>
+    </footer>
+  </body>
 </html>

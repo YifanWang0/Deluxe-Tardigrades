@@ -19,7 +19,7 @@ def login_required(f):
         '''dec (*args, **kwargs): Decorator for checking login and if user in session'''
         if 'osis' in session:
             return f(*args, **kwargs)
-        flash('You must be logged in to view this page!', 'alert-danger')
+        flash('You must be logged in to view this page!', 'danger')
         return redirect('/')
     return dec
 
@@ -30,7 +30,7 @@ def no_login_required(f):
         '''dec(*args, **kwargs): Decorator for checking no login'''
         if 'osis' not in session:
             return f(*args, **kwargs)
-        flash('You cannot view this page while logged in!', 'alert-danger')
+        flash('You cannot view this page while logged in!', 'danger')
         return redirect('/home')
     return dec
 
@@ -44,18 +44,21 @@ def login():
 def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
+    print(osis)
+    print(password)
     if(db_manager.userValid(osis,password)):
         session["osis"]=osis
+        flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
-        flash("Wrong")
+        # flash("Wrong", 'danger')
         return redirect('/')
 
 @app.route("/logout")
 @login_required
 def logout():
     session.clear()
-    flash('You have logged out!')
+    flash('You have logged out!', 'success')
     return redirect('/')
 
 @app.route("/signup")
@@ -66,7 +69,6 @@ def signup():
 @app.route("/auth", methods=['POST'])
 @no_login_required
 def newUser():
-    #add error handling (like password mismatch and invalud stuff), blank fields, and flash
     osis = request.form.get("osis")
     password = request.form.get("password")
     confirm = request.form.get("confirm")
@@ -80,13 +82,13 @@ def newUser():
     buddy = ""
     linfo = [combo, floor, level, type, "OWNED"]
     if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="done"):
-        flash("You've successfully made an account!")
+        flash("You've successfully made an account!", 'success')
         return redirect('/')
     elif(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="locker"):
-        #someone already registered locker add flash
+        flash("Locker has already been registered.", 'danger')
         return redirect('/signup')
     else:
-        #someone already registered with that osis add flash
+        flash("OSIS has already been registered.", 'danger')
         return redirect('/signup')
 
 @app.route("/home")
@@ -98,19 +100,23 @@ def profile():
         buddy = db_manager.getUserInfo(user[4])
     locker = db_manager.getLockerInfo(user[2])
     transactions = []
-    if user[6] != '':
-        transactions = user[6].split(",")
-        for id in transactions:
-            request=db_manager.getTransactionInfo(id)
-            if len(request)>0:
-                transactions.append(request)
-    return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
+    # if user[6] != '':
+    #     transactions = user[6].split(",")
+    #     for id in transactions:
+    #         request=db_manager.getTransactionInfo(id)
+    #         if len(request)>0:
+    #             transactions.append(request)
+    # print(transactions)
+    return render_template("home.html", heading="Home", user=user, buddy=buddy, locker=locker, transactions=transactions)
 
-@app.route("/editprof", methods=['POST'])
+@app.route("/editprof")
+@login_required
 def editprof():
-    return render_template("editprof.html")
+    user = db_manager.getUserInfo(session['osis'])
+    return render_template("editprof.html", user=user, heading="Edit Profile")
 
 @app.route("/updateprof", methods=['POST'])
+@login_required
 def updateprof():
     oldosis = session['osis']
     osis = request.form.get("osis")
@@ -125,15 +131,42 @@ def updateprof():
     floor = request.form.get("floor")
     gender = request.form.get("gender")
     if(db_manager.editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type)):
+        logout()
         return render_template("login.html")
     else:
         #error somewhere in the form, make more specific later
         print("error")
-        return render_template("editprof.html")
+        return render_template("editprof.html",user=oldosis)
 
+@app.route("/locker")
+@login_required
+def locker():
+    user = db_manager.getUserInfo(session['osis'])
+    all = db_manager.tradeableLockers()
+    return render_template("locker.html",user=user,all=all,results=[],heading="Locker Search")
 
+@app.route("/lSearch", methods=['POST'])
+@login_required
+def lSearch():
+    user = db_manager.getUserInfo(session['osis'])
+    searchBy = request.form.get("searchBy")
+    query = request.form.get("query")
+    results = db_manager.searchLocker(searchBy, query)
+    #print(results)
+    if (not results and results != {}):
+        flash("Incorrect Query Format","danger")
+        return redirect('/locker')
+    return render_template("locker.html", user=user,results=results)
 
-
+@app.route("/lFilter", methods=['POST'])
+@login_required
+def lFilter():
+    user = db_manager.getUserInfo(session['osis'])
+    floor = request.form.get("floorSearch")
+    level = request.form.get("levelSearch")
+    type = request.form.get("typeSearch")
+    results = db_manager.filterLocker(floor,level,type)
+    return render_template("locker.html", user=user,results=results)
 
 if __name__ == "__main__":
     db_builder.build_db()
