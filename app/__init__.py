@@ -148,7 +148,7 @@ def survey():
         sports = list[0]
         books = list[1]
         misc = list[2]
-    return render_template("survey.html", sports = sports, books = books, misc = misc, user=user)
+    return render_template("survey.html", heading = "Lockey Buddy Survey", sports = sports, books = books, misc = misc, user=user)
 
 @app.route("/buddy", methods=['POST'])
 @login_required
