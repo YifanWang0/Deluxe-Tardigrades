@@ -76,9 +76,11 @@ amandaZ -- 2020-06-09 12:19
 amandaZ -- 2020-06-09 23:57
     - made filter system using sqlite
     - debugged filter error dealing with wrong type being returned
-amandaZ -- 2020-06-10 17:12
+amandaZ -- 2020-06-10 14:12
     - fixed filter system due to quotes error
     - made update route that gathers info about which person user requested
-amandaZ -- 2020-06-10 20:25
+amandaZ -- 2020-06-10 28:25
     - made filter display cards with info and fixed transaction card on first page
     - finished transaction request with buddies
+amandaZ -- 2020-06-10 20:06
+    - started notification tab
