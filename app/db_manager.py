@@ -150,10 +150,6 @@ def searchLocker(searchBy, query):
     data = exec(q).fetchall()
     return getTransLock(data)
 
-#  transaction_tbl (locker INT, recipient INT, sender INT, status '1=OPEN,0=CLOSED ', request 'L or B', floor INT)
-#  locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status 'OWNED,TRADING,BUDDY')
-
-
 def filterLocker(floor,level,location):
     q = "SELECT owner FROM locker_tbl WHERE status='TRADING'"
     if (floor != ""):
@@ -226,3 +222,14 @@ def buddyRequest(to, sender):
     q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
     inputs=(locker[2],to, sender, 1, "B", locker[3])
     execmany(q,inputs)
+
+def putOnMarket(locker):
+    lInfo = getLockerInfo(locker)
+    q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
+    inputs = (locker,"",linfo[1],1,'L',linfo[3])
+    execmany(q,inputs)
+    q = "UPDATE locker_tbl SET status='TRADING' WHERE locker=" + locker
+    exec(q)
+
+#  transaction_tbl (locker INT, recipient INT, sender INT, status '1=OPEN,0=CLOSED ', request 'L or B', floor INT)
+#  locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status 'OWNED,TRADING,BUDDY')

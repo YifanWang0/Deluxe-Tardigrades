@@ -108,3 +108,6 @@ amandaZ -- 2020-06-10 21:00
 
 elizabethD -- 2020-06-10 21:00
     - merged branch with master
+
+elizabethD -- 2020-06-10 23:22
+    - lockers can be put on market on home page

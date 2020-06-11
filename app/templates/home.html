@@ -10,8 +10,8 @@
           <h5 class="card-title">Locker Info:</h5>
           <p class="card-text">Combination: {{locker[2]}} <br> Floor: {{locker[3]}} <br> Level: {{locker[4]}} <br> Location: {{locker[5]}} <br> Market Status: {{locker[6]}}</p>
           <hr class="my-4">
-          <form action="#">
-            <button type="submit" class="btn btn-info btn-block active">Sell</button>
+          <form action="/market" method="post">
+            <button type="submit" class="btn btn-info btn-block active">Trade</button>
           </form>
         </div>
       </div>
