@@ -49,7 +49,7 @@ def authentication():
         flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
-        flash("Wrong Login Information!", 'danger')
+        # flash("Wrong Login Information!", 'danger')
         return redirect('/')
 
 @app.route("/logout")
@@ -134,7 +134,7 @@ def updateprof():
     else:
         #error somewhere in the form, make more specific later
         print("error")
-        return render_template("editprof.html",user=oldosis)
+        return render_template("editprof.html",heading="Edit Profile",user=oldosis)
 
 @app.route("/survey")
 @login_required
@@ -158,7 +158,7 @@ def buddy():
     misc = request.form.get("misc")
     info = sports+","+books+","+misc
     db_manager.updateSurvey(session['osis'],info)
-    return render_template("buddy.html", query=["","","","","","","","",""])
+    return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""])
 
 @app.route("/bsearch", methods=['POST'])
 @login_required
@@ -194,7 +194,7 @@ def bsearch():
         count+=1
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
-    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
+    return render_template("buddy.html", heading = "Lockey Buddy Search", query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
 
 @app.route("/locker")
 @login_required
@@ -214,7 +214,7 @@ def lSearch():
     if (not results and results != {}):
         flash("Incorrect Query Format","danger")
         return redirect('/locker')
-    return render_template("locker.html", user=user,results=results)
+    return render_template("locker.html", user=user,results=results,heading="Locker Search")
 
 @app.route("/lFilter", methods=['POST'])
 @login_required
@@ -224,7 +224,7 @@ def lFilter():
     level = request.form.get("levelSearch")
     type = request.form.get("typeSearch")
     results = db_manager.filterLocker(floor,level,type)
-    return render_template("locker.html", user=user,results=results)
+    return render_template("locker.html", user=user,results=results,heading="Locker Search")
 
 if __name__ == "__main__":
     db_builder.build_db()
