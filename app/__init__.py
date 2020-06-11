@@ -110,7 +110,7 @@ def updateBuddy():
 @app.route("/editprof")
 @login_required
 def editprof():
-    user = db_manager.getUserInfo(session['osis'])
+    user = session['osis']
     return render_template("editprof.html", user=user, heading="Edit Profile")
 
 @app.route("/updateprof", methods=['POST'])
@@ -195,11 +195,6 @@ def bsearch():
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
     return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
-if __name__ == "__main__":
-    db_builder.build_db()
-    app.debug = True
-    app.run()
-
 
 @app.route("/locker")
 @login_required

@@ -141,24 +141,24 @@
 
 
 <script>
-function displayFloor() {
-  var floorCheck = document.getElementById("floor");
-  var floorDrop = document.getElementById("floorSearch");
-  if (floorCheck.checked == true){floorDrop.style.display = "block";}
-  else {floorDrop.style.display = "none";}
-}
-function displayLevel() {
-  var levelCheck = document.getElementById("level");
-  var levelDrop = document.getElementById("levelSearch");
-  if (levelCheck.checked == true){levelDrop.style.display = "block";}
-  else {levelDrop.style.display = "none";}
-}
-function displayType() {
-  var typeCheck = document.getElementById("type");
-  var typeDrop = document.getElementById("typeSearch");
-  if (typeCheck.checked == true){typeDrop.style.display = "block";}
-  else {typeDrop.style.display = "none";}
-}
+  function displayFloor() {
+    var floorCheck = document.getElementById("floor");
+    var floorDrop = document.getElementById("floorSearch");
+    if (floorCheck.checked == true){floorDrop.style.display = "block";}
+    else {floorDrop.style.display = "none";}
+  }
+  function displayLevel() {
+    var levelCheck = document.getElementById("level");
+    var levelDrop = document.getElementById("levelSearch");
+    if (levelCheck.checked == true){levelDrop.style.display = "block";}
+    else {levelDrop.style.display = "none";}
+  }
+  function displayType() {
+    var typeCheck = document.getElementById("type");
+    var typeDrop = document.getElementById("typeSearch");
+    if (typeCheck.checked == true){typeDrop.style.display = "block";}
+    else {typeDrop.style.display = "none";}
+  }
 </script>
 
 {% endblock %}
