@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Find the Perfect Buddy!</h1>
+<br><br>
+<form action="/bsearch" method="post">
+  <div class="form-row">
+    <div class="form-group col-md-1">
+      <label class="font-weight-bold"> Search by: </label>
+      <select id="searchtype" class="form-control" name="searchtype">
+        <option value="osis" {% if query[1] == "" %} selected {% endif %} >Owner</option>
+        <option value="locker" {% if query[0] == "" %} selected {% endif %}>Locker Number</option>
+      </select>
+    </div>
+    <div class="form-group col-md-3">
+      <label class="font-weight-bold">&nbsp; </label>
+      <input type="text" class="form-control" name="input">
+    </div>
+    <div class="form-group col-md-2">
+    </div>
+    <div class="form-group col-md-4">
+    <label for="sports" class="font-weight-bold">Sports Equipment Load</label>
+    <select id="sports" class="form-control" name="sports">
+      <option value="" {% if query[2] == "" %} selected {% endif %}>None</option>
+      <option value="Large" {% if query[2] == "Large" %} selected {% endif %}>Large</option>
+      <option value="Medium" {% if query[2] == "Medium" %} selected {% endif %}>Medium</option>
+      <option value="Small" {% if query[2] == "Small" %} selected {% endif %}>Small</option>
+    </select>
+    </div>
+    <div class="form-group col-md-2">
+    </div>
+    </div>
+    <div class="form-row">
+      <div class="form group col-md-2">
+        <label for="textbook" class="font-weight-bold">Textbook Count?</label>
+        <select id="textbook" class="form-control" name="textbook">
+          <option value="" {% if query[3] =="" %} selected {% endif %} >None</option>
+          <option value="1-3" {% if query[3] =="1-3" %} selected {% endif %}>1-3</option>
+          <option value="4+" {% if query[3] =="4+" %} selected {% endif %}>4+</option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+      <label for="grade" class="font-weight-bold">Grade</label>
+      <select id="grade" class="form-control" name="grade">
+        <option {% if query[4] =="None" %} selected {% endif %}>None</option>
+        <option {% if query[4] =="9" %} selected {% endif %}>9</option>
+        <option {% if query[4] =="10" %} selected {% endif %}>10</option>
+        <option {% if query[4] =="11" %} selected {% endif %}>11</option>
+        <option {% if query[4] =="12" %} selected {% endif %}>12</option>
+      </select>
+      </div>
+      <div class="form group col-md-2">
+        <label for="gender" class="font-weight-bold">Gender</label>
+        <select id="Gender" class="form-control" name="gender">
+          <option {% if query[5]=="None" %} selected {% endif %}>None</option>
+          <option {% if query[5]=="Male" %} selected {% endif %}>Male</option>
+          <option {% if query[5]=="Female" %} selected {% endif %}>Female</option>
+        </select>
+      </div>
+    <div class="form group col-md-2">
+      <label for="floor" class="font-weight-bold">Floor</label>
+      <select id="floor" class="form-control" name="floor">
+        <option {% if query[6]=="None" %} selected {% endif %}>None</option>
+        <option {% if query[6]=="1" %} selected {% endif %}>1</option>
+        <option {% if query[6]=="2" %} selected {% endif %}>2</option>
+        <option {% if query[6]=="3" %} selected {% endif %}>3</option>
+        <option {% if query[6]=="4" %} selected {% endif %}>4</option>
+        <option {% if query[6]=="5" %} selected {% endif %}>5</option>
+        <option {% if query[6]=="6" %} selected {% endif %}>6</option>
+        <option {% if query[6]=="7" %} selected {% endif %}>7</option>
+        <option {% if query[6]=="8" %} selected {% endif %}>8</option>
+        <option {% if query[6]=="9" %} selected {% endif %}>9</option>
+        <option {% if query[6]=="10" %} selected {% endif %}>10</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+    <label for="lockertype" class="font-weight-bold">Locker Location</label>
+    <select id="Ltype" class="form-control" name="location">
+      <option {% if query[7]=="None" %} selected {% endif %}>None</option>
+      <option {% if query[7]=="Hallway" %} selected {% endif %}>Hallway</option>
+      <option {% if query[7]=="Atrium" %} selected {% endif %}>Atrium</option>
+      <option {% if query[7]=="Bar" %} selected {% endif %}>Bar</option>
+      <option {% if query[7]=="Robotics" %} selected {% endif %}>Robotics</option>
+      <option {% if query[7]=="Music Hallway" %} selected {% endif %}>Music Hallway</option>
+      <option {% if query[7]=="Swim Gym" %} selected {% endif %}>Swim Gym</option>
+      <option {% if query[7]=="Gym" %} selected {% endif %}>Gym</option>
+    </select>
+    </div>
+    <div class="form group col-md-2">
+      <label for="Ltype" class="font-weight-bold">Top/Bottom</label>
+      <select id="level" class="form-control" name="level">
+        <option {% if query[8]=="None" %} selected {% endif %}>None</option>
+        <option {% if query[8]=="Top" %} selected {% endif %}>Top</option>
+        <option {% if query[8]=="Bottom" %} selected {% endif %}>Bottom</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" id="submit">Search</button>
+  </div>
+  </form>
+  <br>
+  {% for item in loop %}
+  <center>
+  <div  class="form-row">
+    <center>
+    <div class="card">
+    <div class="card-header">
+      Buddy Osis: {{buddy[item][0]}}
+    </div>
+    <div class="card-body" style="width: 700px;">
+      <h5 class="card-title">Buddy Info:</h5>
+      <p class="card-text">Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load:{{survey[item][0]}} &nbsp; &nbsp; Textbook Count:{{survey[item][1]}} </p>
+      <h5 class="card-title">Locker Info:</h5>
+      <p class="card-text">Locker Number: {{locker[item][0]}} &nbsp; &nbsp; Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}} &nbsp; &nbsp; Market Status: {{locker[item][6]}}</p>
+    </div>
+  {% if buddy[item][0] in to %}
+  <div>
+      <button class="btn btn-success" type="submit">Accept Request</button>
+  </div>
+  {% endif %}
+  {% if buddy[item][0] in sender %}
+  <div>
+      <button class="btn btn-secondary" type="submit" disabled>Requested</button>
+  </div>
+  {% endif %}
+  {% if buddy[item][0] not in sender and buddy[item][0] not in to%}
+  <form action="/updated" method="post">
+  <div>
+      <button class="btn btn-primary" type="submit" name="request" value ="{{buddy[item][0]}}">Request</button>
+  </div>
+  </form>
+  {% endif %}
+  <br>
+  </div>
+  </center>
+  </div>
+  </center>
+  <br>
+  {% endfor %}
+
+
+
+{% endblock %}

@@ -54,6 +54,10 @@ elizabethD -- 2020-06-07 20:26
     - moved locker_info to correct table
     - fixed userValid
 
+amandaZ -- 2020-06-07 20:03
+    - made login work
+    - created profile page with cards with right info
+
 yifanW -- 2020-06-07 23:32
     - added alerts when inputs for sign up do not meet requirements
 
@@ -66,11 +70,41 @@ elizabethD -- 2020-06-08 17:45
 elizabethD -- 2020-06-08 22:08
     - created inital locker search, needs more testing
 
+amandaZ -- 2020-06-08 24:28
+    - created buddy survey's layout
+    - accessibility of survey answers
+
+amandaZ -- 2020-06-08 27:33
+    - recording the survey answers into sqlite
+    - made placeholder the survey answers if you already answered before
+
+amandaZ -- 2020-06-09 12:19
+    - format filter system (html boxes)
+    - debug survey and sqlite data recording
+
 elizabethD -- 2020-06-09 23:23
     - finished locker search
     - finished filter
     - enhanced locker search design
 
+amandaZ -- 2020-06-09 23:57
+    - made filter system using sqlite
+    - debugged filter error dealing with wrong type being returned
+
+amandaZ -- 2020-06-10 17:12
+    - fixed filter system due to quotes error
+    - made update route that gathers info about which person user requested
+
 elizabethD -- 2020-06-10 17:47
     - fixed editprof and search page
     - removed history/id requirements from all pages
+
+amandaZ -- 2020-06-10 20:25
+    - made filter display cards with info and fixed transaction card on first page
+    - finished transaction request with buddies
+
+amandaZ -- 2020-06-10 21:00
+    - merged branch with master
+
+elizabethD -- 2020-06-10 21:00
+    - merged branch with master
