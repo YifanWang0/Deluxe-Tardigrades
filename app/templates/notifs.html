@@ -1,13 +1,26 @@
 {% extends "base.html" %}
 
 {% block body %}
-{% for item in notif%}
-<div class="card border-primary mb-3" style="max-width: 18rem;">
-  <div class="card-header">Header</div>
-  <div class="card-body text-primary">
-    <h5 class="card-title">Primary card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+{% for item in looper %}
+{% if all[item] in open %}
+<div class="card border-dark mb-3" style="max-width: 18rem;">
+  <div class="card-header">{% if all[item][4] == "B" %} Active Buddy Request {% endif %} {% if all[item][4] == "L" %} Active Locker Request {% endif %}</div>
+  <div class="card-body text-dark">
+    <h5 class="card-title">{% if all[item][4] == "B" %} From: {{buddy[item][0]}} {% endif %}{% if all[item][4] == "L" %} Locker: Locker Number: {{locker[item][3]}}-{{locker[item][0]}} {% endif %}</h5>
+    <p class="card-text">{% if all[item][4] == "B" %} Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load:{{buddy[item][5][0]}} &nbsp; &nbsp; Textbook Count:{{buddy[item][5][1]}} {% endif %}{% if all[item][4] == "L" %}Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}}{% endif %}</p>
   </div>
 </div>
+{% endif %}
+
+{% if all[item] in close %}
+<div class="card border-primary mb-3" style="max-width: 18rem;">
+  <div class="card-header">{% if all[item][4] == "B" %} Active Buddy Request {% endif %} {% if all[item][4] == "L" %} Active Locker Request {% endif %}</div>
+  <div class="card-body text-primary">
+    <h5 class="card-title">{% if all[item][4] == "B" %} From: {{buddy[item][0]}} {% endif %}{% if all[item][4] == "L" %} Locker: Locker Number: {{locker[item][3]}}-{{locker[item][0]}} {% endif %}</h5>
+    <p class="card-text">{% if all[item][4] == "B" %} Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load:{{buddy[item][5][0]}} &nbsp; &nbsp; Textbook Count:{{buddy[item][5][1]}} {% endif %}{% if all[item][4] == "L" %}Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}}{% endif %}</p>
+  </div>
+</div>
+{% endif %}
+
 {% endfor %}
 {% endblock %}

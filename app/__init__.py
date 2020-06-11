@@ -191,6 +191,27 @@ def bsearch():
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
     return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
+
+@app.route("/notifs")
+@login_required
+def notifs():
+    looper=[]
+    buddy=[]
+    locker=[]
+    all = db_manager.getAllNotifs(session["osis"])
+    for value in range(len(all)):
+        looper.append(value)
+    for value in all:
+        if(value[4] == "B"):
+            temp=db_manager.getUserInfo(value[2])
+            temp[5]=temp[5].split(",")
+            buddy.append(temp)
+        else:
+            locker.append(db_manager.getLockerInfo(value[0]))
+    open = db_manager.getMess(session["osis"],1)
+    close = db_manager.getMess(session["osis"],0)
+    return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker)
+
 if __name__ == "__main__":
     db_builder.build_db()
     app.debug = True

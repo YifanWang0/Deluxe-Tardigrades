@@ -164,12 +164,10 @@ def getTransactionTo(osis):
     inputs = (osis,)
     data = execmany(q,inputs).fetchall()
     info=[]
-    print(q)
     if data is None:
         return info
     for value in data:
         info.append(value[0])
-    print(info)
     return info
 
 def buddyRequest(to, sender):
@@ -179,3 +177,45 @@ def buddyRequest(to, sender):
     q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?)"
     inputs=(locker,to, sender, 1, "B")
     execmany(q,inputs)
+
+def getMess(osis,num):
+    q="SELECT * FROM transaction_tbl WHERE recipient=? AND status = ?"
+    inputs = (osis,num)
+    data = execmany(q,inputs).fetchall()
+    info=[]
+    temp=[]
+    if data is None:
+        return info
+    for value in data:
+        for cell in value:
+            temp.append(cell)
+        info.append(temp)
+    return info
+
+def getAllNotifs(osis):
+    q="SELECT * FROM transaction_tbl WHERE recipient=?"
+    inputs = (osis,)
+    data = execmany(q,inputs).fetchall()
+    info=[]
+    temp=[]
+    if data is None:
+        return info
+    for value in data:
+        for cell in value:
+            temp.append(cell)
+        info.append(temp)
+    return info
+
+def getBuddy(osis):
+    q="SELECT buddy FROM user_tbl WHERE osis=?"
+    inputs(osis,)
+    buddy = execmany(q,inputs).fetchone()[0]
+    q="SELECT * FROM transaction_tbl WHERE recipient=?"
+    inputs = (buddy,)
+    data=execmany(q,inputs).fetchone()
+    info=[]
+    if data is None:
+        return info
+    for value in data:
+        info.append(value)
+    return info
