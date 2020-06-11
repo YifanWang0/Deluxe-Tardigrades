@@ -100,7 +100,7 @@
                 <div class="form-row">
                   <div class="form group col-md-12">
                     <label for="Num" class="lb-md">Locker Number</label>
-                    <input type="text" pattern="[0-9]{3}"class="form-control" id="locker" placeholder="---" name="locker" required="required">
+                    <input type="text" pattern="[0-9]{3}"class="form-control" id="locker" placeholder="---" name="locker">
                     <small class="form-text text-muted">Must be 3 digits and ignoring floor number (Ex: 2-225 as 225)</small>
                   </div>
                 </div>
@@ -108,7 +108,7 @@
                 <div class="form-row">
                   <div class="form group col-md-12">
                     <label for="Combination" class="lb-md">Locker Combo</label>
-                    <input type="text" pattern="[0-9]{6}"class="form-control" id="combo" placeholder="------" name="combo" required="required">
+                    <input type="text" pattern="[0-9]{6}"class="form-control" id="combo" placeholder="------" name="combo">
                     <small class="form-text text-muted">Must be 6 digits and ignoring dashes (Ex: 10-21-06 as 102106)</small>
                   </div>
                 </div>
@@ -117,6 +117,7 @@
                   <div class="form group col-md-3">
                     <label for="floor" class="lb-md">Floor</label>
                     <select id="floor" class="form-control" name="floor">
+                      <option> </option>
                       <option>1</option>
                       <option>2</option>
                       <option>3</option>
@@ -132,7 +133,8 @@
                   <div class="form-group col-md-5">
                   <label for="lockertype" class="lb-md">Locker Location</label>
                   <select id="Ltype" class="form-control" name="location">
-                    <option selected>Hallway</option>
+                    <option> </option>
+                    <option>Hallway</option>
                     <option>Senior Atrium</option>
                     <option>Senior Bar</option>
                     <option>Robotics</option>
@@ -145,6 +147,7 @@
                   <div class="form group col-md-4">
                     <label for="Ltype" class="lb-md">Locker Position</label>
                     <select id="level" class="form-control" name="level">
+                      <option> </option>
                       <option>Top</option>
                       <option>Bottom</option>
                     </select>
