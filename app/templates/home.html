@@ -39,15 +39,17 @@
       </div>
     </div>
     {% for item in transactions%}
-    <div class="card text-white bg-warning my-3 col-md-12">
-      <div class="card-header">Pending Transaction</div>
-      <div class="card-body">
-        <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
-        <p class="card-text">Request to: {{item[1]}} <br> </p>
-        <hr class="my-4">
-        <form action="#">
-          <button type="submit" class="btn btn-warning btn-block active">Give Up</button>
-        </form>
+    <div class="row">
+      <div class="card text-white text-center bg-warning my-3 col-md-12">
+        <div class="card-header">Pending Transaction</div>
+        <div class="card-body">
+          <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
+          <p class="card-text">Request to: {{item[1]}} <br> </p>
+          <hr class="my-4">
+          <form action="#">
+            <button type="submit" class="text-white btn btn-warning btn-block active">Give Up</button>
+          </form>
+        </div>
       </div>
     </div>
     {% endfor %}
