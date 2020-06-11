@@ -104,7 +104,7 @@ def profile():
             request=db_manager.getTransactionInfo(id)
             if len(request)>0:
                 transactions.append(request)
-    return render_template("home.html", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
+    return render_template("home.html",title="Home", heading="Profile", user=user, buddy=buddy, locker=locker, transactions=transactions)
 
 @app.route("/editprof", methods=['POST'])
 def editprof():
@@ -130,6 +130,10 @@ def updateprof():
         #error somewhere in the form, make more specific later
         print("error")
         return render_template("editprof.html")
+
+@app.route("/stats")
+def stat():
+    return render_template("stat.html", title="Stats")
 
 
 
