@@ -44,14 +44,12 @@ def login():
 def authentication():
     osis = request.form.get("osis")
     password = request.form.get("password")
-    print(osis)
-    print(password)
     if(db_manager.userValid(osis,password)):
         session["osis"]=osis
         flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
-        # flash("Wrong", 'danger')
+        flash("Wrong Login Information!", 'danger')
         return redirect('/')
 
 @app.route("/logout")
@@ -94,20 +92,20 @@ def newUser():
 @app.route("/home")
 @login_required
 def profile():
-    user = db_manager.getUserInfo(session['osis'])
+    userInfo = db_manager.getUserInfo(session['osis'])
     buddy = ["N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A"]
-    if len(user[4]) != 0:
-        buddy = db_manager.getUserInfo(user[4])
-    locker = db_manager.getLockerInfo(user[2])
-    transactions = []
-    # if user[6] != '':
-    #     transactions = user[6].split(",")
-    #     for id in transactions:
-    #         request=db_manager.getTransactionInfo(id)
-    #         if len(request)>0:
-    #             transactions.append(request)
-    # print(transactions)
-    return render_template("home.html", heading="Home", user=user, buddy=buddy, locker=locker, transactions=transactions)
+    if len(userInfo[4]) != 0:
+        buddy = db_manager.getUserInfo(userInfo[4])
+    locker = db_manager.getLockerInfo(userInfo[2])
+    transactions=db_manager.getTransactionInfo(session['osis'])
+    return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'])
+
+@app.route("/updated", methods=['POST'])
+@login_required
+def updateBuddy():
+     osis=request.form.get("request")
+     db_manager.buddyRequest(osis,session['osis'])
+     return redirect("/home")
 
 @app.route("/editprof")
 @login_required
@@ -138,17 +136,82 @@ def updateprof():
         print("error")
         return render_template("editprof.html",user=oldosis)
 
+@app.route("/survey")
+@login_required
+def survey():
+    sports = ""
+    books = ""
+    misc = ""
+    user = session['osis']
+    list = db_manager.getSurveyInfo(session["osis"])
+    if (len(list)>0):
+        sports = list[0]
+        books = list[1]
+        misc = list[2]
+    return render_template("survey.html", sports = sports, books = books, misc = misc, user=user)
+
+@app.route("/buddy", methods=['POST'])
+@login_required
+def buddy():
+    sports = request.form.get("sports")
+    books = request.form.get("textbook")
+    misc = request.form.get("misc")
+    info = sports+","+books+","+misc
+    db_manager.updateSurvey(session['osis'],info)
+    return render_template("buddy.html", query=["","","","","","","","",""])
+
+@app.route("/bsearch", methods=['POST'])
+@login_required
+def bsearch():
+    query=["","","","","","","","",""]
+    if request.form.get("searchtype") == "osis":
+        query[0] = request.form.get("input")
+    else:
+        query[1] = request.form.get("input")
+    query[2] = request.form.get("sports")
+    query[3] = request.form.get("textbook")
+    query[4] = request.form.get("grade")
+    query[5] = request.form.get("gender")
+    query[6] = request.form.get("floor")
+    query[7] = request.form.get("location")
+    query[8] = request.form.get("level")
+    results = db_manager.filter(query,session["osis"])
+    buddy=[]
+    locker=[]
+    loop=[]
+    survey =[]
+    count = 0
+    for value in range(len(results)):
+        info = db_manager.getUserInfo(results[value])
+        buddy.append(info)
+        temp=db_manager.getLockerInfo(info[2])
+        locker.append(temp)
+        loop.append(count)
+        temp=["", ""]
+        if info[5] != "":
+            temp = info[5].split(",")
+        survey.append(temp)
+        count+=1
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
+    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
+if __name__ == "__main__":
+    db_builder.build_db()
+    app.debug = True
+    app.run()
+
+
 @app.route("/locker")
 @login_required
 def locker():
-    user = db_manager.getUserInfo(session['osis'])
+    user = session['osis']
     all = db_manager.tradeableLockers()
     return render_template("locker.html",user=user,all=all,results=[],heading="Locker Search")
 
 @app.route("/lSearch", methods=['POST'])
 @login_required
 def lSearch():
-    user = db_manager.getUserInfo(session['osis'])
+    user = session['osis']
     searchBy = request.form.get("searchBy")
     query = request.form.get("query")
     results = db_manager.searchLocker(searchBy, query)
@@ -161,7 +224,7 @@ def lSearch():
 @app.route("/lFilter", methods=['POST'])
 @login_required
 def lFilter():
-    user = db_manager.getUserInfo(session['osis'])
+    user = session['osis']
     floor = request.form.get("floorSearch")
     level = request.form.get("levelSearch")
     type = request.form.get("typeSearch")

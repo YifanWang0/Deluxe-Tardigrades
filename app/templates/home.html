@@ -18,10 +18,10 @@
     </div>
     <div class="row">
       <div class="card text-white text-center bg-primary my-3 col-md-5">
-        <div class="card-header">User Osis: {{user[0]}}</div>
+        <div class="card-header">User Osis: {{userInfo[0]}}</div>
         <div class="card-body">
           <h5 class="card-title">User Info:</h5>
-          <p class="card-text">Grade: {{user[3]}} <br> Gender: {{user[6]}}</p>
+          <p class="card-text">Grade: {{userInfo[3]}} <br> Gender: {{userInfo[6]}}</p>
           <hr class="my-4">
           <form action="/editprof">
             <button type="submit" class="btn btn-primary btn-block active">Edit</button>
@@ -34,7 +34,7 @@
         <div class="card-header">Buddy Osis: {{buddy[0]}}</div>
         <div class="card-body">
           <h5 class="card-title">Buddy Info:</h5>
-          <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[7]}}</p>
+          <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[6]}}</p>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
       <div class="card-header">Pending Transaction</div>
       <div class="card-body">
         <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
-        <p class="card-text">Request to: {{item[2]}} <br> </p>
+        <p class="card-text">Request to: {{item[1]}} <br> </p>
         <hr class="my-4">
         <form action="#">
           <button type="submit" class="btn btn-warning btn-block active">Give Up</button>
