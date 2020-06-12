@@ -42,11 +42,21 @@
     <div class="card text-white bg-warning my-3 col-md-12">
       <div class="card-header">Pending Transaction</div>
       <div class="card-body">
-        <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
-        <p class="card-text">Request to: {{item[1]}} <br> </p>
+        <h5 class="card-title">Transaction Request:
+          {% if item[3] == 1 %} OPEN -
+            {% if item[4] == 'L' %} Locker Trade {% endif %}
+            {% if item[4] == 'B' %} Buddy Match {% endif %} {% endif %}
+          {% if item[3] == 0 %} CLOSED -
+            {% if item[4] == 'L' %} Locker Trade {% endif %}
+            {% if item[4] == 'B' %} Buddy Match {% endif %} {% endif %}
+        </h5>
+        <p class="card-text">
+          {% if item[1] == '' %} ON MARKET <br>{% endif %}
+          {% if item[4] == 'L' %} Locker: {{item[5]}}-{{item[0]}}<br>{% endif %}
+          Request to: {{item[1]}} <br> </p>
         <hr class="my-4">
-        <form action="#">
-          <button type="submit" class="btn btn-warning btn-block active">Give Up</button>
+        <form action="/giveup" method="post">
+          <button type="submit" name="giveup" value="{{item[1]}}" class="text-white btn btn-warning btn-block active">Give Up</button>
         </form>
       </div>
     </div>

@@ -60,15 +60,15 @@ def getTransactionInfo(osis):
     inputs = (osis,)
     data = execmany(q, inputs).fetchall()
     info = []
-    print(q)
+    # print(q)
     if(data is None):
         return info
     for value in data:
-        print(value)
-        print(len(value))
-        print(value[4])
+        # print(value)
+        # print(len(value))
+        # print(value[4])
         if len(value)>0 and value[3] == 1:
-            info.append([value[0],value[1],value[2],value[3],value[4]])
+            info.append([value[0],value[1],value[2],value[3],value[4],value[5]])
     return info
 
 def getSurveyInfo(osis):
@@ -207,12 +207,12 @@ def getTransactionTo(osis):
     inputs = (osis,)
     data = execmany(q,inputs).fetchall()
     info=[]
-    print(q)
+    # print(q)
     if data is None:
         return info
     for value in data:
         info.append(value[0])
-    print(info)
+    # print(info)
     return info
 
 def buddyRequest(to, sender):
@@ -224,12 +224,30 @@ def buddyRequest(to, sender):
     execmany(q,inputs)
 
 def putOnMarket(locker):
-    lInfo = getLockerInfo(locker)
+    linfo = getLockerInfo(locker)
     q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
     inputs = (locker,"",linfo[1],1,'L',linfo[3])
     execmany(q,inputs)
-    q = "UPDATE locker_tbl SET status='TRADING' WHERE locker=" + locker
+    q = "UPDATE locker_tbl SET status='TRADING' WHERE locker=" + str(locker)
     exec(q)
 
-#  transaction_tbl (locker INT, recipient INT, sender INT, status '1=OPEN,0=CLOSED ', request 'L or B', floor INT)
+#  user_tbl (osis INT, password TEXT, locker INT, grade INT, buddy INT, survey TEXT, gender TEXT)"
 #  locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status 'OWNED,TRADING,BUDDY')
+#  transaction_tbl (locker INT, recipient INT, sender INT, status '1=OPEN,0=CLOSED ', request 'L or B', floor INT)
+
+def lockerRequest(to,sender):
+    owner = getUserInfo(to)
+    locker = getLockerInfo(owner[2])
+    q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
+    inputs=(owner[2],to, sender, 1, "L", locker[3])
+    execmany(q,inputs)
+
+def giveUp(sender,recipient):
+    if (recipient == ""):
+        q = "UPDATE locker_tbl SET status='OWNED' WHERE owner=" + sender
+        exec(q)
+        q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=''"
+    else:
+        q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=" + recipient
+    print(q)
+    exec(q)

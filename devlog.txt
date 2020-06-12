@@ -111,3 +111,8 @@ elizabethD -- 2020-06-10 21:00
 
 elizabethD -- 2020-06-10 23:22
     - lockers can be put on market on home page
+
+elizabethD -- 2020-06-11 22:06
+    - transaction card displays more specific info
+    - added request a locker functions
+    - added give up function

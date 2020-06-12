@@ -195,11 +195,6 @@ def bsearch():
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
     return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
-if __name__ == "__main__":
-    db_builder.build_db()
-    app.debug = True
-    app.run()
-
 
 @app.route("/locker")
 @login_required
@@ -230,6 +225,33 @@ def lFilter():
     type = request.form.get("typeSearch")
     results = db_manager.filterLocker(floor,level,type)
     return render_template("locker.html", user=user,results=results)
+
+@app.route("/market", methods=['POST'])
+@login_required
+def market():
+    user = session['osis']
+    locker = db_manager.getUserInfo(user)[2]
+    if (db_manager.getLockerInfo(locker)[6] == 'TRADING'):
+        flash("Locker already on market!", 'danger')
+        return redirect('/home')
+    db_manager.putOnMarket(locker)
+    return redirect("/home")
+
+@app.route("/lRequest", methods=['POST'])
+@login_required
+def lRequest():
+     user = session['osis']
+     osis=request.form.get("lrequest")
+     db_manager.lockerRequest(osis,user)
+     return redirect("/home")
+
+@app.route("/giveup", methods=['POST'])
+@login_required
+def giveUp():
+     recip=request.form.get("giveup")
+     print(recip)
+     db_manager.giveUp(session['osis'],recip)
+     return redirect("/home")
 
 if __name__ == "__main__":
     db_builder.build_db()
