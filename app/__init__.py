@@ -251,6 +251,14 @@ def lRequest():
      db_manager.lockerRequest(osis,user)
      return redirect("/home")
 
+@app.route("/lAccept", methods=['POST'])
+@login_required
+def lAccept():
+     me = session['osis']
+     you=request.form.get("laccept")
+     db_manager.acceptLocker(me,you)
+     return redirect("/home")
+
 @app.route("/giveup", methods=['POST'])
 @login_required
 def giveUp():

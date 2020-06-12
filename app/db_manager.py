@@ -252,3 +252,24 @@ def giveUp(sender,recipient):
         q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=" + recipient
     print(q)
     exec(q)
+
+def acceptLocker(me,you):
+    owner = getUserInfo(me)
+    ownerL = getLockerInfo(owner[2])
+    recipient = getUserInfo(you)
+    recipientL = getLockerInfo(recipient[2])
+    q = "UPDATE user_tbl SET locker=" + str(recipient[2]) + " WHERE osis=" + str(me)
+    print(q)
+    exec(q)
+    q = "UPDATE user_tbl SET locker=" + str(owner[2]) + " WHERE osis=" + str(you)
+    print(q)
+    exec(q)
+    q = "UPDATE locker_tbl SET status='OWNED',locker=" + str(recipientL[0]) + ",combo=" + str(recipientL[2]) + ",floor=" + str(recipientL[3]) + ",level='" + str(recipientL[4]) + "',location='" + str(recipientL[5]) + "' WHERE owner=" + str(me)
+    print(q)
+    exec(q)
+    q = "UPDATE locker_tbl SET status='OWNED',locker=" + str(ownerL[0]) + ",combo=" + str(ownerL[2]) + ",floor=" + str(ownerL[3]) + ",level='" + str(ownerL[4]) + "',location='" + str(ownerL[5]) + "' WHERE owner=" + str(you)
+    print(q)
+    exec(q)
+    q = "UPDATE transaction_tbl SET status=0 WHERE recipient=" + str(me) + " AND sender=" + str(you) + " AND request='L'"
+    print(q)
+    exec(q)
