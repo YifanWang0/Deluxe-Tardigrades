@@ -24,10 +24,10 @@ def addUser(osis, password, grade, buddy, linfo, locker, gender):
     inputs = (osis,)
     data = execmany(q, inputs).fetchone()
     if (data is None):
-        q = "SELECT * FROM locker_tbl WHERE locker=?"
-        inputs = (locker,)
-        data = execmany(q, inputs).fetchone()
-        if(data is None):
+        if (locker != ""):
+            q = "SELECT * FROM locker_tbl WHERE locker='" + locker + "' AND floor='" + linfo[1] + "'"
+            data = exec(q).fetchone()
+        if(data is None or locker==""):
             q = "INSERT INTO user_tbl VALUES(?, ?, ?, ?, ?, ?, ?)"
             inputs = (osis, password, locker, grade, buddy, "", gender)
             execmany(q, inputs)
@@ -259,17 +259,14 @@ def acceptLocker(me,you):
     recipient = getUserInfo(you)
     recipientL = getLockerInfo(recipient[2])
     q = "UPDATE user_tbl SET locker=" + str(recipient[2]) + " WHERE osis=" + str(me)
-    print(q)
     exec(q)
     q = "UPDATE user_tbl SET locker=" + str(owner[2]) + " WHERE osis=" + str(you)
-    print(q)
     exec(q)
     q = "UPDATE locker_tbl SET status='OWNED',locker=" + str(recipientL[0]) + ",combo=" + str(recipientL[2]) + ",floor=" + str(recipientL[3]) + ",level='" + str(recipientL[4]) + "',location='" + str(recipientL[5]) + "' WHERE owner=" + str(me)
-    print(q)
     exec(q)
     q = "UPDATE locker_tbl SET status='OWNED',locker=" + str(ownerL[0]) + ",combo=" + str(ownerL[2]) + ",floor=" + str(ownerL[3]) + ",level='" + str(ownerL[4]) + "',location='" + str(ownerL[5]) + "' WHERE owner=" + str(you)
-    print(q)
     exec(q)
     q = "UPDATE transaction_tbl SET status=0 WHERE recipient=" + str(me) + " AND sender=" + str(you) + " AND request='L'"
-    print(q)
     exec(q)
+    giveUp(me,'')
+    giveUp(you,'')

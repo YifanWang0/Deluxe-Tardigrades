@@ -123,3 +123,6 @@ elizabethD -- 2020-06-11 23:15
 
 elizabethD -- 2020-06-12 00:48
     - accept locker trade added, still needs fixing
+
+elizabethD -- 2020-06-12 16:32
+    - fixed locker repeats and no locker upon sign up
