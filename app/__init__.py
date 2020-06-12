@@ -94,7 +94,7 @@ def newUser():
 def profile():
     userInfo = db_manager.getUserInfo(session['osis'])
     buddy = ["N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A"]
-    if len(userInfo[4]) != 0:
+    if userInfo[4] != "":
         buddy = db_manager.getUserInfo(userInfo[4])
     locker = db_manager.getLockerInfo(userInfo[2])
     transactions=db_manager.getTransactionInfo(session['osis'])
@@ -105,6 +105,38 @@ def profile():
 def updateBuddy():
      osis=request.form.get("request")
      db_manager.buddyRequest(osis,session['osis'])
+     return redirect("/home")
+
+@app.route("/giveup", methods=['POST'])
+@login_required
+def giveUp():
+     osis1 = session["osis"]
+     osis2 = request.form.get("person")
+     type = request.form.get("type")
+     if(request.form.get("return")=="home"):
+         db_manager.deleteTrans(osis1,osis2,type)
+     else:
+         db_manager.deleteTrans(osis2,osis1,type)
+     return redirect("/"+request.form.get("return"))
+
+@app.route("/confirm", methods=['POST'])
+@login_required
+def confirm():
+     osis1 = request.form.get("person")
+     osis2 = session["osis"]
+     if (type == "B"):
+         db_manager.confirmB(osis1,osis2)
+     if (type == "L"):
+         db_manager.confirmL(osis1,osis2)
+     if (type == "D"):
+         db_manager.dissolveBuddy(osis2, osis1)
+     return redirect("/home")
+
+@app.route("/dissolve", methods=['POST'])
+@login_required
+def breakBuddy():
+     osis=request.form.get("break")
+     db_manager.breakB(session['osis'], osis)
      return redirect("/home")
 
 @app.route("/editprof")
@@ -195,11 +227,6 @@ def bsearch():
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
     return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
-if __name__ == "__main__":
-    db_builder.build_db()
-    app.debug = True
-    app.run()
-
 
 @app.route("/locker")
 @login_required
@@ -230,6 +257,29 @@ def lFilter():
     type = request.form.get("typeSearch")
     results = db_manager.filterLocker(floor,level,type)
     return render_template("locker.html", user=user,results=results)
+
+@app.route("/notifs")
+@login_required
+def notifs():
+    looper=[]
+    buddy=[]
+    locker=[]
+    dissolve = []
+    all = db_manager.getAllNotifs(session["osis"])
+    for value in range(len(all)):
+        looper.append(value)
+    for value in all:
+        if(value[4] == "B"):
+            temp=db_manager.getUserInfo(value[2])
+            temp[5]=temp[5].split(",")
+            buddy.append(temp)
+        if(value[4] == "L"):
+            locker.append(db_manager.getLockerInfo(value[0]))
+        else:
+            dissolve.append(db_manager.getDissolveInfo(session['osis']))
+    open = db_manager.getMess(session["osis"],1)
+    close = db_manager.getMess(session["osis"],0)
+    return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve)
 
 if __name__ == "__main__":
     db_builder.build_db()

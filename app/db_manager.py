@@ -60,13 +60,9 @@ def getTransactionInfo(osis):
     inputs = (osis,)
     data = execmany(q, inputs).fetchall()
     info = []
-    print(q)
     if(data is None):
         return info
     for value in data:
-        print(value)
-        print(len(value))
-        print(value[4])
         if len(value)>0 and value[3] == 1:
             info.append([value[0],value[1],value[2],value[3],value[4]])
     return info
@@ -170,6 +166,7 @@ def filterLocker(floor,level,location):
 
 def filter(query,osis):
     q="SELECT osis FROM user_tbl WHERE osis != " + osis
+    q+= " AND BUDDY = '' "
     info=[]
     if query[0] != "":
         q+="AND osis = '" + query[0]+"'"
@@ -211,12 +208,10 @@ def getTransactionTo(osis):
     inputs = (osis,)
     data = execmany(q,inputs).fetchall()
     info=[]
-    print(q)
     if data is None:
         return info
     for value in data:
         info.append(value[0])
-    print(info)
     return info
 
 def buddyRequest(to, sender):
@@ -226,3 +221,95 @@ def buddyRequest(to, sender):
     q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
     inputs=(locker[2],to, sender, 1, "B", locker[3])
     execmany(q,inputs)
+
+def getMess(osis,num):
+    q="SELECT * FROM transaction_tbl WHERE recipient=? AND status = ?"
+    inputs = (osis,num)
+    data = execmany(q,inputs).fetchall()
+    info=[]
+    temp=[]
+    if data is None:
+        return info
+    for value in data:
+        for cell in value:
+            temp.append(cell)
+        info.append(temp)
+    return info
+
+def getAllNotifs(osis):
+    q="SELECT * FROM transaction_tbl WHERE recipient=?"
+    inputs = (osis,)
+    data = execmany(q,inputs).fetchall()
+    info=[]
+    temp=[]
+    if data is None:
+        return info
+    for value in data:
+        for cell in value:
+            temp.append(cell)
+        info.append(temp)
+    return info
+
+def deleteTrans(user, recipient, type):
+    q = "DELETE FROM transaction_tbl WHERE sender=? AND recipient=? AND request=?"
+    inputs=(user,recipient,type)
+    data=execmany(q,inputs)
+
+def confirmL(user, recipient):
+    q="UPDATE transaction_tbl SET status = 0 WHERE request = ? AND (sender=? OR recipient = ? OR sender = ? OR recipient = ?)"
+    inputs=("L",user,user,recipient,recipient)
+    execmany(q,inputs)
+    q="SELECT locker FROM user_tbl WHERE osis = ?"
+    inputs = (user,)
+    l1=execmany(q,inputs)
+    inputs=(recipient,)
+    l2=execmany(q,inputs)
+    q="UPDATE user_tbl SET locker = ? WHERE osis = ?"
+    inputs=(l2,user)
+    execmany(q,inputs)
+    inputs=(l1,recipient)
+    execmany(q,inputs)
+    q="UPDATE locker SET owner = ? WHERE locker = ?"
+    inputs=(user,l2)
+    execmany(q,inputs)
+    inputs=(recipient,l1)
+    execmany(q,inputs)
+    return True
+
+def confirmB(user, recipient):
+    q="UPDATE transaction_tbl SET status = 0 WHERE request = ? AND (sender=? OR recipient = ? OR sender = ? OR recipient = ?)"
+    inputs=("B",user,user,recipient,recipient)
+    execmany(q,inputs)
+    q="UPDATE user_tbl SET buddy = ? WHERE osis = ?"
+    inputs=(user, recipient)
+    execmany(q,inputs)
+    q="UPDATE user_tbl SET buddy = ? WHERE osis = ?"
+    inputs=(recipient, user)
+    execmany(q,inputs)
+    return True
+
+def dissolveBuddy(user, sender):
+    q = "UPDATE transaction_tbl SET staus = ? WHERE (sender = ? OR recipient = ?) AND request = ?"
+    inputs=(0,user,user,"D")
+    execmany(q,inputs)
+    q = "UPDATE user_tbl SET buddy = ? WHERE osis = ?"
+    inputs=("",user)
+    execmany(q,inputs)
+    inputs=("",sender)
+    execmany(q,inputs)
+    return True
+
+def breakB(user, recipient):
+    q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
+    inputs=("" , recipient, user, 1, "D", "")
+    execmany(q,inputs)
+    return True
+
+def getDissolveInfo(user):
+    q = "SELECT sender FROM transaction_tbl WHERE recipient=?"
+    inputs=(user,)
+    data=execmany(q,inputs).fetchall()
+    info=[]
+    for value in data:
+        info.append(value[0])
+    return info
