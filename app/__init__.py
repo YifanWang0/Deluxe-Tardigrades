@@ -201,7 +201,9 @@ def bsearch():
 def locker():
     user = session['osis']
     all = db_manager.tradeableLockers()
-    return render_template("locker.html",user=user,all=all,results=[],heading="Locker Search")
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
+    return render_template("locker.html",user=user,all=all,results=[],to=to,sender=sender,heading="Locker Search")
 
 @app.route("/lSearch", methods=['POST'])
 @login_required
@@ -211,10 +213,12 @@ def lSearch():
     query = request.form.get("query")
     results = db_manager.searchLocker(searchBy, query)
     #print(results)
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
     if (not results and results != {}):
         flash("Incorrect Query Format","danger")
         return redirect('/locker')
-    return render_template("locker.html", user=user,results=results)
+    return render_template("locker.html", to=to,sender=sender,user=user,results=results)
 
 @app.route("/lFilter", methods=['POST'])
 @login_required
@@ -223,8 +227,10 @@ def lFilter():
     floor = request.form.get("floorSearch")
     level = request.form.get("levelSearch")
     type = request.form.get("typeSearch")
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
     results = db_manager.filterLocker(floor,level,type)
-    return render_template("locker.html", user=user,results=results)
+    return render_template("locker.html", to=to,sender=sender,user=user,results=results)
 
 @app.route("/market", methods=['POST'])
 @login_required

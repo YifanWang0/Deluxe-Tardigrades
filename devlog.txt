@@ -116,3 +116,7 @@ elizabethD -- 2020-06-11 22:06
     - transaction card displays more specific info
     - added request a locker functions
     - added give up function
+
+elizabethD -- 2020-06-11 23:15
+    - locker request buttons updated to show status of trade
+    - locker search by number fixed

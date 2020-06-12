@@ -132,7 +132,7 @@ def getTransLock(data):
 
 #returns a dict of transaction_tbl tuples and locker_tbl lists of all available lockers
 def tradeableLockers():
-    q = "SELECT * FROM transaction_tbl WHERE status=1 AND request='L'"
+    q = "SELECT * FROM transaction_tbl WHERE status=1 AND request='L' AND recipient=''"
     data = exec(q).fetchall() #-> [(tuple,1,2,3),(tuple,1,2,3)]
     return getTransLock(data)
 
@@ -141,12 +141,12 @@ def searchLocker(searchBy, query):
     if (searchBy == "Locker Number"):
         if (len(query) != 5):
             return False
-        head,space,tail = query.partition(" ")
-        q = "SELECT * FROM transaction_tbl WHERE locker=" + tail + " AND floor=" + head
+        head,space,tail = query.partition("-")
+        q = "SELECT * FROM transaction_tbl WHERE recipient='' AND locker=" + tail + " AND floor=" + head
     else:
         if (len(query) != 9):
             return False
-        q = "SELECT * FROM transaction_tbl WHERE sender=" + query
+        q = "SELECT * FROM transaction_tbl WHERE recipient='' AND sender=" + query
     data = exec(q).fetchall()
     return getTransLock(data)
 
@@ -200,7 +200,8 @@ def getTransactionFrom(osis):
         return info
     for value in data:
         info.append(value[0])
-    return info
+    filtered = [x for x in info if x != '']
+    return filtered
 
 def getTransactionTo(osis):
     q="SELECT sender FROM transaction_tbl WHERE recipient=?"
