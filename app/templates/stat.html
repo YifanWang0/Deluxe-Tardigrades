@@ -9,33 +9,35 @@
 {% endblock %}
 
 {% block body %}
+<center>
 <form>
-  <h4>Please select the data you want to be displayed:</h4>
-  <br>
   <div class="form-row">
-    <div class="form-group col-md-6">
-    <label for="grade" class="font-weight-bold">Y Axis</label>
-    <select id="grade" class="form-control" name="grade">
-      <option>Lockers Available for Trade</option>
-      <option>Lockers Registered</option>
+    <div class="form-group col-md-4"></div>
+    <div class="form-group col-md-4">
+    <label class="font-weight-bold">Which data you want to be displayed:</label>
+    <select id="graph" class="form-control" name="graph">
+      <option selected disabled>---------Please Select---------</option>
+      <option value="lockers-trade">Lockers Available for Trade</option>
+      <option value="users-buddy">Users available for Buddy</option>
+      <option value="lockers-registered">Lockers Registered</option>
+      <option value="popularity">Locker Popularity</option>
     </select>
-    </div>
-    <div class="form group col-md-6">
-      <label for="gender" class="font-weight-bold">X axis</label>
-      <select id="Gender" class="form-control" name="gender">
-        <option>Floor Number</option>
-        <option>Location</option>
-        <option>Grade</option>
-      </select>
     </div>
   </div>
 </form>
 
+<button type="button" class="btn btn-outline-dark" id="grade" style="display:none;">by grade</button>
+<button type="button" class="btn btn-outline-dark" id="floor" style="display:none;">by floor</button>
+<button type="button" class="btn btn-outline-dark" id="location" style="display:none;">by location</button>
+
+</center>
+
+<center>
 <svg width="600" height="500"></svg>
+</center>
 
 <script type="text/javascript"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-<script src="http://d3js.org/d3.v5.min.js" charset="utf-8"></script>
 <script src="{{ url_for('static', filename='js/index.js')}}"></script>
 {% endblock %}
