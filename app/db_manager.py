@@ -186,7 +186,7 @@ def tradeableLockers():
         inputs = (i[0],)
         data = execmany(q, inputs).fetchone()
         info=[]
-        print(data)
+        # print(data)
         for value in data:
             info.append(value)
         dataDict[i] = info
@@ -233,15 +233,15 @@ def filterLocker(floor,level,location):
     return dictRes
 
 def filter(query,osis):
-    info1=filter1(query, osis)
-    info2=filter2(query, osis)
+    info1=filterUser(query, osis)
+    info2=filterLocker(query, osis)
     info=[]
     for value in info1:
         if value in info2:
             info.append(value)
     return info
 
-def filter1(query,osis):
+def filterUser(query,osis):
     q="SELECT osis FROM user_tbl WHERE osis != " + osis
     q+= " AND BUDDY = ''"
     info=[]
@@ -263,7 +263,7 @@ def filter1(query,osis):
         info.append(str(value[0]))
     return info
 
-def filter2(query,osis):
+def filterLocker(query,osis):
     info=[]
     q="SELECT owner FROM locker_tbl WHERE owner != " + osis
     if query[6] != "" and  query[6] != "None":
@@ -344,28 +344,7 @@ def deleteTrans(user, recipient, type):
         exec(q)
     q = "DELETE FROM transaction_tbl WHERE sender=? AND recipient=? AND request=?"
     inputs=(user,recipient,type)
-    print(user,recipient,type)
-    execmany(q,inputs)
-    return True
-
-def confirmL(user, recipient):
-    q="UPDATE transaction_tbl SET status = 0 WHERE request = ? AND (sender=? OR recipient = ? OR sender = ? OR recipient = ?)"
-    inputs=("L",user,user,recipient,recipient)
-    execmany(q,inputs)
-    q="SELECT locker FROM user_tbl WHERE osis = ?"
-    inputs = (user,)
-    l1=execmany(q,inputs)
-    inputs=(recipient,)
-    l2=execmany(q,inputs)
-    q="UPDATE user_tbl SET locker = ? WHERE osis = ?"
-    inputs=(l2,user)
-    execmany(q,inputs)
-    inputs=(l1,recipient)
-    execmany(q,inputs)
-    q="UPDATE locker SET owner = ? WHERE locker = ?"
-    inputs=(user,l2)
-    execmany(q,inputs)
-    inputs=(recipient,l1)
+    # print(user,recipient,type)
     execmany(q,inputs)
     return True
 
@@ -433,16 +412,6 @@ def lockerRequest(to,sender):
     q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
     inputs=(owner[2],to, sender, 1, "L", locker[3])
     execmany(q,inputs)
-
-def giveUp(sender,recipient):
-    if (recipient == ""):
-        q = "UPDATE locker_tbl SET status='OWNED' WHERE owner=" + sender
-        exec(q)
-        q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=''"
-    else:
-        q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=" + recipient
-    print(q)
-    exec(q)
 
 def acceptLocker(me,you):
     owner = getUserInfo(me)

@@ -127,7 +127,7 @@ def giveUp():
 @login_required
 def confirm():
      osis1 = request.form.get("person")
-     print(osis1)
+     # print(osis1)
      osis2 = session["osis"]
      type = request.form.get("type")
      if (type == "B"):
@@ -314,12 +314,12 @@ def notifs():
         looper.append(value)
     for value in all:
         if(value[4] == "B"):
-            temp=db_manager.getUserInfo(value[2],session['osis'])
+            temp=db_manager.getUserInfo(value[2])
             temp[5]=temp[5].split(",")
             buddy.append(temp)
         if(value[4] == "L"):
             them = db_manager.getUserInfo(value[2])
-            print(them)
+            # print(them)
             locker.append(db_manager.getLockerInfo(them[2],them[0]))
         else:
             dissolve.append(db_manager.getDissolveInfo(session['osis']))
