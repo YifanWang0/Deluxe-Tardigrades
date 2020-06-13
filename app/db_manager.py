@@ -169,11 +169,10 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
     return bool
 
 #creates dict of transaction/locker data given list of tuples
-def getTransLock(data,user):
+def getTransLock(data,osis):
     dataDict = {}
     for i in data:
-        # print(i)
-        lock = getLockerInfo(i[0],user)
+        lock = getLockerInfo(i[0],osis)
         dataDict[i] = lock
     return dataDict
 
