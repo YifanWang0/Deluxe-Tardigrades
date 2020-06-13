@@ -169,7 +169,7 @@ def updateprof():
         logout()
         return render_template("login.html")
     else:
-        #error somewhere in the form, make more specific later
+        flash("Error",'danger')
         print("error")
         return render_template("editprof.html",heading="Edit Profile",user=oldosis)
 

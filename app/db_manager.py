@@ -88,14 +88,53 @@ def editUserTbl(osis,fxn,new):
     data = execmany(q,inputs)
     return True
 
+def editTransTbl(osis,fxn,new):
+    if fxn == "locker":
+        q="UPDATE transaction_tbl SET locker = ? WHERE recipient = ?"
+        inputs = (new,osis)
+        execmany(q,inputs)
+    else:
+        q = "UPDATE transaction_tbl SET sender = ? WHERE sender = ?"
+        inputs = (new, osis)
+        print(new, osis)
+        execmany(q,inputs)
+        q = "UPDATE transaction_tbl SET recipient = ? WHERE recipient = ?"
+        inputs = (new, osis)
+        execmany(q,inputs)
+    return True
+
 def editLockerTbl(locker,fxn,new):
+    if fxn == "locker" or fxn == "floor":
+        q="SELECT locker, floor FROM locker_tbl WHERE locker = ?"
+        inputs=(locker,)
+        old = execmany(q,inputs).fetchone()
+        if fxn == "locker":
+            q = "SELECT locker, floor FROM locker_tbl WHERE locker = ?"
+            inputs=(new,)
+            data = execmany(q,inputs).fetchall()
+        else:
+            q = "SELECT locker, floor FROM locker_tbl WHERE floor = ?"
+            inputs=(new,)
+            data = execmany(q,inputs).fetchall()
+        for value in data:
+            if value[0] == old[0] and value[1] == old[1]:
+                return False
     new = "\"" + new + "\""
     q = "UPDATE locker_tbl SET " + fxn + "=" + new + " WHERE locker=?"
     inputs = (locker,)
     data = execmany(q,inputs)
     return True
 
+def findOsis(osis):
+    q = "SELECT * FROM user_tbl WHERE osis = ?"
+    inputs=(osis,)
+    data=execmany(q,inputs).fetchall()
+    if len(data) != 0:
+        return True
+    return False
+
 def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo, floor, level, type):
+    bool = True
     if(userValid(oldosis,oldpassword)):
         if (password != ""): editUserTbl(oldosis,"password",password)
         if (grade != ""): editUserTbl(oldosis,"grade", grade)
@@ -104,19 +143,25 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
         inputs = (oldosis,)
         oldlocker = execmany(q,inputs).fetchone()[0]
         if (combo != ""): editLockerTbl(oldlocker,"combo", combo)
-        if (floor != ""): editLockerTbl(oldlocker,"floor", floor)
+        if (floor != ""): bool = bool and editLockerTbl(oldlocker,"floor", floor)
         if (level != ""): editLockerTbl(oldlocker,"level", level)
         if (type != ""): editLockerTbl(oldlocker,"location", type)
         if (locker != ""):
-            editLockerTbl(oldlocker, "locker", locker)
-            editUserTbl(oldosis, "locker", locker)
+            if(editLockerTbl(oldlocker, "locker", locker)):
+                editUserTbl(oldosis, "locker", locker)
+                editTransTbl(oldosis, "locker", locker)
+            else:
+                bool = False
         if (osis != ""):
-            q = "UPDATE locker_tbl SET owner=? WHERE owner=?"
-            inputs = (osis,oldosis)
-            data = execmany(q, inputs)
-            editUserTbl(oldosis,"osis",osis)
-        return True
-    return False
+            if not (findOsis(osis)):
+                editTransTbl(oldosis,"notifs",osis)
+                q = "UPDATE locker_tbl SET owner=? WHERE owner=?"
+                inputs = (osis,oldosis)
+                data = execmany(q, inputs)
+                editUserTbl(oldosis,"osis",osis)
+            else:
+                bool = False
+    return bool
 
 #creates dict of transaction/locker data given list of tuples
 def getTransLock(data):
