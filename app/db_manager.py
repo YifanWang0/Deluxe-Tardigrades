@@ -97,3 +97,11 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
             editUserTbl(oldosis,"osis",osis)
         return True
     return False
+
+def getColumnInfo(column, table):
+    q = "SELECT " + column + " FROM " + table + "_tbl"
+    rawData = exec(q).fetchall()
+    info = []
+    for entry in rawData:
+        info.append(entry[0])
+    return info
