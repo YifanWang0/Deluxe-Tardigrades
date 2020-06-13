@@ -126,3 +126,6 @@ elizabethD -- 2020-06-12 00:48
 
 elizabethD -- 2020-06-12 16:32
     - fixed locker repeats and no locker upon sign up
+
+elizabethD -- 2020-06-13 15:08
+    - completed merge with buddy and notifs branches
