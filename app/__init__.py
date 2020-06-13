@@ -98,7 +98,7 @@ def profile():
     buddy = ["N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A"]
     if userInfo[4] != "":
         buddy = db_manager.getUserInfo(userInfo[4])
-    locker = db_manager.getLockerInfo(userInfo[2])
+    locker = db_manager.getLockerInfo(userInfo[2], session['osis'])
     transactions=db_manager.getTransactionInfo(session['osis'])
     changed=db_manager.ifDissolve(session["osis"])
     return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'], changed=changed)
@@ -244,7 +244,7 @@ def bsearch():
 @login_required
 def locker():
     user = session['osis']
-    all = db_manager.tradeableLockers()
+    all = db_manager.tradeableLockers(session['osis'])
     return render_template("locker.html",user=user,all=all,results=[],heading="Locker Search")
 
 @app.route("/lSearch", methods=['POST'])

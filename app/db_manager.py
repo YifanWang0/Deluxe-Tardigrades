@@ -46,9 +46,9 @@ def getUserInfo(osis):
     info = [data[0],data[1],data[2],data[3],data[4],data[5],data[6]]
     return info
 
-def getLockerInfo(locker):
-    q = "SELECT * from locker_tbl WHERE locker=?"
-    inputs = (locker,)
+def getLockerInfo(locker,osis):
+    q = "SELECT * from locker_tbl WHERE locker=? AND owner = ?"
+    inputs = (locker,osis)
     data = execmany(q, inputs).fetchone()
     info=[]
     for value in data:
@@ -178,10 +178,10 @@ def getTransLock(data):
     return dataDict
 
 #returns a dict of transaction_tbl tuples and locker_tbl lists of all available lockers
-def tradeableLockers():
+def tradeableLockers(user):
     q = "SELECT * FROM transaction_tbl WHERE status=1 AND request='L'"
     data = exec(q).fetchall() #-> [(tuple,1,2,3),(tuple,1,2,3)]
-    return getTransLock(data)
+    return getTransLock(data,user)
 
 #returns a dict of transaction_tbl tuple and locker_tbl list of searched locker
 def searchLocker(searchBy, query):
