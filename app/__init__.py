@@ -227,7 +227,7 @@ def bsearch():
     for value in range(len(results)):
         info = db_manager.getUserInfo(results[value])
         buddy.append(info)
-        temp=db_manager.getLockerInfo(info[2])
+        temp=db_manager.getLockerInfo(info[2],session['osis'])
         locker.append(temp)
         loop.append(count)
         temp=["", ""]
@@ -282,7 +282,7 @@ def notifs():
         looper.append(value)
     for value in all:
         if(value[4] == "B"):
-            temp=db_manager.getUserInfo(value[2])
+            temp=db_manager.getUserInfo(value[2],session['osis'])
             temp[5]=temp[5].split(",")
             buddy.append(temp)
         if(value[4] == "L"):

@@ -51,8 +51,9 @@ def getLockerInfo(locker,osis):
     inputs = (locker,osis)
     data = execmany(q, inputs).fetchone()
     info=[]
-    for value in data:
-        info.append(value)
+    if data is not None:
+        for value in data:
+            info.append(value)
     return info
 
 def getTransactionInfo(osis):
@@ -170,10 +171,10 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
     return bool
 
 #creates dict of transaction/locker data given list of tuples
-def getTransLock(data):
+def getTransLock(data,osis):
     dataDict = {}
     for i in data:
-        lock = getLockerInfo(i[0])
+        lock = getLockerInfo(i[0],osis)
         dataDict[i] = lock
     return dataDict
 
@@ -389,6 +390,6 @@ def ifDissolve(user):
     q = "SELECT * FROM transaction_tbl WHERE (recipient=? OR sender=?) AND status = ? AND request = ?"
     inputs=(user,user,1,"D")
     data=execmany(q,inputs).fetchall()
-    if data is not None:
+    if len(data)!=0:
         return True
     return False
