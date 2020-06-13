@@ -6,7 +6,7 @@ var graphSelection = document.getElementById("graph");
 
 var displayButtons = function(){
   var value = graphSelection.value;
-  if (value == "lockers-trade" || value == "popularity"){
+  if (value == "lockers-trade" || value == "popularity" || value == "lockers-registered"){
     grade_btn.style.display = "none";
     floor_btn.style.display = "inline";
     location_btn.style.display = "inline";
@@ -23,11 +23,18 @@ var displayButtons = function(){
 
 graphSelection.addEventListener("change", displayButtons);
 
-//trying to get a graph to work
+//creating pie chart for user registration data
+grade_btn.addEventListener("click", function(){
+  if (graphSelection.value == "users-registered"){
+    userRegistration();
+  }
+});
+
+var userRegistration = function() {
 // set the dimensions and margins of the graph
-var width = 450
-    height = 450
-    margin = 40
+var width = 600
+    height = 600
+    margin = 100
 
 // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
 var radius = Math.min(width, height) / 2 - margin
@@ -40,8 +47,23 @@ var svg = d3.select("#svg")
   .append("g")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-// Create dummy data
-var data = {a: 9, b: 20, c:30, d:8, e:12, f:3, g:7, h:14}
+//create data
+var freshman = 0;
+var sophomore= 0;
+var junior = 0;
+var senior = 0;
+for (var i=0; i < userRegistration_grade.length; i++){
+  if (userRegistration_grade[i] == 9){
+    freshman += 1;
+  } else if (userRegistration_grade[i] == 10){
+    sophomore += 1;
+  } else if (userRegistration_grade[i] == 11){
+    junior += 1;
+  } else {
+    senior += 1;
+  }
+}
+data = {Freshman:freshman, Sophomore:sophomore, Junior:junior, Senior:senior}
 
 // set the color scale
 var color = d3.scaleOrdinal()
@@ -100,7 +122,7 @@ svg
   .data(data_ready)
   .enter()
   .append('text')
-    .text( function(d) { console.log(d.data.key) ; return d.data.key } )
+    .text( function(d) { return d.data.key } )
     .attr('transform', function(d) {
         var pos = outerArc.centroid(d);
         var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
@@ -111,3 +133,4 @@ svg
         var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
         return (midangle < Math.PI ? 'start' : 'end')
     })
+}

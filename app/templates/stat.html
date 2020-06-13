@@ -1,29 +1,22 @@
 {% extends "base.html" %}
 
-{% block style %}
-  <style>
-        .bar {
-            fill: steelblue;
-        }
-  </style>
-{% endblock %}
-
 {% block body %}
 <center>
 <form>
-  <div class="form-row">
-    <div class="form-group col-md-4"></div>
-    <div class="form-group col-md-4">
-    <label class="font-weight-bold">Which data you want to be displayed:</label>
-    <select id="graph" class="form-control" name="graph">
-      <option selected disabled>Please Select</option>
-      <option value="lockers-trade">Lockers Available for Trade</option>
-      <option value="users-buddy">Users Available for Buddy</option>
-      <option value="users-registered">User Registation</option>
-      <option value="popularity">Locker Popularity</option>
-    </select>
-    </div>
+<div class="form-row">
+  <div class="form-group col-md-4"></div>
+  <div class="form-group col-md-4">
+  <label class="font-weight-bold">Which data you want to be displayed:</label>
+  <select id="graph" class="form-control" name="graph">
+    <option selected disabled>Please Select</option>
+    <option value="lockers-trade">Lockers Available for Trade</option>
+    <option value="users-buddy">Users Available for Buddy</option>
+    <option value="users-registered">User Registation</option>
+    <option value="lockers-registered">Locker Registration</option>
+    <option value="popularity">Locker Popularity</option>
+  </select>
   </div>
+</div>
 </form>
 
 <button type="button" class="btn btn-outline-dark" id="grade" style="display:none;">by grade</button>
@@ -36,8 +29,13 @@
 <div id="svg"></div>
 </center>
 
+<script>
+  var userRegistration_grade = {{ userRegistration_grade }}
+</script>
 <script type="text/javascript"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="{{ url_for('static', filename='js/index.js')}}"></script>
+
+
 {% endblock %}
