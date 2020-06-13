@@ -36,22 +36,34 @@
           <h5 class="card-title">Buddy Info:</h5>
           <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[6]}}</p>
         </div>
+        {% if buddy[0] != "N/A" %}
+          <form action="/dissolve" method="post">
+            <button type="submit" class="btn btn-primary btn-block active" name="break" value={{buddy[0]}}>Change Buddy</button>
+          </form>
+         {% endif %}
+         {% if buddy[0] == "N/A" %}
+         <form action="/survey">
+           <button type="submit" class="btn btn-primary btn-block active">Find a Buddy</button>
+         </form>
+        {% endif %}
+        </div>
       </div>
-    </div>
     {% for item in transactions%}
+    <form action="/giveup" method="post">
     <div class="row">
       <div class="card text-white text-center bg-warning my-3 col-md-12">
         <div class="card-header">Pending Transaction</div>
         <div class="card-body">
-          <h5 class="card-title">Transaction Request: {{item[5]}}</h5>
+          <h5 class="card-title"> Transaction Type:{% if item[4]=="B" %} Buddy Request {% endif %} {% if item[4]=="L" %} Locker Request {% endif %} {% if item[4]=="D" %} Change Buddy Request {% endif %}</h5>
           <p class="card-text">Request to: {{item[1]}} <br> </p>
+          <input type="text" name="person" value={{item[1]}} hidden>
+            <input type="text" name="type" value="B" hidden>
           <hr class="my-4">
-          <form action="#">
-            <button type="submit" class="text-white btn btn-warning btn-block active">Give Up</button>
-          </form>
+            <button type="submit" class="text-white btn btn-warning btn-block active" name="return" value="home">Give Up</button>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
     {% endfor %}
   </div>
 </div>

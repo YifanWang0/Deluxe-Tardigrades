@@ -124,7 +124,9 @@
           <p class="card-text">Locker Number: {{locker[item][0]}} &nbsp; &nbsp; Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}} &nbsp; &nbsp; Market Status: {{locker[item][6]}}</p>
           <hr>
           {% if buddy[item][0] in to %}
-          <form action="#">
+          <form action="/confirm" method="POST">
+            <input type="text" name="person" value={{buddy[item][0]}} hidden>
+            <input type="text" name="type" value="B" hidden>
             <button class="btn btn-success btn-block active" type="submit">Accept Request</button>
           </form>
           {% endif %}
