@@ -102,7 +102,7 @@ def editTransTbl(osis,fxn,new):
         execmany(q,inputs)
     return True
 
-def editLockerTbl(locker,fxn,new):
+def editLockerTbl(locker,fxn,new, osis):
     if fxn == "locker" or fxn == "floor":
         q="SELECT locker, floor FROM locker_tbl WHERE locker = ?"
         inputs=(locker,)
@@ -123,8 +123,11 @@ def editLockerTbl(locker,fxn,new):
     inputs = (locker,)
     data = execmany(q,inputs)
     if fxn == "floor":
-        q = "UPDATE transaction_tbl SET floor = ? WHERE locker=?"
-        inputs = (new, locker)
+        q= "SELECT floor FROM locker_tbl WHERE owner = ? AND locker = ?"
+        inputs = (osis, locker)
+        d= execmany(q,inputs).fetchone()
+        q = "UPDATE transaction_tbl SET floor = ? WHERE locker=? AND floor = ?"
+        inputs = (new, locker, d[0])
         data = execmany(q,inputs)
     return True
 
@@ -145,12 +148,12 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
         q = "SELECT locker FROM user_tbl WHERE osis=?"
         inputs = (oldosis,)
         oldlocker = execmany(q,inputs).fetchone()[0]
-        if (combo != ""): editLockerTbl(oldlocker,"combo", combo)
-        if (floor != ""): bool = bool and editLockerTbl(oldlocker,"floor", floor)
-        if (level != ""): editLockerTbl(oldlocker,"level", level)
-        if (type != ""): editLockerTbl(oldlocker,"location", type)
+        if (combo != ""): editLockerTbl(oldlocker,"combo", combo, oldosis)
+        if (floor != ""): bool = bool and editLockerTbl(oldlocker,"floor", floor, oldosis)
+        if (level != ""): editLockerTbl(oldlocker,"level", level, oldosis)
+        if (type != ""): editLockerTbl(oldlocker,"location", type, oldosis)
         if (locker != ""):
-            if(editLockerTbl(oldlocker, "locker", locker)):
+            if(editLockerTbl(oldlocker, "locker", locker, oldosis)):
                 editUserTbl(oldosis, "locker", locker)
                 editTransTbl(oldosis, "locker", locker)
             else:
