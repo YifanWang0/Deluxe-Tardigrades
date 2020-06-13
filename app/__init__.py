@@ -100,7 +100,8 @@ def profile():
         buddy = db_manager.getUserInfo(userInfo[4])
     locker = db_manager.getLockerInfo(userInfo[2])
     transactions=db_manager.getTransactionInfo(session['osis'])
-    return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'])
+    changed=db_manager.ifDissolve(session["osis"])
+    return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'], changed=changed)
 
 @app.route("/updated", methods=['POST'])
 @login_required
@@ -146,7 +147,7 @@ def breakBuddy():
 @app.route("/editprof")
 @login_required
 def editprof():
-    user = db_manager.getUserInfo(session['osis'])
+    user = session['osis']
     return render_template("editprof.html", user=user, heading="Edit Profile")
 
 @app.route("/updateprof", methods=['POST'])
@@ -175,6 +176,10 @@ def updateprof():
 @app.route("/survey")
 @login_required
 def survey():
+    info=db_manager.getUserInfo(session["osis"])
+    if(info[4]!=""):
+        flash("Sorry! You already have a Buddy!",'danger')
+        return redirect("/home")
     sports = ""
     books = ""
     misc = ""
@@ -194,7 +199,8 @@ def buddy():
     misc = request.form.get("misc")
     info = sports+","+books+","+misc
     db_manager.updateSurvey(session['osis'],info)
-    return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""])
+    user=session['osis']
+    return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""], user=user)
 
 @app.route("/bsearch", methods=['POST'])
 @login_required
@@ -212,6 +218,7 @@ def bsearch():
     query[7] = request.form.get("location")
     query[8] = request.form.get("level")
     results = db_manager.filter(query,session["osis"])
+    length=len(results)
     buddy=[]
     locker=[]
     loop=[]
@@ -230,7 +237,8 @@ def bsearch():
         count+=1
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
-    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
+    user=session['osis']
+    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey, length=length, user=user)
 
 @app.route("/locker")
 @login_required
@@ -283,7 +291,8 @@ def notifs():
             dissolve.append(db_manager.getDissolveInfo(session['osis']))
     open = db_manager.getMess(session["osis"],1)
     close = db_manager.getMess(session["osis"],0)
-    return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve)
+    user=session['osis']
+    return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
 
 
 if __name__ == "__main__":

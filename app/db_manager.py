@@ -211,8 +211,8 @@ def filter2(query,osis):
     return info
 
 def getTransactionFrom(osis):
-    q="SELECT recipient FROM transaction_tbl WHERE sender=?"
-    inputs = (osis,)
+    q="SELECT recipient FROM transaction_tbl WHERE sender=? AND status = ?"
+    inputs = (osis,1)
     data = execmany(q,inputs).fetchall()
     info=[]
     if data is None:
@@ -222,8 +222,8 @@ def getTransactionFrom(osis):
     return info
 
 def getTransactionTo(osis):
-    q="SELECT sender FROM transaction_tbl WHERE recipient=?"
-    inputs = (osis,)
+    q="SELECT sender FROM transaction_tbl WHERE recipient=? AND status = ?"
+    inputs = (osis,1)
     data = execmany(q,inputs).fetchall()
     info=[]
     if data is None:
@@ -333,3 +333,11 @@ def getDissolveInfo(user):
     for value in data:
         info.append(value[0])
     return info
+
+def ifDissolve(user):
+    q = "SELECT * FROM transaction_tbl WHERE (recipient=? OR sender=?) AND status = ? AND request = ?"
+    inputs=(user,user,1,"D")
+    data=execmany(q,inputs).fetchall()
+    if data is not None:
+        return True
+    return False
