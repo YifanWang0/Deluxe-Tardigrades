@@ -51,9 +51,9 @@ def getLockerInfo(locker,osis):
     inputs = (locker,osis)
     data = execmany(q, inputs).fetchone()
     info=[]
-    print(data)
-    for value in data:
-        info.append(value)
+    if data is not None:
+        for value in data:
+            info.append(value)
     return info
 
 def getTransactionInfo(osis):
@@ -169,11 +169,10 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
     return bool
 
 #creates dict of transaction/locker data given list of tuples
-def getTransLock(data,user):
+def getTransLock(data,osis):
     dataDict = {}
     for i in data:
-        # print(i)
-        lock = getLockerInfo(i[0],user)
+        lock = getLockerInfo(i[0],osis)
         dataDict[i] = lock
     return dataDict
 
@@ -200,12 +199,24 @@ def searchLocker(searchBy, query):
             return False
         head,space,tail = query.partition("-")
         q = "SELECT * FROM transaction_tbl WHERE recipient='' AND locker=" + tail + " AND floor=" + head
+        data = exec(q).fetchall()
+        dataDict = {}
+        for i in data:
+            q = "SELECT * from locker_tbl WHERE locker=? AND floor=?"
+            inputs = (tail,head)
+            data = execmany(q, inputs).fetchone()
+            info=[]
+            if data is not None:
+                for value in data:
+                    info.append(value)
+            dataDict[i] = info
+        return dataDict
     else:
         if (len(query) != 9):
             return False
         q = "SELECT * FROM transaction_tbl WHERE recipient='' AND sender=" + query
-    data = exec(q).fetchall()
-    return getTransLock(data)
+        data = exec(q).fetchall()
+        return getTransLock(data,query)
 
 def filterLocker(floor,level,location):
     q = "SELECT owner FROM locker_tbl WHERE status='TRADING'"
@@ -400,7 +411,7 @@ def ifDissolve(user):
     q = "SELECT * FROM transaction_tbl WHERE (recipient=? OR sender=?) AND status = ? AND request = ?"
     inputs=(user,user,1,"D")
     data=execmany(q,inputs).fetchall()
-    if data is not None:
+    if len(data)!=0:
         return True
     return False
 

@@ -147,9 +147,12 @@
                                 Market Status: OPEN </p>
             <hr class="my-3">
             {% if key[2] in to %}
+            <form action="/confirm" method="post">
             <div>
-              <button class="btn btn-success" type="submit">Accept Request</button>
+              <input type="text" name="type" value="L" hidden>
+              <button class="btn btn-success" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
             </div>
+            </form>
             {% endif %}
             {% if key[2] in sender %}
             <div>
