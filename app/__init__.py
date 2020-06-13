@@ -49,7 +49,7 @@ def authentication():
         flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
-        flash("Wrong Login Information!", 'danger')
+        # flash("Wrong Login Information!", 'danger')
         return redirect('/')
 
 @app.route("/logout")
@@ -127,12 +127,13 @@ def giveUp():
 @login_required
 def confirm():
      osis1 = request.form.get("person")
+     print(osis1)
      osis2 = session["osis"]
      type = request.form.get("type")
      if (type == "B"):
          db_manager.confirmB(osis1,osis2)
      if (type == "L"):
-         db_manager.confirmL(osis1,osis2)
+         db_manager.acceptLocker(osis2,osis1)
      if (type == "D"):
          db_manager.dissolveBuddy(osis2, osis1)
      return redirect("/home")
@@ -170,7 +171,6 @@ def updateprof():
         return render_template("login.html")
     else:
         flash("Error",'danger')
-        print("error")
         return render_template("editprof.html",heading="Edit Profile",user=oldosis)
 
 @app.route("/survey")
@@ -227,7 +227,7 @@ def bsearch():
     for value in range(len(results)):
         info = db_manager.getUserInfo(results[value])
         buddy.append(info)
-        temp=db_manager.getLockerInfo(info[2])
+        temp=db_manager.getLockerInfo(info[2], session['osis'])
         locker.append(temp)
         loop.append(count)
         temp=["", ""]
@@ -244,8 +244,10 @@ def bsearch():
 @login_required
 def locker():
     user = session['osis']
-    all = db_manager.tradeableLockers(session['osis'])
-    return render_template("locker.html",user=user,all=all,results=[],heading="Locker Search")
+    all = db_manager.tradeableLockers()
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
+    return render_template("locker.html",user=user,all=all,results=[],to=to,sender=sender,heading="Locker Search")
 
 @app.route("/lSearch", methods=['POST'])
 @login_required
@@ -254,11 +256,12 @@ def lSearch():
     searchBy = request.form.get("searchBy")
     query = request.form.get("query")
     results = db_manager.searchLocker(searchBy, query)
-    #print(results)
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
     if (not results and results != {}):
         flash("Incorrect Query Format","danger")
         return redirect('/locker')
-    return render_template("locker.html", user=user,results=results,heading="Locker Search")
+    return render_template("locker.html",heading="Locker Search",to=to,sender=sender,user=user,results=results)
 
 @app.route("/lFilter", methods=['POST'])
 @login_required
@@ -267,8 +270,37 @@ def lFilter():
     floor = request.form.get("floorSearch")
     level = request.form.get("levelSearch")
     type = request.form.get("typeSearch")
+    to = db_manager.getTransactionTo(session["osis"])
+    sender = db_manager.getTransactionFrom(session["osis"])
     results = db_manager.filterLocker(floor,level,type)
-    return render_template("locker.html", user=user,results=results,heading="Locker Search")
+    return render_template("locker.html",heading="Locker Search",to=to,sender=sender,user=user,results=results)
+
+@app.route("/market", methods=['POST'])
+@login_required
+def market():
+    user = session['osis']
+    locker = db_manager.getUserInfo(user)[2]
+    if (db_manager.getLockerInfo(locker,user)[6] == 'TRADING'):
+        flash("Locker already on market!", 'danger')
+        return redirect('/home')
+    db_manager.putOnMarket(locker,user)
+    return redirect("/home")
+
+@app.route("/lRequest", methods=['POST'])
+@login_required
+def lRequest():
+     user = session['osis']
+     osis=request.form.get("lrequest")
+     db_manager.lockerRequest(osis,user)
+     return redirect("/home")
+
+@app.route("/lAccept", methods=['POST'])
+@login_required
+def lAccept():
+     me = session['osis']
+     you=request.form.get("laccept")
+     db_manager.acceptLocker(me,you)
+     return redirect("/home")
 
 @app.route("/notifs")
 @login_required
@@ -286,14 +318,15 @@ def notifs():
             temp[5]=temp[5].split(",")
             buddy.append(temp)
         if(value[4] == "L"):
-            locker.append(db_manager.getLockerInfo(value[0]))
+            them = db_manager.getUserInfo(value[2])
+            print(them)
+            locker.append(db_manager.getLockerInfo(them[2],them[0]))
         else:
             dissolve.append(db_manager.getDissolveInfo(session['osis']))
     open = db_manager.getMess(session["osis"],1)
     close = db_manager.getMess(session["osis"],0)
     user=session['osis']
     return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
-
 
 if __name__ == "__main__":
     db_builder.build_db()

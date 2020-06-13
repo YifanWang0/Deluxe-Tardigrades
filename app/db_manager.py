@@ -24,10 +24,10 @@ def addUser(osis, password, grade, buddy, linfo, locker, gender):
     inputs = (osis,)
     data = execmany(q, inputs).fetchone()
     if (data is None):
-        q = "SELECT * FROM locker_tbl WHERE locker=?"
-        inputs = (locker,)
-        data = execmany(q, inputs).fetchone()
-        if(data is None):
+        if (locker != ""):
+            q = "SELECT * FROM locker_tbl WHERE locker='" + locker + "' AND floor='" + linfo[1] + "'"
+            data = exec(q).fetchone()
+        if(data is None or locker==""):
             q = "INSERT INTO user_tbl VALUES(?, ?, ?, ?, ?, ?, ?)"
             inputs = (osis, password, locker, grade, buddy, "", gender)
             execmany(q, inputs)
@@ -51,8 +51,9 @@ def getLockerInfo(locker,osis):
     inputs = (locker,osis)
     data = execmany(q, inputs).fetchone()
     info=[]
-    for value in data:
-        info.append(value)
+    if data is not None:
+        for value in data:
+            info.append(value)
     return info
 
 def getTransactionInfo(osis):
@@ -64,7 +65,7 @@ def getTransactionInfo(osis):
         return info
     for value in data:
         if len(value)>0 and value[3] == 1:
-            info.append([value[0],value[1],value[2],value[3],value[4]])
+            info.append([value[0],value[1],value[2],value[3],value[4],value[5]])
     return info
 
 def getSurveyInfo(osis):
@@ -121,14 +122,12 @@ def editLockerTbl(locker,fxn,new, osis):
     new = "\"" + new + "\""
     q = "UPDATE locker_tbl SET " + fxn + "=" + new + " WHERE locker=?"
     inputs = (locker,)
+    q= "SELECT floor FROM locker_tbl WHERE owner = ? AND locker = ?"
+    inputs = (osis, locker)
+    d= execmany(q,inputs).fetchone()
+    q = "UPDATE transaction_tbl SET floor = ? WHERE locker=? AND floor = ?"
+    inputs = (new, locker, d[0])
     data = execmany(q,inputs)
-    if fxn == "floor":
-        q= "SELECT floor FROM locker_tbl WHERE owner = ? AND locker = ?"
-        inputs = (osis, locker)
-        d= execmany(q,inputs).fetchone()
-        q = "UPDATE transaction_tbl SET floor = ? WHERE locker=? AND floor = ?"
-        inputs = (new, locker, d[0])
-        data = execmany(q,inputs)
     return True
 
 def findOsis(osis):
@@ -170,36 +169,55 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
     return bool
 
 #creates dict of transaction/locker data given list of tuples
-def getTransLock(data):
+def getTransLock(data,user):
     dataDict = {}
     for i in data:
-        lock = getLockerInfo(i[0])
+        # print(i)
+        lock = getLockerInfo(i[0],user)
         dataDict[i] = lock
     return dataDict
 
 #returns a dict of transaction_tbl tuples and locker_tbl lists of all available lockers
-def tradeableLockers(user):
-    q = "SELECT * FROM transaction_tbl WHERE status=1 AND request='L'"
+def tradeableLockers():
+    q = "SELECT * FROM transaction_tbl WHERE status=1 AND request='L' AND recipient=''"
     data = exec(q).fetchall() #-> [(tuple,1,2,3),(tuple,1,2,3)]
-    return getTransLock(data,user)
+    dataDict = {}
+    for i in data:
+        q = "SELECT * from locker_tbl WHERE locker=? AND status='TRADING'"
+        inputs = (i[0],)
+        data = execmany(q, inputs).fetchone()
+        info=[]
+        print(data)
+        for value in data:
+            info.append(value)
+        dataDict[i] = info
+    return dataDict
 
 #returns a dict of transaction_tbl tuple and locker_tbl list of searched locker
 def searchLocker(searchBy, query):
     if (searchBy == "Locker Number"):
         if (len(query) != 5):
             return False
-        head,space,tail = query.partition(" ")
-        q = "SELECT * FROM transaction_tbl WHERE locker=" + tail + " AND floor=" + head
+        head,space,tail = query.partition("-")
+        q = "SELECT * FROM transaction_tbl WHERE recipient='' AND locker=" + tail + " AND floor=" + head
+        data = exec(q).fetchall()
+        dataDict = {}
+        for i in data:
+            q = "SELECT * from locker_tbl WHERE locker=? AND floor=?"
+            inputs = (tail,head)
+            data = execmany(q, inputs).fetchone()
+            info=[]
+            if data is not None:
+                for value in data:
+                    info.append(value)
+            dataDict[i] = info
+        return dataDict
     else:
         if (len(query) != 9):
             return False
-        q = "SELECT * FROM transaction_tbl WHERE sender=" + query
-    data = exec(q).fetchall()
-    return getTransLock(data)
-
-#  transaction_tbl (locker INT, recipient INT, sender INT, status '1=OPEN,0=CLOSED ', request 'L or B', floor INT)
-#  locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status 'OWNED,TRADING,BUDDY')
-
+        q = "SELECT * FROM transaction_tbl WHERE recipient='' AND sender=" + query
+        data = exec(q).fetchall()
+        return getTransLock(data,query)
 
 def filterLocker(floor,level,location):
     q = "SELECT owner FROM locker_tbl WHERE status='TRADING'"
@@ -240,7 +258,7 @@ def filter1(query,osis):
         q+=" AND grade = '" + query[4]+"'"
     if query[5] != "" and  query[5] != "None":
         q+=" AND gender = '" + query[5]+"'"
-    q+=";"
+        q+=";"
     data=exec(q).fetchall()
     for value in data:
         info.append(str(value[0]))
@@ -270,10 +288,11 @@ def getTransactionFrom(osis):
         return info
     for value in data:
         info.append(value[0])
-    return info
+    filtered = [x for x in info if x != '']
+    return filtered
 
 def getTransactionTo(osis):
-    q="SELECT sender FROM transaction_tbl WHERE recipient=? AND status = ?"
+    q="SELECT sender FROM transaction_tbl WHERE recipient=? AND status=?"
     inputs = (osis,1)
     data = execmany(q,inputs).fetchall()
     info=[]
@@ -288,7 +307,7 @@ def buddyRequest(to, sender):
     if locker == '':
         locker = getUserInfo(sender)[2]
     q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
-    inputs=(locker[2],to, sender, 1, "B", locker[3])
+    inputs=(locker[2],to, sender, 1, "B", getLockerInfo(locker[2],to)[3])
     execmany(q,inputs)
     return True
 
@@ -321,8 +340,12 @@ def getAllNotifs(osis):
     return info
 
 def deleteTrans(user, recipient, type):
+    if (recipient == "" and type == 'L'):
+        q = "UPDATE locker_tbl SET status='OWNED' WHERE owner=" + user
+        exec(q)
     q = "DELETE FROM transaction_tbl WHERE sender=? AND recipient=? AND request=?"
     inputs=(user,recipient,type)
+    print(user,recipient,type)
     execmany(q,inputs)
     return True
 
@@ -389,6 +412,54 @@ def ifDissolve(user):
     q = "SELECT * FROM transaction_tbl WHERE (recipient=? OR sender=?) AND status = ? AND request = ?"
     inputs=(user,user,1,"D")
     data=execmany(q,inputs).fetchall()
-    if data is not None:
+    if len(data)!=0:
         return True
     return False
+
+def putOnMarket(locker,osis):
+    linfo = getLockerInfo(locker,osis)
+    q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
+    inputs = (locker,"",linfo[1],1,'L',linfo[3])
+    execmany(q,inputs)
+    q = "UPDATE locker_tbl SET status='TRADING' WHERE locker=" + str(locker) + " AND owner=" + str(osis)
+    exec(q)
+
+#  user_tbl (osis INT, password TEXT, locker INT, grade INT, buddy INT, survey TEXT, gender TEXT)"
+#  locker_tbl (locker INT, owner TEXT, combo TEXT, floor INT, level INT, location TEXT, status 'OWNED,TRADING,BUDDY')
+#  transaction_tbl (locker INT, recipient INT, sender INT, status '1=OPEN,0=CLOSED ', request 'L or B', floor INT)
+
+def lockerRequest(to,sender):
+    owner = getUserInfo(to)
+    locker = getLockerInfo(owner[2],to)
+    q = "INSERT INTO transaction_tbl VALUES (?,?,?,?,?,?)"
+    inputs=(owner[2],to, sender, 1, "L", locker[3])
+    execmany(q,inputs)
+
+def giveUp(sender,recipient):
+    if (recipient == ""):
+        q = "UPDATE locker_tbl SET status='OWNED' WHERE owner=" + sender
+        exec(q)
+        q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=''"
+    else:
+        q = "DELETE FROM transaction_tbl WHERE sender=" + sender + " AND recipient=" + recipient
+    print(q)
+    exec(q)
+
+def acceptLocker(me,you):
+    owner = getUserInfo(me)
+    ownerL = getLockerInfo(owner[2],me)
+    recipient = getUserInfo(you)
+    recipientL = getLockerInfo(recipient[2],you)
+    q = "UPDATE user_tbl SET locker=" + str(recipient[2]) + " WHERE osis=" + str(me)
+    exec(q)
+    q = "UPDATE user_tbl SET locker=" + str(owner[2]) + " WHERE osis=" + str(you)
+    exec(q)
+    q = "UPDATE locker_tbl SET status='OWNED',locker=" + str(recipientL[0]) + ",combo=" + str(recipientL[2]) + ",floor=" + str(recipientL[3]) + ",level='" + str(recipientL[4]) + "',location='" + str(recipientL[5]) + "' WHERE owner=" + str(me)
+    exec(q)
+    q = "UPDATE locker_tbl SET status='OWNED',locker=" + str(ownerL[0]) + ",combo=" + str(ownerL[2]) + ",floor=" + str(ownerL[3]) + ",level='" + str(ownerL[4]) + "',location='" + str(ownerL[5]) + "' WHERE owner=" + str(you)
+    exec(q)
+    q = "UPDATE transaction_tbl SET status=0 WHERE recipient=" + str(me) + " AND sender=" + str(you)
+    exec(q)
+    deleteTrans(me,"","L")
+    deleteTrans(you,"","L")
+    return True
