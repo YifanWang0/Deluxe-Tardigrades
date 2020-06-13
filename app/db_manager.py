@@ -96,7 +96,6 @@ def editTransTbl(osis,fxn,new):
     else:
         q = "UPDATE transaction_tbl SET sender = ? WHERE sender = ?"
         inputs = (new, osis)
-        print(new, osis)
         execmany(q,inputs)
         q = "UPDATE transaction_tbl SET recipient = ? WHERE recipient = ?"
         inputs = (new, osis)
@@ -123,6 +122,10 @@ def editLockerTbl(locker,fxn,new):
     q = "UPDATE locker_tbl SET " + fxn + "=" + new + " WHERE locker=?"
     inputs = (locker,)
     data = execmany(q,inputs)
+    if fxn == "floor":
+        q = "UPDATE transaction_tbl SET floor = ? WHERE locker=?"
+        inputs = (new, locker)
+        data = execmany(q,inputs)
     return True
 
 def findOsis(osis):
