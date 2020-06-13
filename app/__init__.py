@@ -49,7 +49,7 @@ def authentication():
         flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
-        flash("Wrong Login Information!", 'danger')
+        # flash("Wrong Login Information!", 'danger')
         return redirect('/')
 
 @app.route("/logout")
@@ -96,11 +96,12 @@ def newUser():
 def profile():
     userInfo = db_manager.getUserInfo(session['osis'])
     buddy = ["N/A","N/A","N/A","N/A","N/A","N/A","N/A","N/A"]
-    if len(userInfo[4]) != 0:
+    if userInfo[4] != "":
         buddy = db_manager.getUserInfo(userInfo[4])
-    locker = db_manager.getLockerInfo(userInfo[2])
+    locker = db_manager.getLockerInfo(userInfo[2], session['osis'])
     transactions=db_manager.getTransactionInfo(session['osis'])
-    return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'])
+    changed=db_manager.ifDissolve(session["osis"])
+    return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'], changed=changed)
 
 @app.route("/updated", methods=['POST'])
 @login_required
@@ -109,10 +110,45 @@ def updateBuddy():
      db_manager.buddyRequest(osis,session['osis'])
      return redirect("/home")
 
+@app.route("/giveup", methods=['POST'])
+@login_required
+def giveUp():
+    osis1 = session["osis"]
+    osis2 = request.form.get("person")
+    type = request.form.get("type")
+    if(request.form.get("return")=="home"):
+        db_manager.deleteTrans(osis1,osis2,type)
+    else:
+        db_manager.deleteTrans(osis2,osis1,type)
+        db_manager.deleteTrans(osis1,osis2,type)
+    return redirect("/"+request.form.get("return"))
+
+@app.route("/confirm", methods=['POST'])
+@login_required
+def confirm():
+     osis1 = request.form.get("person")
+     print(osis1)
+     osis2 = session["osis"]
+     type = request.form.get("type")
+     if (type == "B"):
+         db_manager.confirmB(osis1,osis2)
+     if (type == "L"):
+         db_manager.acceptLocker(osis2,osis1)
+     if (type == "D"):
+         db_manager.dissolveBuddy(osis2, osis1)
+     return redirect("/home")
+
+@app.route("/dissolve", methods=['POST'])
+@login_required
+def breakBuddy():
+     osis=request.form.get("break")
+     db_manager.breakB(session['osis'], osis)
+     return redirect("/home")
+
 @app.route("/editprof")
 @login_required
 def editprof():
-    user = db_manager.getUserInfo(session['osis'])
+    user = session['osis']
     return render_template("editprof.html", user=user, heading="Edit Profile")
 
 @app.route("/updateprof", methods=['POST'])
@@ -134,13 +170,16 @@ def updateprof():
         logout()
         return render_template("login.html")
     else:
-        #error somewhere in the form, make more specific later
-        print("error")
-        return render_template("editprof.html",user=oldosis)
+        flash("Error",'danger')
+        return render_template("editprof.html",heading="Edit Profile",user=oldosis)
 
 @app.route("/survey")
 @login_required
 def survey():
+    info=db_manager.getUserInfo(session["osis"])
+    if(info[4]!=""):
+        flash("Sorry! You already have a Buddy!",'danger')
+        return redirect("/home")
     sports = ""
     books = ""
     misc = ""
@@ -150,7 +189,7 @@ def survey():
         sports = list[0]
         books = list[1]
         misc = list[2]
-    return render_template("survey.html", sports = sports, books = books, misc = misc, user=user)
+    return render_template("survey.html", heading = "Lockey Buddy Survey", sports = sports, books = books, misc = misc, user=user)
 
 @app.route("/buddy", methods=['POST'])
 @login_required
@@ -160,7 +199,8 @@ def buddy():
     misc = request.form.get("misc")
     info = sports+","+books+","+misc
     db_manager.updateSurvey(session['osis'],info)
-    return render_template("buddy.html", query=["","","","","","","","",""])
+    user=session['osis']
+    return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""], user=user)
 
 @app.route("/bsearch", methods=['POST'])
 @login_required
@@ -178,6 +218,7 @@ def bsearch():
     query[7] = request.form.get("location")
     query[8] = request.form.get("level")
     results = db_manager.filter(query,session["osis"])
+    length=len(results)
     buddy=[]
     locker=[]
     loop=[]
@@ -186,7 +227,7 @@ def bsearch():
     for value in range(len(results)):
         info = db_manager.getUserInfo(results[value])
         buddy.append(info)
-        temp=db_manager.getLockerInfo(info[2])
+        temp=db_manager.getLockerInfo(info[2],info[0])
         locker.append(temp)
         loop.append(count)
         temp=["", ""]
@@ -196,7 +237,8 @@ def bsearch():
         count+=1
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
-    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey)
+    user=session['osis']
+    return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey, length=length, user=user)
 
 @app.route("/locker")
 @login_required
@@ -214,13 +256,12 @@ def lSearch():
     searchBy = request.form.get("searchBy")
     query = request.form.get("query")
     results = db_manager.searchLocker(searchBy, query)
-    #print(results)
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
     if (not results and results != {}):
         flash("Incorrect Query Format","danger")
         return redirect('/locker')
-    return render_template("locker.html", to=to,sender=sender,user=user,results=results)
+    return render_template("locker.html",heading="Locker Search",to=to,sender=sender,user=user,results=results)
 
 @app.route("/lFilter", methods=['POST'])
 @login_required
@@ -232,17 +273,17 @@ def lFilter():
     to = db_manager.getTransactionTo(session["osis"])
     sender = db_manager.getTransactionFrom(session["osis"])
     results = db_manager.filterLocker(floor,level,type)
-    return render_template("locker.html", to=to,sender=sender,user=user,results=results)
+    return render_template("locker.html",heading="Locker Search",to=to,sender=sender,user=user,results=results)
 
 @app.route("/market", methods=['POST'])
 @login_required
 def market():
     user = session['osis']
     locker = db_manager.getUserInfo(user)[2]
-    if (db_manager.getLockerInfo(locker)[6] == 'TRADING'):
+    if (db_manager.getLockerInfo(locker,user)[6] == 'TRADING'):
         flash("Locker already on market!", 'danger')
         return redirect('/home')
-    db_manager.putOnMarket(locker)
+    db_manager.putOnMarket(locker,user)
     return redirect("/home")
 
 @app.route("/lRequest", methods=['POST'])
@@ -261,13 +302,31 @@ def lAccept():
      db_manager.acceptLocker(me,you)
      return redirect("/home")
 
-@app.route("/giveup", methods=['POST'])
+@app.route("/notifs")
 @login_required
-def giveUp():
-     recip=request.form.get("giveup")
-     print(recip)
-     db_manager.giveUp(session['osis'],recip)
-     return redirect("/home")
+def notifs():
+    looper=[]
+    buddy=[]
+    locker=[]
+    dissolve = []
+    all = db_manager.getAllNotifs(session["osis"])
+    for value in range(len(all)):
+        looper.append(value)
+    for value in all:
+        if(value[4] == "B"):
+            temp=db_manager.getUserInfo(value[2])
+            temp[5]=temp[5].split(",")
+            buddy.append(temp)
+        if(value[4] == "L"):
+            them = db_manager.getUserInfo(value[2])
+            print(them)
+            locker.append(db_manager.getLockerInfo(them[2],them[0]))
+        else:
+            dissolve.append(db_manager.getDissolveInfo(session['osis']))
+    open = db_manager.getMess(session["osis"],1)
+    close = db_manager.getMess(session["osis"],0)
+    user=session['osis']
+    return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
 
 if __name__ == "__main__":
     db_builder.build_db()

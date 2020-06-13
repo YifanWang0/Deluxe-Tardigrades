@@ -3,40 +3,48 @@
 
 {% block body %}
 
-<h1>Fill out this Survey about yourself!</h1>
-<br><br>
+<div class="alert alert-info text-center" role="alert">
+    Fill out this survey about yourself to pair with a perfect buddy!
+</div>
+
 <form action="/buddy" method="post">
-  <div class="form-row">
-    <div class="form-group col-md-6">
-    <label for="sports" class="font-weight-bold">Sports Equipment Load</label>
-    <select id="sports" class="form-control" name="sports">
-      <option value="" {% if sports=="" %} selected{% endif %}>None</option>
-      <option value="Large" {% if sports=="Large" %} selected{% endif %}>Large</option>
-      <option value="Medium" {% if sports=="Medium" %} selected{% endif %}>Medium</option>
-      <option value="Small" {% if sports=="Small" %} selected{% endif %}>Small</option>
-    </select>
+  <div class="form-row text-center">
+    <div class="form group col-md-2"></div>
+    <div class="form-group col-md-3">
+      <label for="sports" class="lb-md">Sports Equipment Load</label>
+      <select id="sports" class="form-control" name="sports">
+        <option value="" {% if sports=="" %} selected{% endif %}>None</option>
+        <option value="Large" {% if sports=="Large" %} selected{% endif %}>Large</option>
+        <option value="Medium" {% if sports=="Medium" %} selected{% endif %}>Medium</option>
+        <option value="Small" {% if sports=="Small" %} selected{% endif %}>Small</option>
+      </select>
     </div>
-    <div class="form group col-md-6">
-      <label for="textbook" class="font-weight-bold">Estimated Text Book Count?</label>
+    <div class="form group col-md-1"></div>
+    <div class="form group col-md-4">
+      <label for="textbook" class="lb-md">Estimated Text Book Count?</label>
       <select id="textbook" class="form-control" name="textbook">
         <option value="" {% if books=="" %} selected{% endif %} >None</option>
         <option value="1-3" {% if books=="1-3" %} selected{% endif %}>1-3</option>
         <option value="4+" {% if books=="4+" %} selected{% endif %}>4+</option>
       </select>
     </div>
+    <div class="form group col-md-2"></div>
   </div>
 
-  <br>
 
-  <div class="form-row">
+  <div class="form-row text-center">
+    <div class="form group col-md-3"></div>
     <div class="form group col-md-6">
-      <label for="textbook" class="font-weight-bold">Miscellaneous Habits or Comments:</label>
+      <label for="textbook" class="lb-md">Miscellaneous Habits or Comments</label>
       <br>
       <textarea id="misc" name="misc" rows="10" cols="50" >{{misc}}</textarea>
     </div>
+    <div class="form group col-md-3"></div>
   </div>
-
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <br>
+  <div class="text-center">
+    <button class="btn btn-lg btn-primary" type="submit" id="submit">Submit</button>
+  </div>
 </form>
 
 {% endblock %}
