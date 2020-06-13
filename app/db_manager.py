@@ -51,6 +51,7 @@ def getLockerInfo(locker):
     inputs = (locker,)
     data = execmany(q, inputs).fetchone()
     info=[]
+    print(data)
     for value in data:
         info.append(value)
     return info
@@ -112,13 +113,24 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
         if (level != ""): editLockerTbl(oldlocker,"level", level)
         if (type != ""): editLockerTbl(oldlocker,"location", type)
         if (locker != ""):
-            editLockerTbl(oldlocker, "locker", locker)
-            editUserTbl(oldosis, "locker", locker)
+            if (floor  == ''):
+                floor = getLockerInfo(oldlocker)[3]
+            q = "SELECT * FROM locker_tbl WHERE locker='" + locker + "' AND floor='" + floor + "'"
+            data = exec(q).fetchone()
+            if (data is None):
+                if (getLockerInfo(oldlocker)[6] == ''):
+                    editLockerTbl(oldlocker,"status", 'OWNED')
+                editLockerTbl(oldlocker, "locker", locker)
+                editUserTbl(oldosis, "locker", locker)
         if (osis != ""):
-            q = "UPDATE locker_tbl SET owner=? WHERE owner=?"
-            inputs = (osis,oldosis)
-            data = execmany(q, inputs)
-            editUserTbl(oldosis,"osis",osis)
+            q = "SELECT * FROM user_tbl WHERE osis=?"
+            inputs = (osis,)
+            data = execmany(q, inputs).fetchone()
+            if (data is None):
+                q = "UPDATE locker_tbl SET owner=? WHERE owner=?"
+                inputs = (osis,oldosis)
+                data = execmany(q, inputs)
+                editUserTbl(oldosis,"osis",osis)
         return True
     return False
 
@@ -126,6 +138,7 @@ def editUser(oldosis, osis, oldpassword, password, grade, locker, gender, combo,
 def getTransLock(data):
     dataDict = {}
     for i in data:
+        print(i)
         lock = getLockerInfo(i[0])
         dataDict[i] = lock
     return dataDict
