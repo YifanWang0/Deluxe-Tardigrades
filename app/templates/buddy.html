@@ -98,8 +98,8 @@
   </div>
   </form>
   <br>
-  {% for item in loop %}
   <center>
+  {% for item in loop %}
   <div class="form-row">
     <center>
     <div class="card">
@@ -113,9 +113,12 @@
       <p class="card-text">Locker Number: {{locker[item][0]}} &nbsp; &nbsp; Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}} &nbsp; &nbsp; Market Status: {{locker[item][6]}}</p>
     </div>
   {% if buddy[item][0] in to %}
+    <form action="/confirm">
+      <input type="text" name="person" value={{buddy[item][0]}} hidden>
   <div>
       <button class="btn btn-success" type="submit">Accept Request</button>
   </div>
+    </form>
   {% endif %}
   {% if buddy[item][0] in sender %}
   <div>
