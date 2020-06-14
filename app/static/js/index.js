@@ -1,4 +1,6 @@
-count = 0;
+var grade_count = 0;
+var floor_count = 0;
+var location_count = 0;
 
 //changing buttons displayed (for rendering graphs) according to option selected
 var grade_btn = document.getElementById("grade");
@@ -24,26 +26,39 @@ var displayButtons = function(){
 }
 
 graphSelection.addEventListener("change", function(){
-  count = 0;
+  grade_count = 0;
+  floor_count = 0;
+  location_count = 0;
   d3.selectAll("svg").remove();
   displayButtons();
 });
 
 grade_btn.addEventListener("click", function(){
-  if (graphSelection.value == "users-registered" && count == 0){
+  d3.selectAll("svg").remove();
+  if (graphSelection.value == "users-registered" && grade_count == 0){
     userRegistration();
   }
 });
 
 floor_btn.addEventListener("click", function(){
-  if (graphSelection.value == "lockers-registered" && count == 0){
+  d3.selectAll("svg").remove();
+  if (graphSelection.value == "lockers-registered" && floor_count == 0){
     lockerRegistrationByFloor();
+  }
+})
+
+location_btn.addEventListener("click", function(){
+  d3.selectAll("svg").remove();
+  if (graphSelection.value == "lockers-registered" && location_count == 0){
+    lockerRegistrationByLocation();
   }
 })
 
 //creating donut chart for user registration data
 var userRegistration = function() {
-count = 1;
+grade_count = 1;
+floor_count = 0;
+location_count = 0;
 // set the dimensions and margins of the graph
 var width = 600
     height = 600
@@ -150,7 +165,10 @@ svg
 
 //creating bar graph for locker registration
 var lockerRegistrationByFloor = function() {
-count = 1;
+grade_count = 0;
+floor_count = 1;
+location_count = 0;
+
 var data = [];
 
 var first = 0
@@ -197,8 +215,6 @@ var data =  [{"floor":1, "number":first},
              {"floor":8, "number":eighth},
              {"floor":9, "number":ninth},
              {"floor":10, "number":tenth},]
-
-console.log(data);
 
 //defining the margin amounts of the chart
 var margin = {top:50, right:50, bottom:50, left:50};
@@ -291,4 +307,154 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dy", "1em")
           .style("text-anchor", "middle")
           .text("Floor");
+}
+
+var lockerRegistrationByLocation = function() {
+grade_count = 0;
+floor_count = 0;
+location_count = 1;
+
+var parsedList = []
+var quoteCount = 0
+var word= '';
+for (var i=0; i<lockerRegistration_location.length; i++){
+  if (lockerRegistration_location[i] == "'"){
+    quoteCount += 1;
+  } else{
+    if (quoteCount%2 != 0){
+      word = word + lockerRegistration_location[i];
+    } else if (quoteCount%2 == 0 && quoteCount != 0 && lockerRegistration_location[i] != ' '){
+      parsedList.push(word);
+      word = '';
+    }
+  }
+};
+
+var data = [];
+
+var hallway = 0
+    bar = 0
+    robotics = 0
+    music_hallway = 0
+    atrium = 0
+    swim_gym = 0
+    gym = 0
+
+for (var i=0; i<parsedList.length; i++){
+  if (parsedList[i] == "Hallway"){
+    hallway += 1;
+  } else if (parsedList[i] == "Bar") {
+    bar += 1;
+  } else if (parsedList[i] == "Robotics") {
+    robotics += 1;
+  } else if (parsedList[i] == "Music Hallway") {
+    music_hallway += 1;
+  } else if (parsedList[i] == "Atrium") {
+    atrium += 1;
+  } else if (parsedList[i] == "Swim Gym") {
+    swim_gym += 1;
+  } else if (parsedList[i] == "Gym") {
+    gym += 1;
+  }
+}
+
+data = [{"location": "Hallway", "number": hallway},
+        {"location": "Bar", "number": bar},
+        {"location": "Robotics", "number": robotics},
+        {"location": "Music Hallway", "number": music_hallway},
+        {"location": "Atrium", "number": atrium},
+        {"location": "Swim Gym", "number": swim_gym},
+        {"location": "Gym", "number": gym}]
+
+//defining the margin amounts of the chart
+var margin = {top:50, right:50, bottom:50, left:50};
+//the total width of the bar graph
+var height = 3*200-100;
+//the total height of the bar graph
+var width = 800-100;
+
+
+//sets the number of pixels for the yscale
+//adds padding
+var yScale = d3.scaleBand()
+    .range([0, height])
+    .paddingInner(0.08)
+
+//sets the number of pixels for the xscale
+var xScale = d3.scaleLinear()
+    .range([0,width-50]);
+
+//positions the x axis on the top
+var xAxis = d3.axisTop(xScale)
+//positions the y axis on the left
+var yAxis = d3.axisLeft(yScale);
+
+
+//makes a chart with width and height adjusted with margins
+var svgContainer = d3.select("#svg").append("svg")
+    .attr("width", width+100)
+    .attr("height",height+100)
+    .append("g").attr("class", "container")
+    .attr("transform", "translate("+ 100 +","+ 50 +")");
+
+    yScale.domain(data.map(function(d) { return d.location; }));
+      yAxis = d3.axisLeft(yScale);
+
+      xScale.domain([0, d3.max(data, function(d) { return d.number+2; })]);
+      xAxis = d3.axisTop(xScale);
+
+      //draws the actual bars and does the height based off of data values
+      bars = svgContainer.selectAll(".bar")
+          .data(data)
+          .enter()
+          .append("g")
+
+      bars.append("rect")
+          .attr("class", "bar")
+          .attr("y", function(d) { return yScale(d.location); })
+          .attr("height", yScale.bandwidth())
+          .attr("x", function(d) { return 0; })
+          .attr("width", function(d) { return xScale(d.number); })
+          .style("fill", "#f6d8b9");
+
+      //make the numbers on the labels, x value and y value of the numerical labels
+      labeling = svgContainer.selectAll(".text")
+          .data(data)
+          .enter()
+
+      labeling.append("text")
+          .attr("class","label")
+          .attr("y", (function(d) { return yScale(d.location)  + (yScale.bandwidth())/2 + 6 ; }  ))
+          .attr("x", function(d) { return  xScale(d.number) + 10; })
+          .attr("dx", ".25em")
+          .text(function(d) { return d.number; });
+
+
+      //creates labels for y scale on the side
+      svgContainer.append("g")
+          .attr("class", "xaxis")
+          .call(xAxis)
+          .selectAll("text")
+          // .attr("font-family", "Didot")
+
+      svgContainer.append("g")
+          .attr("class", "yaxis")
+          .call(yAxis)
+          .selectAll("text")
+          // .attr("font-family", "Didot")
+
+      svgContainer.append("text")
+          .attr("transform",
+                "translate(" + (width/2) + " ," +
+                               (margin.top - 85) + ")")
+          .style("text-anchor", "middle")
+          .text("Number of Lockers Registered");
+
+      svgContainer.append("text")
+          .attr("transform", "rotate(-90)")
+          .attr("y", 0 - margin.left - 49)
+          .attr("x",0 - (height / 2))
+          .attr("dy", "1em")
+          .style("text-anchor", "middle")
+          .text("Location");
 }

@@ -9,6 +9,7 @@ from datetime import date, timedelta
 import db_builder, db_manager
 import os, random, sqlite3
 import urllib3, json, urllib
+import html
 
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
@@ -135,7 +136,8 @@ def updateprof():
 def stats():
     userRegistration_grade = db_manager.getColumnInfo("grade", "user")
     lockerRegistration_floor = db_manager.getColumnInfo("floor", "locker")
-    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor)
+    lockerRegistration_location = db_manager.getColumnInfo("location", "locker")
+    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor, lockerRegistration_location=lockerRegistration_location)
 
 
 

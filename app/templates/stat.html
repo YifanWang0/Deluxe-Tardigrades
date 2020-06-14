@@ -29,9 +29,12 @@
 <div id="svg"></div>
 </center>
 
+<div id="lockerRegistration_location" data-value="{{ lockerRegistration_location }}">
+
 <script>
   var userRegistration_grade = {{ userRegistration_grade }}
   var lockerRegistration_floor = {{ lockerRegistration_floor }}
+  var lockerRegistration_location = document.getElementById("lockerRegistration_location").getAttribute("data-value");
 </script>
 <script type="text/javascript"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
