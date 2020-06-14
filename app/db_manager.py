@@ -431,3 +431,11 @@ def acceptLocker(me,you):
     deleteTrans(me,"","L")
     deleteTrans(you,"","L")
     return True
+
+def getColumnInfo(column, table):
+    q = "SELECT " + column + " FROM " + table + "_tbl"
+    rawData = exec(q).fetchall()
+    info = []
+    for entry in rawData:
+        info.append(entry[0])
+    return info

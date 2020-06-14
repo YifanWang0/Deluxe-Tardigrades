@@ -328,6 +328,13 @@ def notifs():
     user=session['osis']
     return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
 
+@app.route("/stats")
+def stats():
+    userRegistration_grade = db_manager.getColumnInfo("grade", "user")
+    lockerRegistration_floor = db_manager.getColumnInfo("floor", "locker")
+    lockerRegistration_location = db_manager.getColumnInfo("location", "locker")
+    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor, lockerRegistration_location=lockerRegistration_location)
+
 if __name__ == "__main__":
     db_builder.build_db()
     app.debug = True

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block body %}
+<center>
+<form>
+<div class="form-row">
+  <div class="form-group col-md-4"></div>
+  <div class="form-group col-md-4">
+  <label class="font-weight-bold">Which data you want to be displayed:</label>
+  <select id="graph" class="form-control" name="graph">
+    <option selected disabled>Please Select</option>
+    <option value="lockers-trade">Lockers Available for Trade</option>
+    <option value="users-buddy">Users Available for Buddy</option>
+    <option value="users-registered">User Registation</option>
+    <option value="lockers-registered">Locker Registration</option>
+  </select>
+  </div>
+</div>
+</form>
+
+<button type="button" class="btn btn-outline-dark" id="grade" style="display:none;">by grade</button>
+<button type="button" class="btn btn-outline-dark" id="floor" style="display:none;">by floor</button>
+<button type="button" class="btn btn-outline-dark" id="location" style="display:none;">by location</button>
+</center>
+
+<br><br><br>
+
+<center>
+<div id="svg"></div>
+</center>
+
+<div id="lockerRegistration_location" data-value="{{ lockerRegistration_location }}"></div>
+<div id="lockerRegistration_floor" data-value="{{ lockerRegistration_floor }}"></div>
+
+<script>
+  var userRegistration_grade = {{ userRegistration_grade }}
+  var lockerRegistration_floor = document.getElementById("lockerRegistration_floor").getAttribute("data-value");
+  var lockerRegistration_location = document.getElementById("lockerRegistration_location").getAttribute("data-value");
+</script>
+<script type="text/javascript"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="{{ url_for('static', filename='js/index.js')}}"></script>
+
+
+{% endblock %}
