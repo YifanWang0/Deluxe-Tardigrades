@@ -134,8 +134,8 @@ def updateprof():
 @app.route("/stats")
 def stats():
     userRegistration_grade = db_manager.getColumnInfo("grade", "user")
-    print(userRegistration_grade)
-    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade)
+    lockerRegistration_floor = db_manager.getColumnInfo("floor", "locker")
+    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor)
 
 
 

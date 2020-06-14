@@ -13,7 +13,6 @@
     <option value="users-buddy">Users Available for Buddy</option>
     <option value="users-registered">User Registation</option>
     <option value="lockers-registered">Locker Registration</option>
-    <option value="popularity">Locker Popularity</option>
   </select>
   </div>
 </div>
@@ -22,8 +21,9 @@
 <button type="button" class="btn btn-outline-dark" id="grade" style="display:none;">by grade</button>
 <button type="button" class="btn btn-outline-dark" id="floor" style="display:none;">by floor</button>
 <button type="button" class="btn btn-outline-dark" id="location" style="display:none;">by location</button>
-
 </center>
+
+<br><br><br>
 
 <center>
 <div id="svg"></div>
@@ -31,6 +31,7 @@
 
 <script>
   var userRegistration_grade = {{ userRegistration_grade }}
+  var lockerRegistration_floor = {{ lockerRegistration_floor }}
 </script>
 <script type="text/javascript"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
