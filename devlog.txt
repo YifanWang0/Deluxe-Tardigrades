@@ -112,6 +112,10 @@ elizabethD -- 2020-06-10 21:00
 elizabethD -- 2020-06-10 23:22
     - lockers can be put on market on home page
 
+amandaZ -- 2020-06-11 17:59
+    - Tried to implement change buddy button where you can change your buddy
+    - wrote database functions for change buddy
+
 elizabethD -- 2020-06-11 22:06
     - transaction card displays more specific info
     - added request a locker functions
@@ -124,8 +128,27 @@ elizabethD -- 2020-06-11 23:15
 elizabethD -- 2020-06-12 00:48
     - accept locker trade added, still needs fixing
 
+amandaZ -- 2020-06-12 16:04
+    - found and fixed some errors in trying to send transaction requests such as delete button and accept button not working
+
 elizabethD -- 2020-06-12 16:32
     - fixed locker repeats and no locker upon sign up
 
+amandaZ -- 2020-06-12 19:10
+    - finished changed buddy button and sending notifications to confirm changing of buddies
+    - fixed filter so it only shows people who don't already have buddies
+
 elizabethD -- 2020-06-13 15:08
     - completed merge with buddy and notifs branches
+
+amandaZ -- 2020-06-13 21:18
+    - fixed error in filter that only searches for osis in user table which doesnt work when you use floor, locker location, or top/bottom filters
+    - shows "No results found" if no results are found
+
+amandaZ -- 2020-06-14 18:48
+    - made the change buddy button into check notifs button if they already made a change buddy request
+    - prevented people who are buddies from accesting find buddy page
+
+amandaZ -- 2020-06-14 21:37
+    - worked on edit profile route for if they changed their osis, it has to update all three tables
+    - made sure the newly edited info is not already in database (like for user and locker number)
