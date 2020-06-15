@@ -34,22 +34,25 @@ graphSelection.addEventListener("change", function(){
 });
 
 grade_btn.addEventListener("click", function(){
-  d3.selectAll("svg").remove();
+  console.log(grade_count);
   if (graphSelection.value == "users-registered" && grade_count == 0){
+    d3.selectAll("svg").remove();
     userRegistration();
   }
 });
 
 floor_btn.addEventListener("click", function(){
-  d3.selectAll("svg").remove();
+  console.log(floor_count);
   if (graphSelection.value == "lockers-registered" && floor_count == 0){
+    d3.selectAll("svg").remove();
     lockerRegistrationByFloor();
   }
 })
 
 location_btn.addEventListener("click", function(){
-  d3.selectAll("svg").remove();
+  console.log(floor_count);
   if (graphSelection.value == "lockers-registered" && location_count == 0){
+    d3.selectAll("svg").remove();
     lockerRegistrationByLocation();
   }
 })
