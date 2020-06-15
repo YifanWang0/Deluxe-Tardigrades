@@ -234,7 +234,7 @@ def filterLocker(floor,level,location):
 
 def filter(query,osis):
     info1=filterUser(query, osis)
-    info2=filterLocker(query, osis)
+    info2=filterLock(query, osis)
     info=[]
     for value in info1:
         if value in info2:
@@ -263,7 +263,7 @@ def filterUser(query,osis):
         info.append(str(value[0]))
     return info
 
-def filterLocker(query,osis):
+def filterLock(query,osis):
     info=[]
     q="SELECT owner FROM locker_tbl WHERE owner != " + osis
     if query[6] != "" and  query[6] != "None":
