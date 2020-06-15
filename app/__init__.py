@@ -329,11 +329,62 @@ def notifs():
     return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
 
 @app.route("/stats")
+@login_required
 def stats():
+    osis = session["osis"]
+    grade = db_manager.getUserInfo(osis)[3]
+    #user registration
     userRegistration_grade = db_manager.getColumnInfo("grade", "user")
+    #locker regisgration
     lockerRegistration_floor = db_manager.getColumnInfo("floor", "locker")
     lockerRegistration_location = db_manager.getColumnInfo("location", "locker")
-    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor, lockerRegistration_location=lockerRegistration_location)
+    #buddies avaiable
+    buddyAvailable_grade = db_manager.getColumnInfo_Specific("grade", "user", "buddy is null or buddy = '' ")
+    for user in buddyAvailable_grade:
+        if user == grade:
+            buddyAvailable_grade.remove(user)
+    listOfOsis = db_manager.getColumnInfo_Specific("osis", "user", "buddy is null or buddy = ''")
+    for user in listOfOsis:
+        if user == osis:
+            listOfOsis.remove(user)
+    temp_floor = []
+    temp_location = []
+    buddyAvailable_floor = []
+    buddyAvailable_location = []
+    for user in listOfOsis:
+        temp_floor.append(db_manager.getColumnInfo_Specific("floor", "locker", "owner = " + str(user)))
+    for list in temp_floor:
+        if len(list) != 0 and isinstance(list[0], int):
+            buddyAvailable_floor.append(list[0])
+    for user in listOfOsis:
+        temp_location.append(db_manager.getColumnInfo_Specific("location", "locker", "owner = " + str(user)))
+    for list in temp_location:
+        if len(list) != 0 and list[0] != '':
+            buddyAvailable_location.append(list[0])
+    #lockers available
+    temp_floor = db_manager.getColumnInfo_Specific("floor", "transaction", "status = 1")
+    lockersAvailable_floor = []
+    for floor in temp_floor:
+        if isinstance(floor, int):
+            lockersAvailable_floor.append(floor)
+    temp_location = db_manager.getColumnInfo_Specific("locker", "transaction", "status = 1")
+    parsed_location = []
+    for locker in temp_location:
+        if isinstance(locker, int):
+            parsed_location.append(locker)
+    temp_location1 = db_manager.getColumnInfo_Specific("floor", "transaction", "status = 1")
+    parsed_location1 = []
+    for floor in temp_location1:
+        if isinstance(floor, int):
+            parsed_location1.append(floor)
+    lockersAvailable_location = []
+    index = -1
+    for locker in parsed_location:
+        index += 1
+        lockersAvailable_location.append(db_manager.getColumnInfo_Specific("location", "locker", "locker = " + str(locker) + " AND floor = " + str(parsed_location1[index])))
+    return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor, lockerRegistration_location=lockerRegistration_location,
+                           buddyAvailable_grade=buddyAvailable_grade, buddyAvailable_floor=buddyAvailable_floor, buddyAvailable_location=buddyAvailable_location, lockersAvailable_floor=lockersAvailable_floor,
+                           lockersAvailable_location=lockersAvailable_location)
 
 if __name__ == "__main__":
     db_builder.build_db()

@@ -439,3 +439,11 @@ def getColumnInfo(column, table):
     for entry in rawData:
         info.append(entry[0])
     return info
+
+def getColumnInfo_Specific(column, table, requirement):
+    q = "SELECT " + column + " FROM " + table + "_tbl WHERE " + requirement
+    rawData = exec(q).fetchall()
+    info = []
+    for entry in rawData:
+        info.append(entry[0])
+    return info
