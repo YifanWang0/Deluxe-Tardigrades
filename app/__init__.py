@@ -162,6 +162,10 @@ def breakBuddy():
 def market():
     user = session['osis']
     locker = db_manager.getUserInfo(user)[2]
+    print(locker)
+    if (locker == ''):
+        flash("You do not have a locker!", 'danger')
+        return redirect('/home')
     if (db_manager.getLockerInfo(locker,user)[6] == 'TRADING'):
         flash("Locker already on market!", 'danger')
         return redirect('/home')
