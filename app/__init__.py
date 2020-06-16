@@ -221,7 +221,7 @@ def survey():
         sports = list[0]
         books = list[1]
         misc = list[2]
-    return render_template("survey.html", heading = "Lockey Buddy Survey", sports = sports, books = books, misc = misc, user=user)
+    return render_template("survey.html", heading = "Locker Buddy Survey", sports = sports, books = books, misc = misc, user=user)
 
 # updates the user_tbl with survey answers and returns buddy search page
 @app.route("/buddy", methods=['POST'])
@@ -233,7 +233,7 @@ def buddy():
     info = sports+"|"+books+"|"+misc
     db_manager.updateSurvey(session['osis'],info)
     user=session['osis']
-    return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""], user=user)
+    return render_template("buddy.html", heading = "Locker Buddy Search", query=["","","","","","","","",""], user=user)
 
 # searches the user_tbl and locker_tbl for specific people who fit search criteria
 @app.route("/bsearch", methods=['POST'])

@@ -122,7 +122,9 @@
           <h5 class="card-title">Buddy Info:</h5>
           <p class="card-text">Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load: {{survey[item][0]}} &nbsp; &nbsp; Textbook Count: {{survey[item][1]}} </p>
           <h5 class="card-title">Locker Info:</h5>
-          <p class="card-text">Locker Number: {{locker[item][0]}} &nbsp; &nbsp; Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}} &nbsp; &nbsp; Market Status: {{locker[item][6]}}</p>
+          <p class="card-text">Locker Number: {{locker[item][0]}} &nbsp; &nbsp; Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}} &nbsp; &nbsp; Market Status: {{locker[item][6]}}
+            <br> Miscellaneous: {{survey[item][2]}}
+          </p>
           <hr>
           {% if buddy[item][0] in to %}
           <form action="/confirm" method="POST">

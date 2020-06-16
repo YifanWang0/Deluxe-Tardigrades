@@ -10,7 +10,7 @@
         <div class="card-body">
           <h5 class="card-title">{% if all[item][4] == "B" %} From: {{buddy[item][0]}} {% endif %}{% if all[item][4] == "L" %} Locker: {{locker[item][3]}}-{{locker[item][0]}} {% endif %} {% if all[item][4] == "D" %} From: {{dissolve[item][0]}} {% endif %}</h5>
           <input type="text" name="type" value={{all[item][4]}} hidden>
-          <p class="card-text">{% if all[item][4] == "B" %} Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load: {{buddy[item][5][0]}} &nbsp; &nbsp; Textbook Count: {{buddy[item][5][1]}} {% endif %}{% if all[item][4] == "L" %}Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}}{% endif %} {% if all[item][4] == "D" %} Your buddy wants to find a different buddy. {% endif %}</p>
+          <p class="card-text">{% if all[item][4] == "B" %} Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load: {{buddy[item][5][0]}} &nbsp; &nbsp; Textbook Count: {{buddy[item][5][1]}} <br> Miscellaneous: {{buddy[item][5][2]}}{% endif %}{% if all[item][4] == "L" %}Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}} {% endif %} {% if all[item][4] == "D" %} Your buddy wants to find a different buddy. {% endif %}</p>
           <input type="text" name="person" {% if all[item][4] == "D" %} value = {{dissolve[item][0]}} {% endif %} {% if all[item][4] == "B" %} value = {{buddy[item][0]}} {% endif %} {% if all[item][4] == "L" %} value = {{locker[item][1]}} {% endif %} hidden>
           <button type="submit" class="btn btn-info btn-block active" name="return" value="notifs">Accept Request</button>
         </div>
