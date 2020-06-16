@@ -75,6 +75,9 @@ amandaC -- 2020-06-08 19:00
     - finished css to signup and login page
     - added form checking and flash messages to sign up
 
+yifanW -- 2020-06-08 21:22
+    - rendered graph displaying all user registrations
+
 elizabethD -- 2020-06-08 22:08
     - created initial locker search, needs more testing
 
@@ -90,9 +93,20 @@ amandaZ -- 2020-06-09 03:33
     - recording the survey answers into sqlite
     - made placeholder the survey answers if you already answered before
 
+yifanW -- 2020-06-09 09:13
+    - rendered graph displaying all locker registrations by floor
+
 amandaZ -- 2020-06-09 12:19
     - format filter system (html boxes)
     - debug survey and sqlite data recording
+
+yifanW -- 2020-06-09 20:48
+    - implemented code for parsing list from python file
+    - rendered graph displaying all locker registrations by location
+
+yifanW -- 2020-06-09 21:34
+    - fixed bug with displaying multiple graphs when button is clicked
+    - fixed location of labels
 
 elizabethD -- 2020-06-09 23:23
     - finished locker search
@@ -135,16 +149,22 @@ amandaC -- 2020-06-10 21:55
 elizabethD -- 2020-06-10 23:22
     - lockers can be put on market on home page
 
+yifanW -- 2020-06-11 00:52
+    - rendered graphs for buddies available by grade and floor
+
 amandaZ -- 2020-06-11 17:59
     - Tried to implement change buddy button where you can change your buddy
     - wrote database functions for change buddy
+
+yifanW -- 2020-06-11 19:49
+    - rendered graph for buddies available by location
 
 elizabethD -- 2020-06-11 22:06
     - transaction card displays more specific info
     - added request a locker functions
     - added give up function
 
-amandaC -- 2020-06-10 23:08
+amandaC -- 2020-06-11 23:08
     - added css to survey page
     - added css to buddy search
     - fixed css for transactions on home page
@@ -156,6 +176,10 @@ elizabethD -- 2020-06-11 23:15
 elizabethD -- 2020-06-12 00:48
     - accept locker trade added, still needs fixing
 
+yifanW -- 2020-06-12 13:21
+    - merged registration graphs with master
+    - fixed graph to not include current user
+
 amandaZ -- 2020-06-12 16:04
     - found and fixed some errors in trying to send transaction requests such as delete button and accept button not working
 
@@ -165,6 +189,9 @@ elizabethD -- 2020-06-12 16:32
 amandaZ -- 2020-06-12 19:10
     - finished changed buddy button and sending notifications to confirm changing of buddies
     - fixed filter so it only shows people who don't already have buddies
+
+yifanW -- 2020-06-12 23:45
+    - rendered graph for locker available by floor
 
 elizabethD -- 2020-06-13 15:08
     - completed merge with buddy and notifs branches
@@ -181,6 +208,11 @@ amandaZ -- 2020-06-14 21:37
     - worked on edit profile route for if they changed their osis, it has to update all three tables
     - made sure the newly edited info is not already in database (like for user and locker number)
 
+yifanW -- 2020-06-15 20:28
+    - rendered graph for locker available by location
+    - styled all graphs and adjusted positions
+    - merged with master branch
+
 amandaC -- 2020-06-15 22:58
     - added css to notifications page
     - fixed button on notifications page and locker search page
@@ -196,3 +228,7 @@ elizabethD -- 2020-06-15 23:21
     - commented and reordered all code
     - debugged locker search
     - finalized code
+
+yifanW -- 2020-06-16 00:34
+    - fixed bug with lockers and buddies available graphs
+    - commented code for index.js

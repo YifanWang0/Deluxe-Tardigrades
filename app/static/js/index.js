@@ -8,6 +8,7 @@ var floor_btn = document.getElementById("floor");
 var location_btn = document.getElementById("location");
 var graphSelection = document.getElementById("graph");
 
+//displaying buttons after option selected from dropdown
 var displayButtons = function(){
   var value = graphSelection.value;
   if (value == "lockers-trade" || value == "lockers-registered"){
@@ -33,6 +34,7 @@ graphSelection.addEventListener("change", function(){
   displayButtons();
 });
 
+//by grade button renders graph
 grade_btn.addEventListener("click", function(){
   if (graphSelection.value == "users-registered" && grade_count == 0){
     d3.selectAll("svg").remove();
@@ -43,6 +45,7 @@ grade_btn.addEventListener("click", function(){
   }
 });
 
+//by floor button renders graph
 floor_btn.addEventListener("click", function(){
   if (graphSelection.value == "lockers-registered" && floor_count == 0){
     d3.selectAll("svg").remove();
@@ -56,6 +59,7 @@ floor_btn.addEventListener("click", function(){
   }
 })
 
+//by location button renders graph
 location_btn.addEventListener("click", function(){
   if (graphSelection.value == "lockers-registered" && location_count == 0){
     d3.selectAll("svg").remove();
@@ -71,9 +75,11 @@ location_btn.addEventListener("click", function(){
 
 //creating donut chart for user registration data
 var userRegistration = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 1;
 floor_count = 0;
 location_count = 0;
+
 // set the dimensions and margins of the graph
 var width = 600
     height = 600
@@ -90,7 +96,7 @@ var svg = d3.select("#svg")
 .append("g")
   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-//create data
+//create data by parsing list from python file
 var freshman = 0;
 var sophomore= 0;
 var junior = 0;
@@ -178,12 +184,14 @@ svg
   })
 }
 
-//creating bar graph for locker registration
+//creating bar graph for locker registration by floor
 var lockerRegistrationByFloor = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 0;
 floor_count = 1;
 location_count = 0;
 
+//creating data by parsing list from python file
 var data = [];
 
 var first = 0
@@ -238,7 +246,6 @@ var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
 
-
 //sets the number of pixels for the yscale
 //adds padding
 var yScale = d3.scaleBand()
@@ -253,7 +260,6 @@ var xScale = d3.scaleLinear()
 var xAxis = d3.axisTop(xScale)
 //positions the y axis on the left
 var yAxis = d3.axisLeft(yScale);
-
 
 //makes a chart with width and height adjusted with margins
 var svgContainer = d3.select("#svg").append("svg")
@@ -294,7 +300,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
 
-
       //creates labels for y scale on the side
       svgContainer.append("g")
           .attr("class", "xaxis")
@@ -324,11 +329,14 @@ var svgContainer = d3.select("#svg").append("svg")
           .text("Floor");
 }
 
+//creating bar graph for locker registration by location
 var lockerRegistrationByLocation = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 0;
 floor_count = 0;
 location_count = 1;
 
+//creates data by parsing list from python file
 var parsedList = []
 var quoteCount = 0
 var word= '';
@@ -388,7 +396,6 @@ var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
 
-
 //sets the number of pixels for the yscale
 //adds padding
 var yScale = d3.scaleBand()
@@ -403,7 +410,6 @@ var xScale = d3.scaleLinear()
 var xAxis = d3.axisTop(xScale)
 //positions the y axis on the left
 var yAxis = d3.axisLeft(yScale);
-
 
 //makes a chart with width and height adjusted with margins
 var svgContainer = d3.select("#svg").append("svg")
@@ -444,7 +450,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
 
-
       //creates labels for y scale on the side
       svgContainer.append("g")
           .attr("class", "xaxis")
@@ -472,12 +477,14 @@ var svgContainer = d3.select("#svg").append("svg")
           .text("Location");
 }
 
+//creating bar graph for buddy available by grade
 var buddyAvailableByGrade = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 1;
 floor_count = 0;
 location_count = 0;
 
-//create data
+//creating data by parsing list from python file
 var freshman = 0;
 var sophomore= 0;
 var junior = 0;
@@ -504,7 +511,6 @@ var margin = {top:50, right:50, bottom:50, left:50};
 var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
-
 
 //sets the number of pixels for the yscale
 //adds padding
@@ -561,7 +567,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
 
-
       //creates labels for y scale on the side
       svgContainer.append("g")
           .attr("class", "xaxis")
@@ -589,11 +594,14 @@ var svgContainer = d3.select("#svg").append("svg")
           .text("Grade");
 }
 
+//creating bar graph for buddy available by floor
 var buddyAvailableByFloor = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 0;
 floor_count = 1;
 location_count = 0;
 
+//creating data by parsing list from python
 var data = [];
 
 var first = 0
@@ -631,7 +639,6 @@ for (var i=0; i<buddyAvailable_floor.length; i++){
   }
 }
 
-
 var data =  [{"floor":1, "number":first},
              {"floor":2, "number":second},
              {"floor":3, "number":third},
@@ -650,7 +657,6 @@ var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
 
-
 //sets the number of pixels for the yscale
 //adds padding
 var yScale = d3.scaleBand()
@@ -665,7 +671,6 @@ var xScale = d3.scaleLinear()
 var xAxis = d3.axisTop(xScale)
 //positions the y axis on the left
 var yAxis = d3.axisLeft(yScale);
-
 
 //makes a chart with width and height adjusted with margins
 var svgContainer = d3.select("#svg").append("svg")
@@ -706,7 +711,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
 
-
       //creates labels for y scale on the side
       svgContainer.append("g")
           .attr("class", "xaxis")
@@ -736,11 +740,14 @@ var svgContainer = d3.select("#svg").append("svg")
           .text("Floor");
 }
 
+//creating bar graph for buddy available by location
 var buddyAvailableByLocation = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 0;
 floor_count = 0;
 location_count = 1;
 
+//creating data by parsing list from python file
 var parsedList = []
 var quoteCount = 0
 var word= '';
@@ -800,7 +807,6 @@ var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
 
-
 //sets the number of pixels for the yscale
 //adds padding
 var yScale = d3.scaleBand()
@@ -815,7 +821,6 @@ var xScale = d3.scaleLinear()
 var xAxis = d3.axisTop(xScale)
 //positions the y axis on the left
 var yAxis = d3.axisLeft(yScale);
-
 
 //makes a chart with width and height adjusted with margins
 var svgContainer = d3.select("#svg").append("svg")
@@ -856,7 +861,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
 
-
       //creates labels for y scale on the side
       svgContainer.append("g")
           .attr("class", "xaxis")
@@ -884,11 +888,14 @@ var svgContainer = d3.select("#svg").append("svg")
           .text("Location");
 }
 
+//creating bar graph for lockers available by floor
 var lockersAvailableByFloor = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 0;
 floor_count = 1;
 location_count = 0;
 
+//creates data by parsing list from python file
 var data = [];
 
 var first = 0
@@ -926,7 +933,6 @@ for (var i=0; i<lockersAvailable_floor.length; i++){
   }
 }
 
-
 var data =  [{"floor":1, "number":first},
              {"floor":2, "number":second},
              {"floor":3, "number":third},
@@ -944,7 +950,6 @@ var margin = {top:50, right:50, bottom:50, left:50};
 var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
-
 
 //sets the number of pixels for the yscale
 //adds padding
@@ -1001,7 +1006,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
 
-
       //creates labels for y scale on the side
       svgContainer.append("g")
           .attr("class", "xaxis")
@@ -1031,11 +1035,14 @@ var svgContainer = d3.select("#svg").append("svg")
           .text("Floor");
 }
 
+//creating bar graph for lockers available by location
 var lockersAvailableByLocation = function() {
+//reset count for buttons to avoid multiple graphs
 grade_count = 0;
 floor_count = 0;
 location_count = 1;
 
+//creates data by parsing list from python file
 var parsedList = []
 var quoteCount = 0
 var word= '';
@@ -1095,7 +1102,6 @@ var height = 3*200-100;
 //the total height of the bar graph
 var width = 800-100;
 
-
 //sets the number of pixels for the yscale
 //adds padding
 var yScale = d3.scaleBand()
@@ -1110,7 +1116,6 @@ var xScale = d3.scaleLinear()
 var xAxis = d3.axisTop(xScale)
 //positions the y axis on the left
 var yAxis = d3.axisLeft(yScale);
-
 
 //makes a chart with width and height adjusted with margins
 var svgContainer = d3.select("#svg").append("svg")
@@ -1150,7 +1155,6 @@ var svgContainer = d3.select("#svg").append("svg")
           .attr("x", function(d) { return  xScale(d.number) + 10; })
           .attr("dx", ".25em")
           .text(function(d) { return d.number; });
-
 
       //creates labels for y scale on the side
       svgContainer.append("g")
