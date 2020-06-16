@@ -4,23 +4,25 @@
 {% block body %}
 <center>
 <form>
-  <div class="form-row">
+  <div class="form-row text-center">
+    <div class="form-group col-md-4"></div>
     <div class="form-group col-md-4">
-    <label class="font-weight-bold">Which data you want to be displayed:</label>
-    <select id="graph" class="form-control" name="graph">
-      <option selected disabled>Please Select</option>
-      <option value="lockers-trade">Lockers Available for Trade</option>
-      <option value="users-buddy">Users Available for Buddy</option>
-      <option value="lockers-registered">Locker Registration</option>
-      <option value="users-registered">User Registation</option>
-    </select>
+      <label class="font-weight-bold">Which data you want to be displayed:</label>
+      <select id="graph" class="form-control" name="graph">
+        <option selected disabled>Please Select</option>
+        <option value="lockers-trade">Lockers Available for Trade</option>
+        <option value="users-buddy">Users Available for Buddy</option>
+        <option value="lockers-registered">Locker Registration</option>
+        <option value="users-registered">User Registation</option>
+      </select>
     </div>
+    <div class="form-group col-md-4"></div>
   </div>
 </form>
 
-<button type="button" class="btn btn-outline-dark" id="grade" style="display:none;">by grade</button>
-<button type="button" class="btn btn-outline-dark" id="floor" style="display:none;">by floor</button>
-<button type="button" class="btn btn-outline-dark" id="location" style="display:none;">by location</button>
+<button type="button" class="btn btn-outline-dark" id="grade" style="display:none;">By Grade</button>
+<button type="button" class="btn btn-outline-dark" id="floor" style="display:none;">By Floor</button>
+<button type="button" class="btn btn-outline-dark" id="location" style="display:none;">By Location</button>
 </center>
 
 <br><br><br>
