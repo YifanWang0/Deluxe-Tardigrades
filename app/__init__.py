@@ -224,7 +224,7 @@ def buddy():
     sports = request.form.get("sports")
     books = request.form.get("textbook")
     misc = request.form.get("misc")
-    info = sports+","+books+","+misc
+    info = sports+"|"+books+"|"+misc
     db_manager.updateSurvey(session['osis'],info)
     user=session['osis']
     return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""], user=user)
@@ -260,7 +260,7 @@ def bsearch():
         loop.append(count)
         temp=["", ""]
         if info[5] != "":
-            temp = info[5].split(",")
+            temp = info[5].split("|")
         survey.append(temp)
         count+=1
     to = db_manager.getTransactionTo(session["osis"])
@@ -329,7 +329,7 @@ def notifs():
     for value in all:
         if(value[4] == "B"):
             temp=db_manager.getUserInfo(value[2])
-            temp[5]=temp[5].split(",")
+            temp[5]=temp[5].split("|")
             buddy.append(temp)
         if(value[4] == "L"):
             them = db_manager.getUserInfo(value[2])
