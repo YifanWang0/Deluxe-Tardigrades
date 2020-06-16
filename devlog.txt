@@ -70,11 +70,11 @@ elizabethD -- 2020-06-08 17:45
 elizabethD -- 2020-06-08 22:08
     - created inital locker search, needs more testing
 
-amandaZ -- 2020-06-08 24:28
+amandaZ -- 2020-06-08 23:28
     - created buddy survey's layout
     - accessibility of survey answers
 
-amandaZ -- 2020-06-08 27:33
+amandaZ -- 2020-06-09 00:33
     - recording the survey answers into sqlite
     - made placeholder the survey answers if you already answered before
 
