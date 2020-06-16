@@ -64,8 +64,16 @@ yifanW -- 2020-06-07 23:32
 elizabethD -- 2020-06-07 23:39
     - added profile editor html and database functions
 
+amandaC -- 2020-06-08 17:14
+    - added base css to login page
+    - added a footer
+
 elizabethD -- 2020-06-08 17:45
     - connected editprof to home page
+
+amandaC -- 2020-06-08 19:00
+    - finshed css to signup and login page
+    - added form checking and flash messages to sign up
 
 elizabethD -- 2020-06-08 22:08
     - created inital locker search, needs more testing
@@ -91,6 +99,14 @@ amandaZ -- 2020-06-09 23:57
     - made filter system using sqlite
     - debugged filter error dealing with wrong type being returned
 
+amandaC -- 2020-06-10 15:20
+    - added css to home and edit profile page
+    - fixed login and signup css
+    - added password confirmation to edit profile page
+
+amandaC -- 2020-06-10 16:35
+    - added css to locker search
+
 amandaZ -- 2020-06-10 17:12
     - fixed filter system due to quotes error
     - made update route that gathers info about which person user requested
@@ -112,6 +128,9 @@ elizabethD -- 2020-06-10 21:00
 elizabethD -- 2020-06-10 23:22
     - lockers can be put on market on home page
 
+amandaC -- 2020-06-10 21:55
+    - fixed signup form so locker info is not required
+
 amandaZ -- 2020-06-11 17:59
     - Tried to implement change buddy button where you can change your buddy
     - wrote database functions for change buddy
@@ -120,6 +139,11 @@ elizabethD -- 2020-06-11 22:06
     - transaction card displays more specific info
     - added request a locker functions
     - added give up function
+
+amandaC -- 2020-06-10 23:08
+    - added css to survey page
+    - added css to buddy search
+    - fixed css for transactions on home page
 
 elizabethD -- 2020-06-11 23:15
     - locker request buttons updated to show status of trade
@@ -152,6 +176,12 @@ amandaZ -- 2020-06-14 18:48
 amandaZ -- 2020-06-14 21:37
     - worked on edit profile route for if they changed their osis, it has to update all three tables
     - made sure the newly edited info is not already in database (like for user and locker number)
+
+amandaC -- 2020-06-15 22:58
+    - added css to notifications page
+    - fixed button on notifications page and locker search page
+    - added flash message to signup page
+    - capitalized buttons on stats page
 
 amandaZ -- 2020-06-15 23:17
     - debugged notifications, buddy, and locker bugs
