@@ -72,17 +72,17 @@ elizabethD -- 2020-06-08 17:45
     - connected editprof to home page
 
 amandaC -- 2020-06-08 19:00
-    - finshed css to signup and login page
+    - finished css to signup and login page
     - added form checking and flash messages to sign up
 
 elizabethD -- 2020-06-08 22:08
-    - created inital locker search, needs more testing
+    - created initial locker search, needs more testing
 
-amandaZ -- 2020-06-08 24:28
+amandaZ -- 2020-06-09 00:28
     - created buddy survey's layout
     - accessibility of survey answers
 
-amandaZ -- 2020-06-08 27:33
+amandaZ -- 2020-06-09 03:33
     - recording the survey answers into sqlite
     - made placeholder the survey answers if you already answered before
 
@@ -125,11 +125,11 @@ amandaZ -- 2020-06-10 21:00
 elizabethD -- 2020-06-10 21:00
     - merged branch with master
 
-elizabethD -- 2020-06-10 23:22
-    - lockers can be put on market on home page
-
 amandaC -- 2020-06-10 21:55
     - fixed signup form so locker info is not required
+
+elizabethD -- 2020-06-10 23:22
+    - lockers can be put on market on home page
 
 amandaZ -- 2020-06-11 17:59
     - Tried to implement change buddy button where you can change your buddy
@@ -166,12 +166,12 @@ elizabethD -- 2020-06-13 15:08
     - completed merge with buddy and notifs branches
 
 amandaZ -- 2020-06-13 21:18
-    - fixed error in filter that only searches for osis in user table which doesnt work when you use floor, locker location, or top/bottom filters
+    - fixed error in filter that only searches for osis in user table which doesn't work when you use floor, locker location, or top/bottom filters
     - shows "No results found" if no results are found
 
 amandaZ -- 2020-06-14 18:48
     - made the change buddy button into check notifs button if they already made a change buddy request
-    - prevented people who are buddies from accesting find buddy page
+    - prevented people who are buddies from accessing find buddy page
 
 amandaZ -- 2020-06-14 21:37
     - worked on edit profile route for if they changed their osis, it has to update all three tables
