@@ -35,37 +35,40 @@
         <div class="card-body">
           <h5 class="card-title">Buddy Info:</h5>
           <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[6]}}</p>
-        </div>
+          <hr class="my-4">
         {% if buddy[0] != "N/A" and not changed %}
           <form action="/dissolve" method="post">
-            <button type="submit" class="btn btn-primary btn-block active" name="break" value={{buddy[0]}}>Change Buddy</button>
+            <button type="submit" class="btn btn-success btn-block active" name="break" value={{buddy[0]}}>Change Buddy</button>
           </form>
          {% endif %}
          {% if buddy[0] != "N/A" and changed %}
            <form action="/notifs">
-             <button type="submit" class="btn btn-primary btn-block active" >Check Notifications!</button>
+             <button type="submit" class="btn btn-success btn-block active" >Check Notifications!</button>
            </form>
           {% endif %}
          {% if buddy[0] == "N/A" %}
          <form action="/survey">
-           <button type="submit" class="btn btn-primary btn-block active">Find a Buddy</button>
+           <button type="submit" class="btn btn-success btn-block active">Find a Buddy</button>
          </form>
         {% endif %}
         </div>
       </div>
+      </div>
     {% for item in transactions%}
     <form action="/giveup" method="post">
     <div class="row">
-    <div class="card text-white text-center bg-warning my-3 col-md-12">
-      <div class="card-header">Pending Transaction</div>
-      <div class="card-body">
-        <h5 class="card-title">Transaction Type: {% if item[4]=="B" %} Buddy Request {% endif %} {% if item[4]=="L" %} Locker Request {% endif %} {% if item[4]=="D" %} Change Buddy Request {% endif %}</h5>
-        <p class="card-text">{% if item[1] == '' %} ON MARKET <br>{% endif %}Locker: {{item[5]}}-{{item[0]}}<br>Request to: {{item[1]}} <br> </p>
-        <input type="text" name="person" hidden value={{item[1]}}>
-          <input type="text" name="type" hidden value={{item[4]}}>
-        <hr class="my-4">
-        <button type="submit" class="text-white btn btn-warning btn-block active" name="return" value="home">Give Up</button>
-          </div>
+      <div class="card text-white text-center bg-warning my-3 col-md-12">
+        <div class="card-header">Pending Transaction</div>
+        <div class="card-body">
+          <h5 class="card-title">Transaction Type: {% if item[4]=="B" %} Buddy Request {% endif %} {% if item[4]=="L" %} Locker Request {% endif %} {% if item[4]=="D" %} Change Buddy Request {% endif %}</h5>
+          <p class="card-text">{% if item[1] == '' %} ON MARKET <br>{% endif %}Locker: {{item[5]}}-{{item[0]}}<br>Request to: {{item[1]}} <br> </p>
+          <input type="text" name="person" hidden value={{item[1]}}>
+            <input type="text" name="type" hidden value={{item[4]}}>
+          <hr class="my-4">
+          <form action="/survey">
+            <button type="submit" class="btn btn-warning btn-block active" name="return" value="home">Give Up</button>
+          </form>
+        </div>
       </div>
     </div>
     </form>
