@@ -21,7 +21,7 @@
   {% if all[item] in close %}
   <form action="/giveup" method="post">
     <div class="row">
-      <div class="card text-white text-primary bg-info my-3 col-md-12">
+      <div class="card text-white bg-info my-3 col-md-12">
         <div class="card-header">{% if all[item][4] == "B" %} Inactive Buddy Request {% endif %} {% if all[item][4] == "L" %} Inactive Locker Request {% endif %} {% if all[item][4] == "D" %} Inactive Dissolve Buddy Request {% endif %}</div>
         <div class="card-body">
           <h5 class="card-title">{% if all[item][4] == "B" %} From: {{buddy[item][0]}} {% endif %}{% if all[item][4] == "L" %} Locker: Locker Number: {{locker[item][3]}}-{{locker[item][0]}} {% endif %} {% if all[item][4] == "D" %} From: {{dissolve[item][0]}} {% endif %}</h5>

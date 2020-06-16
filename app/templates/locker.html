@@ -106,19 +106,19 @@
             <form action="/confirm" method="post">
             <div>
               <input type="text" name="type" value="L" hidden>
-              <button class="btn btn-success" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
+              <button class="btn btn-primary btn-block active" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
             </div>
             </form>
             {% endif %}
             {% if key[2] in sender %}
             <div>
-              <button class="btn btn-secondary" type="submit" disabled>Requested</button>
+              <button class="btn btn-secondary btn-block active" type="submit" disabled>Requested</button>
             </div>
             {% endif %}
             {% if key[2] not in sender and key[2] not in to and all[key][1] != user %}
             <form action="/lRequest" method="post">
             <div>
-              <button class="btn btn-primary" type="submit" name="lrequest" value ="{{key[2]}}">Request</button>
+              <button class="btn btn-info btn-block active" type="submit" name="lrequest" value ="{{key[2]}}">Request</button>
             </div>
             </form>
             {% endif %}
@@ -150,19 +150,19 @@
             <form action="/confirm" method="post">
             <div>
               <input type="text" name="type" value="L" hidden>
-              <button class="btn btn-success" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
+              <button class="btn btn-primary btn-block active" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
             </div>
             </form>
             {% endif %}
             {% if key[2] in sender %}
             <div>
-              <button class="btn btn-secondary" type="submit" disabled>Requested</button>
+              <button class="btn btn-secondary btn-block active" type="submit" disabled>Requested</button>
             </div>
             {% endif %}
             {% if key[2] not in sender and key[2] not in to and results[key][1] != user %}
             <form action="/lRequest" method="post">
             <div>
-              <button class="btn btn-primary" type="submit" name="lrequest" value ="{{key[2]}}">Request</button>
+              <button class="btn btn-info btn-block active" type="submit" name="lrequest" value ="{{key[2]}}">Request</button>
             </div>
             </form>
             {% endif %}
