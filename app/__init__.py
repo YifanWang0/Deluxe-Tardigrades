@@ -340,7 +340,7 @@ def notifs():
     open = db_manager.getMess(session["osis"],1)
     close = db_manager.getMess(session["osis"],0)
     user=session['osis']
-    return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
+    return render_template("notifs.html", heading="Notifications", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
 
 # displays information about the stats of each floor, locker type, number buddies, etc
 @app.route("/stats")
