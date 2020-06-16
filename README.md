@@ -47,7 +47,8 @@ pip3 install -r requirements.txt
 ```
 
 Go into the app folder.
-```cd app/
+```
+cd app/
 ```
 
 Then run our program.
