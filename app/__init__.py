@@ -77,8 +77,12 @@ def newUser():
     gender = request.form.get("gender")
     buddy = ""
     linfo = [combo, floor, level, type, "OWNED"]
+    if(locker != "" and combo == "" or combo != "" and locker == ""):
+        flash("Please fill in all locker information.", 'danger')
+        return redirect('/signup')
     if (locker == ""):
-        linfo[4] = ""
+        for i in linfo:
+            linfo[1] = ""
     if(db_manager.addUser(osis, password, grade, buddy, linfo, locker, gender)=="done"):
         flash("You've successfully made an account!", 'success')
         return redirect('/')
