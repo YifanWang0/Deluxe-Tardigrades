@@ -21,14 +21,14 @@
   {% if all[item] in close %}
   <form action="/giveup" method="post">
     <div class="row">
-      <div class="card text-white text-primary bg-info my-3 col-md-12">
+      <div class="card text-white text-center bg-info my-3 col-md-12">
         <div class="card-header">{% if all[item][4] == "B" %} Inactive Buddy Request {% endif %} {% if all[item][4] == "L" %} Inactive Locker Request {% endif %} {% if all[item][4] == "D" %} Inactive Dissolve Buddy Request {% endif %}</div>
         <div class="card-body">
           <h5 class="card-title">{% if all[item][4] == "B" %} From: {{buddy[item][0]}} {% endif %}{% if all[item][4] == "L" %} Locker: Locker Number: {{locker[item][3]}}-{{locker[item][0]}} {% endif %} {% if all[item][4] == "D" %} From: {{dissolve[item][0]}} {% endif %}</h5>
           <input type="text" name="type" value={{all[item][4]}} hidden>
           <p class="card-text">{% if all[item][4] == "B" %} Grade: {{buddy[item][3]}} &nbsp; &nbsp; Gender: {{buddy[item][6]}} &nbsp; &nbsp; Sports Load: {{buddy[item][5][0]}} &nbsp; &nbsp; Textbook Count: {{buddy[item][5][1]}} {% endif %}{% if all[item][4] == "L" %}Floor: {{locker[item][3]}} &nbsp; &nbsp; Level: {{locker[item][4]}} &nbsp; &nbsp; Location: {{locker[item][5]}}{% endif %} {% if all[item][4] == "D" %} Your buddy wants to find a different buddy. {% endif %}</p>
           <input type="text" name="person" {% if all[item][4] == "D" %} value = {{dissolve[item][0]}} {% endif %} {% if all[item][4] == "B" %} value = {{buddy[item][0]}} {% endif %} hidden>
-          <button type="submit" class="btn btn-primary btn-block active" name="return" value="notifs">Delete</button>
+          <button type="submit" class="btn btn-info btn-block active" name="return" value="notifs">Delete</button>
         </div>
       </div>
     </div>

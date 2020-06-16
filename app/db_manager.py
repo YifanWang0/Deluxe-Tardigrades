@@ -482,6 +482,7 @@ def getMess(osis,num):
         for cell in value:
             temp.append(cell)
         info.append(temp)
+        temp=[]
     return info
 
 # returns a list of all notifications the user was sent
@@ -497,4 +498,5 @@ def getAllNotifs(osis):
         for cell in value:
             temp.append(cell)
         info.append(temp)
+        temp=[]
     return info

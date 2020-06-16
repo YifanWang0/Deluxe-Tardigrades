@@ -201,7 +201,7 @@ def updateprof():
         logout()
         return render_template("login.html")
     else:
-        flash("Error",'danger')
+        flash("Error: Invalid data or format",'danger')
         return render_template("editprof.html",heading="Edit Profile",user=oldosis)
 
 # allows the user to answer questions to help them get a buddy
@@ -333,14 +333,14 @@ def notifs():
     for value in range(len(all)):
         looper.append(value)
     for value in all:
-        if(value[4] == "B"):
+        if(value[4] != "L"):
             temp=db_manager.getUserInfo(value[2])
             temp[5]=temp[5].split("|")
             buddy.append(temp)
         if(value[4] == "L"):
             them = db_manager.getUserInfo(value[2])
             locker.append(db_manager.getLockerInfo(them[2],them[0]))
-        else:
+        if(value[4] == "D"):
             dissolve.append(db_manager.getDissolveInfo(session['osis']))
     open = db_manager.getMess(session["osis"],1)
     close = db_manager.getMess(session["osis"],0)
