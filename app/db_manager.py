@@ -244,7 +244,6 @@ def deleteTrans(user, recipient, type):
         exec(q)
     q = "DELETE FROM transaction_tbl WHERE sender=? AND recipient=? AND request=?"
     inputs=(user,recipient,type)
-    # print(user,recipient,type)
     execmany(q,inputs)
     return True
 
@@ -354,7 +353,7 @@ def getSurveyInfo(osis):
     data = execmany(q, inputs).fetchone()
     info = []
     if(data[0] != ""):
-        info = data[0].split(",")
+        info = data[0].split("|")
     return info
 
 # filters the buddy search by using the filterUser and filterLock helper functions, returns a list of osis

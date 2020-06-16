@@ -133,7 +133,6 @@ def giveUp():
 @login_required
 def confirm():
      osis1 = request.form.get("person")
-     # print(osis1)
      osis2 = session["osis"]
      type = request.form.get("type")
      if (type == "B"):
@@ -166,7 +165,6 @@ def breakBuddy():
 def market():
     user = session['osis']
     locker = db_manager.getUserInfo(user)[2]
-    print(locker)
     if (locker == ''):
         flash("You do not have a locker!", 'danger')
         return redirect('/home')
@@ -263,7 +261,7 @@ def bsearch():
     for value in range(len(results)):
         info = db_manager.getUserInfo(results[value])
         buddy.append(info)
-        temp=db_manager.getLockerInfo(info[2],session['osis'])
+        temp=db_manager.getLockerInfo(info[2],info[0])
         locker.append(temp)
         loop.append(count)
         temp=["", ""]
@@ -341,7 +339,6 @@ def notifs():
             buddy.append(temp)
         if(value[4] == "L"):
             them = db_manager.getUserInfo(value[2])
-            # print(them)
             locker.append(db_manager.getLockerInfo(them[2],them[0]))
         else:
             dissolve.append(db_manager.getDissolveInfo(session['osis']))
