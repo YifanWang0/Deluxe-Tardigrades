@@ -382,26 +382,23 @@ def stats():
         if len(list) != 0 and list[0] != '':
             buddyAvailable_location.append(list[0])
     #lockers available
-    temp_floor = db_manager.getColumnInfo_Specific("floor", "transaction", "status = 1")
-    lockersAvailable_floor = []
-    for floor in temp_floor:
-        if isinstance(floor, int):
-            lockersAvailable_floor.append(floor)
-    temp_location = db_manager.getColumnInfo_Specific("locker", "transaction", "status = 1")
-    parsed_location = []
-    for locker in temp_location:
-        if isinstance(locker, int):
-            parsed_location.append(locker)
-    temp_location1 = db_manager.getColumnInfo_Specific("floor", "transaction", "status = 1")
-    parsed_location1 = []
-    for floor in temp_location1:
-        if isinstance(floor, int):
-            parsed_location1.append(floor)
-    lockersAvailable_location = []
-    index = -1
-    for locker in parsed_location:
-        index += 1
-        lockersAvailable_location.append(db_manager.getColumnInfo_Specific("location", "locker", "locker = " + str(locker) + " AND floor = " + str(parsed_location1[index])))
+    lockersAvailable_floor = db_manager.getColumnInfo_Specific("floor", "locker", "status = 'TRADING'")
+    lockersAvailable_location = db_manager.getColumnInfo_Specific("location", "locker", "status = 'TRADING'")
+    # temp_location = db_manager.getColumnInfo_Specific("locker", "transaction", "status = 1")
+    # parsed_location = []
+    # for locker in temp_location:
+    #     if isinstance(locker, int):
+    #         parsed_location.append(locker)
+    # temp_location1 = db_manager.getColumnInfo_Specific("floor", "transaction", "status = 1")
+    # parsed_location1 = []
+    # for floor in temp_location1:
+    #     if isinstance(floor, int):
+    #         parsed_location1.append(floor)
+    # lockersAvailable_location = []
+    # index = -1
+    # for locker in parsed_location:
+    #     index += 1
+    #     lockersAvailable_location.append(db_manager.getColumnInfo_Specific("location", "locker", "locker = " + str(locker) + " AND floor = " + str(parsed_location1[index])))
     return render_template("stat.html", title="Stats", userRegistration_grade=userRegistration_grade, lockerRegistration_floor=lockerRegistration_floor, lockerRegistration_location=lockerRegistration_location,
                            buddyAvailable_grade=buddyAvailable_grade, buddyAvailable_floor=buddyAvailable_floor, buddyAvailable_location=buddyAvailable_location, lockersAvailable_floor=lockersAvailable_floor,
                            lockersAvailable_location=lockersAvailable_location)

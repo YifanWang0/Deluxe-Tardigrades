@@ -3,7 +3,7 @@
 <div class="container">
   <h3>Search</h3>
   <div class="alert alert-info" role="alert">
-     Search for a specific locker number by inputting 4 digits with a space after the floor number (Ex: 2-225 as 2 225).<br>
+     Search for a specific locker number by inputting 4 digits with a dash after the floor number (Ex: 2-225).<br>
       Search for a specific person trading by inputting their 9 digit OSIS.<br>
       Indicate which search to make using the dropdown.
   </div>
@@ -11,7 +11,7 @@
     <form action="/lSearch" method="post">
       <div class="form-row">
         <div class="form group col-md-4">
-          <input id="query" class="form-control mr-sm-2" type="text" name="query" placeholder="2 225 OR 123456789"><br>
+          <input id="query" class="form-control mr-sm-2" type="text" name="query" placeholder="2-225 OR 123456789"><br>
         </div>
         <div class="form group col-md-3">
           <select id="searchBy" class="form-control" name="searchBy">
@@ -101,10 +101,27 @@
             <p class="card-text">Owner: {{key[2]}} <br> Floor: {{key[5]}} <br>
                                Level: {{all[key][4]}} <br> Location: {{all[key][5]}} <br>
                                Market Status: OPEN </p>
-            <hr class="my-4">
-            <form action="/home">
-              <button type="submit" class="btn btn-info btn-block active">Request Trade</button>
+            <hr class="my-3">
+            {% if key[2] in to %}
+            <form action="/confirm" method="post">
+            <div>
+              <input type="text" name="type" value="L" hidden>
+              <button class="btn btn-primary btn-block active" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
+            </div>
             </form>
+            {% endif %}
+            {% if key[2] in sender %}
+            <div>
+              <button class="btn btn-secondary btn-block active" type="submit" disabled>Requested</button>
+            </div>
+            {% endif %}
+            {% if key[2] not in sender and key[2] not in to and all[key][1] != user %}
+            <form action="/lRequest" method="post">
+            <div>
+              <button class="btn btn-info btn-block active" type="submit" name="lrequest" value ="{{key[2]}}">Request</button>
+            </div>
+            </form>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -116,8 +133,8 @@
     <div class="text-center">
       <h2>Search Results</h2>
     </div>
-    <!-- id, locker number, recipient, owner, status, request, floor -->
-    <!-- locker number, owner, combo, floor, level, type, status -->
+    <!-- locker number, recipient, owner, status, request, floor -->
+    <!-- locker number, owner, combo, floor, level, location, status -->
     <div class="col-sm-12 col-md-12 col-lg-12 mx-auto">
       {% for key in results %}
       <div class="row">
@@ -128,9 +145,27 @@
             <p class="card-text">Owner: {{key[2]}} <br> Floor: {{key[5]}} <br>
                                  Level: {{results[key][4]}} <br> Location: {{results[key][5]}} <br>
                                 Market Status: OPEN </p>
-            <form action="/home">
-              <button class="btn btn-info active btn-block">Request Trade</button>
+            <hr class="my-3">
+            {% if key[2] in to %}
+            <form action="/confirm" method="post">
+            <div>
+              <input type="text" name="type" value="L" hidden>
+              <button class="btn btn-primary btn-block active" type="submit" name="person" value ="{{key[2]}}">Accept Request</button>
+            </div>
             </form>
+            {% endif %}
+            {% if key[2] in sender %}
+            <div>
+              <button class="btn btn-secondary btn-block active" type="submit" disabled>Requested</button>
+            </div>
+            {% endif %}
+            {% if key[2] not in sender and key[2] not in to and results[key][1] != user %}
+            <form action="/lRequest" method="post">
+            <div>
+              <button class="btn btn-info btn-block active" type="submit" name="lrequest" value ="{{key[2]}}">Request</button>
+            </div>
+            </form>
+            {% endif %}
           </div>
         </div>
       </div>
