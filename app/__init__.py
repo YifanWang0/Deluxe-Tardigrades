@@ -1,7 +1,7 @@
 # Team Deluxe-Tardigrades :: Yifan Wang, Amber Chen, Elizabeth Doss, Mandy Zheng
 # SoftDev pd1
 # P05 :: Fin
-# 2020-06-11
+# 2020-06-16
 
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from functools import wraps
@@ -13,6 +13,7 @@ import urllib3, json, urllib
 app = Flask(__name__)
 app.secret_key = os.urandom(32)
 
+# denotes which routes require login
 def login_required(f):
     @wraps(f)
     def dec(*args, **kwargs):
@@ -23,6 +24,7 @@ def login_required(f):
         return redirect('/')
     return dec
 
+# denotes which routes do not require login
 def no_login_required(f):
     '''Decorator for making sure user is not logged in'''
     @wraps(f)
@@ -34,11 +36,13 @@ def no_login_required(f):
         return redirect('/home')
     return dec
 
+# allows the user to login to their account
 @app.route("/")
 @no_login_required
 def login():
     return render_template("login.html")
 
+# checks to see if osis and password combination are valid in user_tbl
 @app.route("/check", methods=['POST'])
 @no_login_required
 def authentication():
@@ -49,21 +53,15 @@ def authentication():
         flash("You have successfully logged in!", "success")
         return redirect('/home')
     else:
-        # flash("Wrong Login Information!", 'danger')
         return redirect('/')
 
-@app.route("/logout")
-@login_required
-def logout():
-    session.clear()
-    flash('You have logged out!', 'success')
-    return redirect('/')
-
+ # allows the user to create a new account which is added to user_tbl and locker_tbl
 @app.route("/signup")
 @no_login_required
 def signup():
     return render_template("signup.html")
 
+# adds new user info to the database
 @app.route("/auth", methods=['POST'])
 @no_login_required
 def newUser():
@@ -91,6 +89,15 @@ def newUser():
         flash("OSIS has already been registered.", 'danger')
         return redirect('/signup')
 
+# allows the user to logout of their account
+@app.route("/logout")
+@login_required
+def logout():
+    session.clear()
+    flash('You have logged out!', 'success')
+    return redirect('/')
+
+# home page which displays user/locker/transaction data, allows user to put their locker on the market
 @app.route("/home")
 @login_required
 def profile():
@@ -103,13 +110,7 @@ def profile():
     changed=db_manager.ifDissolve(session["osis"])
     return render_template("home.html", heading="Profile", userInfo=userInfo, buddy=buddy, locker=locker, transactions=transactions , user=session['osis'], changed=changed)
 
-@app.route("/updated", methods=['POST'])
-@login_required
-def updateBuddy():
-     osis=request.form.get("request")
-     db_manager.buddyRequest(osis,session['osis'])
-     return redirect("/home")
-
+# gives up a locker or buddy request or takes locker off the market
 @app.route("/giveup", methods=['POST'])
 @login_required
 def giveUp():
@@ -123,6 +124,7 @@ def giveUp():
         db_manager.deleteTrans(osis1,osis2,type)
     return redirect("/"+request.form.get("return"))
 
+# confirms a request sent to the user by another user, can be to accept a locker or buddy or dissolve a buddy pairing
 @app.route("/confirm", methods=['POST'])
 @login_required
 def confirm():
@@ -138,6 +140,15 @@ def confirm():
          db_manager.dissolveBuddy(osis2, osis1)
      return redirect("/home")
 
+# updates buddy once a pairing is made
+@app.route("/updated", methods=['POST'])
+@login_required
+def updateBuddy():
+     osis=request.form.get("request")
+     db_manager.buddyRequest(osis,session['osis'])
+     return redirect("/home")
+
+# dissolves a buddy partnership by updating the user table
 @app.route("/dissolve", methods=['POST'])
 @login_required
 def breakBuddy():
@@ -145,12 +156,26 @@ def breakBuddy():
      db_manager.breakB(session['osis'], osis)
      return redirect("/home")
 
+# puts a user's locker on the market to be traded
+@app.route("/market", methods=['POST'])
+@login_required
+def market():
+    user = session['osis']
+    locker = db_manager.getUserInfo(user)[2]
+    if (db_manager.getLockerInfo(locker,user)[6] == 'TRADING'):
+        flash("Locker already on market!", 'danger')
+        return redirect('/home')
+    db_manager.putOnMarket(locker,user)
+    return redirect("/home")
+
+# allows the user to edit info from sign up
 @app.route("/editprof")
 @login_required
 def editprof():
     user = session['osis']
     return render_template("editprof.html", user=user, heading="Edit Profile")
 
+# updates the database, logs the user out if successful, returns the same page otherwise
 @app.route("/updateprof", methods=['POST'])
 @login_required
 def updateprof():
@@ -173,6 +198,7 @@ def updateprof():
         flash("Error",'danger')
         return render_template("editprof.html",heading="Edit Profile",user=oldosis)
 
+# allows the user to answer questions to help them get a buddy
 @app.route("/survey")
 @login_required
 def survey():
@@ -191,6 +217,7 @@ def survey():
         misc = list[2]
     return render_template("survey.html", heading = "Lockey Buddy Survey", sports = sports, books = books, misc = misc, user=user)
 
+# updates the user_tbl with survey answers and returns buddy search page
 @app.route("/buddy", methods=['POST'])
 @login_required
 def buddy():
@@ -202,6 +229,7 @@ def buddy():
     user=session['osis']
     return render_template("buddy.html", heading = "Lockey Buddy Search", query=["","","","","","","","",""], user=user)
 
+# searches the user_tbl and locker_tbl for specific people who fit search criteria
 @app.route("/bsearch", methods=['POST'])
 @login_required
 def bsearch():
@@ -240,6 +268,7 @@ def bsearch():
     user=session['osis']
     return render_template("buddy.html" , query=query,buddy=buddy,locker=locker, to = to, sender = sender, loop=loop, survey=survey, length=length, user=user)
 
+# allows the user to search for a locker or person or filter tradeable lockers in the database
 @app.route("/locker")
 @login_required
 def locker():
@@ -249,6 +278,7 @@ def locker():
     sender = db_manager.getTransactionFrom(session["osis"])
     return render_template("locker.html",user=user,all=all,results=[],to=to,sender=sender,heading="Locker Search")
 
+# searches the transaction table for a single locker number or person
 @app.route("/lSearch", methods=['POST'])
 @login_required
 def lSearch():
@@ -263,6 +293,7 @@ def lSearch():
         return redirect('/locker')
     return render_template("locker.html",heading="Locker Search",to=to,sender=sender,user=user,results=results)
 
+# filters through the transaction table to find lockers with the desired criteria
 @app.route("/lFilter", methods=['POST'])
 @login_required
 def lFilter():
@@ -275,17 +306,7 @@ def lFilter():
     results = db_manager.filterLocker(floor,level,type)
     return render_template("locker.html",heading="Locker Search",to=to,sender=sender,user=user,results=results)
 
-@app.route("/market", methods=['POST'])
-@login_required
-def market():
-    user = session['osis']
-    locker = db_manager.getUserInfo(user)[2]
-    if (db_manager.getLockerInfo(locker,user)[6] == 'TRADING'):
-        flash("Locker already on market!", 'danger')
-        return redirect('/home')
-    db_manager.putOnMarket(locker,user)
-    return redirect("/home")
-
+# sends a locker request to a person and adds to the transaction table
 @app.route("/lRequest", methods=['POST'])
 @login_required
 def lRequest():
@@ -294,14 +315,7 @@ def lRequest():
      db_manager.lockerRequest(osis,user)
      return redirect("/home")
 
-@app.route("/lAccept", methods=['POST'])
-@login_required
-def lAccept():
-     me = session['osis']
-     you=request.form.get("laccept")
-     db_manager.acceptLocker(me,you)
-     return redirect("/home")
-
+# displays all notifications of locker and buddy requests for the user
 @app.route("/notifs")
 @login_required
 def notifs():
@@ -328,6 +342,7 @@ def notifs():
     user=session['osis']
     return render_template("notifs.html", all=all, open=open, close=close, looper=looper, buddy=buddy, locker=locker, dissolve = dissolve, user=user)
 
+# displays information about the stats of each floor, locker type, number buddies, etc
 @app.route("/stats")
 @login_required
 def stats():
