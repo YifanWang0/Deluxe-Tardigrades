@@ -157,3 +157,8 @@ amandaZ -- 2020-06-15 23:17
     - debugged notifications, buddy, and locker bugs
     - fixed design doc
     - finalized code
+
+elizabethD -- 2020-06-15 23:21
+    - commented and reordered all code
+    - debugged locker search
+    - finalized code
