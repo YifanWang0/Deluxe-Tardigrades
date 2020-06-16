@@ -182,18 +182,25 @@ def editLockerTbl(locker,fxn,new, osis):
             q = "SELECT locker, floor FROM locker_tbl WHERE floor = ?"
             inputs=(new,)
             data = execmany(q,inputs).fetchall()
-        for value in data:
-            if value[0] == old[0] and value[1] == old[1]:
-                return False
+        if data is not None:
+            for value in data:
+                if value[0] == old[0] and value[1] == old[1]:
+                    return False
     new = "\"" + new + "\""
-    q = "UPDATE locker_tbl SET " + fxn + "=" + new + " WHERE locker=?"
-    inputs = (locker,)
+    q = "UPDATE locker_tbl SET " + fxn + "=" + new + " WHERE owner=?"
+    inputs = (osis,)
+    d= execmany(q, inputs)
     q= "SELECT floor FROM locker_tbl WHERE owner = ? AND locker = ?"
     inputs = (osis, locker)
     d= execmany(q,inputs).fetchone()
-    q = "UPDATE transaction_tbl SET floor = ? WHERE locker=? AND floor = ?"
-    inputs = (new, locker, d[0])
-    data = execmany(q,inputs)
+    if d is not None:
+        q = "UPDATE transaction_tbl SET floor = ? WHERE locker=? AND floor = ?"
+        inputs = (new, locker, d[0])
+        data = execmany(q,inputs)
+    else:
+        q = "UPDATE transaction_tbl SET floor = ? WHERE locker=?"
+        inputs = (new, locker)
+        data = execmany(q,inputs)
     return True
 
 # edits user/locker/transaction_tbl depending on the new information provided by the user
