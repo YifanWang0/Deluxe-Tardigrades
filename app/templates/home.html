@@ -35,12 +35,13 @@
         <div class="card-body">
           <h5 class="card-title">Buddy Info:</h5>
           <p class="card-text">Grade: {{buddy[3]}} <br> Gender: {{buddy[6]}}</p>
-        </div>
+          <hr class="my-4">
         {% if buddy[0] != "N/A" and not changed %}
           <form action="/dissolve" method="post">
             <button type="submit" class="btn btn-primary btn-block active" name="break" value={{buddy[0]}}>Change Buddy</button>
           </form>
          {% endif %}
+        </div>
          {% if buddy[0] != "N/A" and changed %}
            <form action="/notifs">
              <button type="submit" class="btn btn-primary btn-block active" >Check Notifications!</button>
