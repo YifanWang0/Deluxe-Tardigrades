@@ -112,7 +112,8 @@ for (var i=0; i < userRegistration_grade.length; i++){
     senior += 1;
   }
 }
-var data = {Freshman:freshman, Sophomore:sophomore, Junior:junior, Senior:senior}
+
+var data = {Freshman:freshman, Sophomore:sophomore, Junior:junior, Senior:senior};
 
 // set the color scale
 var color = d3.scaleOrdinal()
@@ -193,7 +194,7 @@ location_count = 0;
 
 //creating data by parsing list from python file
 var data = [];
-
+console.log(lockerRegistration_floor);
 var first = 0
     second = 0
     third = 0
@@ -206,7 +207,11 @@ var first = 0
     tenth = 0
 for (var i=0; i<lockerRegistration_floor.length; i++){
   if (lockerRegistration_floor[i] == 1){
-    first += 1;
+    if (lockerRegistration_floor[i+1] == 0) {
+      tenth += 1;
+    } else {
+      first += 1;
+    }
   } else if (lockerRegistration_floor[i] == 2){
     second += 1;
   } else if (lockerRegistration_floor[i] == 3){
@@ -223,8 +228,6 @@ for (var i=0; i<lockerRegistration_floor.length; i++){
     eighth += 1;
   } else if (lockerRegistration_floor[i] == 9){
     ninth += 1;
-  } else {
-    tenth += 1;
   }
 }
 
@@ -238,7 +241,7 @@ var data =  [{"floor":1, "number":first},
              {"floor":8, "number":eighth},
              {"floor":9, "number":ninth},
              {"floor":10, "number":tenth},]
-
+console.log(data);
 //defining the margin amounts of the chart
 var margin = {top:50, right:50, bottom:50, left:50};
 //the total width of the bar graph
