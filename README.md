@@ -21,7 +21,7 @@ With many students unsatisfied with their assigned lockers, Stuyvesant has had a
   - User profile and home page
   - Locker and Profile Survey
 
-### Video Demo Here:
+### [Video Demo Here](https://youtu.be/7EuYKo0dBdM)
 
 ### How to Run
 <!-- TODO: add details!!! -->
